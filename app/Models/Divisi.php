@@ -1,0 +1,23 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Divisi extends Model
+{
+    use HasFactory;
+
+    protected $fillable = ['nama_divisi', 'kode_divisi', 'deskripsi'];
+
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
+
+    public function pengajuan()
+    {
+        return $this->hasMany(PengajuanTenagaKerja::class);
+    }
+}
