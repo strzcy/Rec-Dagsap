@@ -4,20 +4,39 @@ namespace App\Http\Controllers\Divisi;
 
 use App\Http\Controllers\Controller;
 use App\Models\PengajuanTenagaKerja;
+use App\Models\Lowongan;
 use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        $totalPengajuan = PengajuanTenagaKerja::where('divisi_id', Auth::user()->divisi_id)->count();
-        $pendingPengajuan = PengajuanTenagaKerja::where('divisi_id', Auth::user()->divisi_id)
+        $userId = Auth::id();
+        $divisiId = Auth::user()->divisi_id;
+        
+        $totalPengajuan = PengajuanTenagaKerja::where('user_id', $userId)->count();
+        $pendingPengajuan = PengajuanTenagaKerja::where('user_id', $userId)
             ->where('status', 'pending')->count();
-        $approvedPengajuan = PengajuanTenagaKerja::where('divisi_id', Auth::user()->divisi_id)
+        $approvedPengajuan = PengajuanTenagaKerja::where('user_id', $userId)
             ->where('status', 'disetujui')->count();
-        $recentPengajuan = PengajuanTenagaKerja::where('divisi_id', Auth::user()->divisi_id)
+        $rejectedPengajuan = PengajuanTenagaKerja::where('user_id', $userId)
+            ->where('status', 'ditolak')->count();
+            
+        $recentPengajuan = PengajuanTenagaKerja::where('user_id', $userId)
             ->latest()->take(5)->get();
             
-        return view('divisi.dashboard', compact('totalPengajuan', 'pendingPengajuan', 'approvedPengajuan', 'recentPengajuan'));
+        // Cek lowongan aktif dari pengajuan yang disetujui
+        $activeLowongan = Lowongan::whereHas('pengajuan', function($q) use ($divisiId) {
+            $q->where('divisi_id', $divisiId);
+        })->where('status', 'publikasi')->count();
+            
+        return view('divisi.dashboard', compact(
+            'totalPengajuan', 
+            'pendingPengajuan', 
+            'approvedPengajuan', 
+            'rejectedPengajuan',
+            'recentPengajuan',
+            'activeLowongan'
+        ));
     }
 }

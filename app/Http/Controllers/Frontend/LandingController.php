@@ -12,6 +12,7 @@ class LandingController extends Controller
     {
         $lowongans = Lowongan::where('status', 'publikasi')
             ->where('tanggal_selesai', '>=', now())
+            ->with('pengajuan.divisi')
             ->latest()
             ->paginate(9);
             
@@ -40,5 +41,14 @@ class LandingController extends Controller
         $lowongans = $query->latest()->paginate(12);
         
         return view('frontend.lowongan', compact('lowongans'));
+    }
+    
+    public function show(Lowongan $lowongan)
+    {
+        if ($lowongan->status !== 'publikasi' || $lowongan->tanggal_selesai < now()) {
+            return redirect()->route('frontend.home')->with('error', 'Lowongan sudah tidak tersedia.');
+        }
+        
+        return view('frontend.detail', compact('lowongan'));
     }
 }

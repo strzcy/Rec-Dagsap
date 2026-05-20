@@ -5,20 +5,55 @@ namespace App\Http\Controllers\HRD;
 use App\Http\Controllers\Controller;
 use App\Models\Lowongan;
 use App\Models\Pelamar;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        $totalLowongan = Lowongan::where('hrd_id', auth()->id())->count();
-        $activeLowongan = Lowongan::where('hrd_id', auth()->id())->where('status', 'publikasi')->count();
-        $totalPelamar = Pelamar::whereHas('lowongan', function($q) {
-            $q->where('hrd_id', auth()->id());
-        })->count();
-        $recentPelamar = Pelamar::with('lowongan')->whereHas('lowongan', function($q) {
-            $q->where('hrd_id', auth()->id());
-        })->latest()->take(10)->get();
+        $hrdId = Auth::id();
         
-        return view('hrd.dashboard', compact('totalLowongan', 'activeLowongan', 'totalPelamar', 'recentPelamar'));
+        $totalLowongan = Lowongan::where('hrd_id', $hrdId)->count();
+        $activeLowongan = Lowongan::where('hrd_id', $hrdId)
+            ->where('status', 'publikasi')
+            ->where('tanggal_selesai', '>=', now())
+            ->count();
+        $closedLowongan = Lowongan::where('hrd_id', $hrdId)
+            ->where('status', 'ditutup')
+            ->count();
+            
+        $totalPelamar = Pelamar::whereHas('lowongan', function($q) use ($hrdId) {
+            $q->where('hrd_id', $hrdId);
+        })->count();
+        
+        // Statistik status pelamar
+        $statStatus = Pelamar::whereHas('lowongan', function($q) use ($hrdId) {
+            $q->where('hrd_id', $hrdId);
+        })->selectRaw('status, count(*) as total')
+          ->groupBy('status')
+          ->get();
+          
+        $recentPelamar = Pelamar::with('lowongan')
+            ->whereHas('lowongan', function($q) use ($hrdId) {
+                $q->where('hrd_id', $hrdId);
+            })
+            ->latest()
+            ->take(10)
+            ->get();
+            
+        $recentLowongan = Lowongan::where('hrd_id', $hrdId)
+            ->latest()
+            ->take(5)
+            ->get();
+            
+        return view('hrd.dashboard', compact(
+            'totalLowongan', 
+            'activeLowongan',
+            'closedLowongan',
+            'totalPelamar',
+            'statStatus',
+            'recentPelamar',
+            'recentLowongan'
+        ));
     }
 }
