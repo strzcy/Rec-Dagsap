@@ -19,6 +19,9 @@ class PengajuanTenagaKerja extends Model
 
     protected $casts = [
         'approved_at' => 'datetime',
+        'kriteria' => 'array',
+        'persyaratan' => 'array',
+        'tugas' => 'array',
     ];
 
     public function divisi()

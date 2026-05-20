@@ -3,9 +3,135 @@
 namespace App\Http\Controllers\HRD;
 
 use App\Http\Controllers\Controller;
+use App\Models\PengajuanTenagaKerja;
+use App\Models\Lowongan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class LowonganController extends Controller
 {
-    //
+    public function index()
+    {
+        $lowongans = Lowongan::with(['pengajuan.divisi'])
+            ->where('hrd_id', Auth::id())
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+        
+        return view('hrd.lowongan.index', compact('lowongans'));
+    }
+
+    public function create()
+    {
+        // Ambil pengajuan yang sudah disetujui dan belum dibuat lowongan
+        $pengajuans = PengajuanTenagaKerja::with('divisi')
+            ->where('status', 'disetujui')
+            ->whereDoesntHave('lowongan')
+            ->get();
+        
+        return view('hrd.lowongan.create', compact('pengajuans'));
+    }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'pengajuan_id' => 'required|exists:pengajuan_tenaga_kerjas,id',
+            'judul' => 'required|string|max:255',
+            'deskripsi' => 'required|string',
+            'tanggal_mulai' => 'required|date',
+            'tanggal_selesai' => 'required|date|after:tanggal_mulai',
+            'banner_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
+
+        $validated['hrd_id'] = Auth::id();
+        $validated['status'] = 'publikasi';
+
+        if ($request->hasFile('banner_image')) {
+            $path = $request->file('banner_image')->store('banners', 'public');
+            $validated['banner_image'] = $path;
+        }
+
+        Lowongan::create($validated);
+
+        return redirect()->route('hrd.lowongan.index')
+            ->with('success', 'Lowongan berhasil dipublikasikan!');
+    }
+
+    public function show(Lowongan $lowongan)
+    {
+        if ($lowongan->hrd_id !== Auth::id()) {
+            abort(403);
+        }
+        
+        return view('hrd.lowongan.show', compact('lowongan'));
+    }
+
+    public function edit(Lowongan $lowongan)
+    {
+        if ($lowongan->hrd_id !== Auth::id()) {
+            abort(403);
+        }
+        
+        return view('hrd.lowongan.edit', compact('lowongan'));
+    }
+
+    public function update(Request $request, Lowongan $lowongan)
+    {
+        if ($lowongan->hrd_id !== Auth::id()) {
+            abort(403);
+        }
+
+        $validated = $request->validate([
+            'judul' => 'required|string|max:255',
+            'deskripsi' => 'required|string',
+            'tanggal_mulai' => 'required|date',
+            'tanggal_selesai' => 'required|date|after:tanggal_mulai',
+            'banner_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'status' => 'required|in:draft,publikasi,ditutup',
+        ]);
+
+        if ($request->hasFile('banner_image')) {
+            if ($lowongan->banner_image) {
+                Storage::disk('public')->delete($lowongan->banner_image);
+            }
+            $path = $request->file('banner_image')->store('banners', 'public');
+            $validated['banner_image'] = $path;
+        }
+
+        $lowongan->update($validated);
+
+        return redirect()->route('hrd.lowongan.index')
+            ->with('success', 'Lowongan berhasil diupdate!');
+    }
+
+    public function destroy(Lowongan $lowongan)
+    {
+        if ($lowongan->hrd_id !== Auth::id()) {
+            abort(403);
+        }
+
+        if ($lowongan->banner_image) {
+            Storage::disk('public')->delete($lowongan->banner_image);
+        }
+
+        $lowongan->delete();
+
+        return redirect()->route('hrd.lowongan.index')
+            ->with('success', 'Lowongan berhasil dihapus!');
+    }
+    
+    public function toggleStatus(Lowongan $lowongan)
+    {
+        if ($lowongan->hrd_id !== Auth::id()) {
+            abort(403);
+        }
+        
+        $newStatus = $lowongan->status === 'publikasi' ? 'ditutup' : 'publikasi';
+        $lowongan->update(['status' => $newStatus]);
+        
+        $message = $newStatus === 'publikasi' ? 'Lowongan dibuka kembali!' : 'Lowongan ditutup!';
+        
+        return redirect()->route('hrd.lowongan.index')
+            ->with('success', $message);
+    }
 }
