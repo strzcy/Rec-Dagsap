@@ -10,8 +10,9 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+            $table->string('username')->unique(); // Tambahkan ini
             $table->string('name');
-            $table->string('email')->unique();
+            $table->string('email')->unique()->nullable(); // email jadi nullable/opsional
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->enum('role', ['divisi', 'management', 'hrd']);

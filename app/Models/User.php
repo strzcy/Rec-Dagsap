@@ -11,7 +11,7 @@ class User extends Authenticatable
     use HasFactory, Notifiable;
 
     protected $fillable = [
-        'name', 'email', 'password', 'role', 'divisi_id', 'no_telepon'
+        'username', 'name', 'email', 'password', 'role', 'divisi_id', 'no_telepon'
     ];
 
     protected $hidden = [
@@ -24,6 +24,12 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    // Ganti default username untuk login (bukan email)
+    public function username()
+    {
+        return 'username';
     }
 
     public function divisi()
