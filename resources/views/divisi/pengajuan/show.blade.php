@@ -1,0 +1,143 @@
+@extends('layouts.app')
+
+@section('title', 'Detail Pengajuan')
+
+@section('header', 'Detail Pengajuan Tenaga Kerja')
+@section('subheader', 'Lihat detail permintaan tenaga kerja')
+
+@section('content')
+<div class="bg-white rounded-lg shadow">
+    <div class="p-6">
+        <!-- Status Banner -->
+        <div class="mb-6 p-4 rounded-lg {{ $pengajuan->status == 'pending' ? 'bg-yellow-50 border border-yellow-200' : ($pengajuan->status == 'disetujui' ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200') }}">
+            <div class="flex items-center justify-between flex-wrap">
+                <div>
+                    <span class="font-semibold">Status: </span>
+                    @if($pengajuan->status == 'pending')
+                        <span class="text-yellow-700">Menunggu Approval</span>
+                    @elseif($pengajuan->status == 'disetujui')
+                        <span class="text-green-700">Disetujui pada {{ $pengajuan->approved_at ? \Carbon\Carbon::parse($pengajuan->approved_at)->format('d/m/Y H:i') : '-' }}</span>
+                    @else
+                        <span class="text-red-700">Ditolak</span>
+                    @endif
+                </div>
+                @if($pengajuan->status == 'ditolak' && $pengajuan->alasan_penolakan)
+                    <div class="text-sm text-red-600 mt-2 md:mt-0">
+                        <strong>Alasan:</strong> {{ $pengajuan->alasan_penolakan }}
+                    </div>
+                @endif
+            </div>
+        </div>
+        
+        <!-- Informasi Pengajuan -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6 pb-6 border-b">
+            <div>
+                <label class="text-xs text-gray-500">Divisi Pengaju</label>
+                <p class="font-medium">{{ $pengajuan->divisi->nama_divisi ?? '-' }}</p>
+            </div>
+            <div>
+                <label class="text-xs text-gray-500">Diajukan Oleh</label>
+                <p class="font-medium">{{ $pengajuan->user->name ?? '-' }} ({{ $pengajuan->user->username ?? '-' }})</p>
+            </div>
+            <div>
+                <label class="text-xs text-gray-500">Tanggal Pengajuan</label>
+                <p class="font-medium">{{ $pengajuan->created_at->format('d/m/Y H:i') }}</p>
+            </div>
+            <div>
+                <label class="text-xs text-gray-500">Jenis Kebutuhan</label>
+                <p class="font-medium">{{ $pengajuan->jenis == 'penambahan' ? 'Penambahan' : 'Penggantian' }}</p>
+            </div>
+        </div>
+        
+        <!-- Detail Pekerjaan -->
+        <div class="mb-6">
+            <h3 class="text-lg font-semibold mb-3">Detail Pekerjaan</h3>
+            <div class="grid grid-cols-2 gap-4 mb-4">
+                <div>
+                    <label class="text-xs text-gray-500">Posisi</label>
+                    <p class="font-medium">{{ $pengajuan->posisi }}</p>
+                </div>
+                <div>
+                    <label class="text-xs text-gray-500">Jumlah Dibutuhkan</label>
+                    <p class="font-medium">{{ $pengajuan->jumlah }} orang</p>
+                </div>
+            </div>
+            
+            <div class="mb-4">
+                <label class="text-xs text-gray-500">Tugas dan Tanggung Jawab</label>
+                <div class="mt-1 space-y-1">
+                    @php
+                        $tugas = is_array($pengajuan->tugas) ? $pengajuan->tugas : json_decode($pengajuan->tugas, true);
+                    @endphp
+                    @if(!empty($tugas))
+                        @foreach($tugas as $item)
+                            <p class="text-sm">• {{ $item }}</p>
+                        @endforeach
+                    @else
+                        <p class="text-gray-500">-</p>
+                    @endif
+                </div>
+            </div>
+            
+            <div class="mb-4">
+                <label class="text-xs text-gray-500">Deskripsi Pekerjaan</label>
+                <p class="mt-1 text-gray-700">{{ nl2br(e($pengajuan->deskripsi_pekerjaan)) ?: '-' }}</p>
+            </div>
+        </div>
+        
+        <!-- Spesifikasi Calon -->
+        <div class="mb-6">
+            <h3 class="text-lg font-semibold mb-3">Spesifikasi Calon</h3>
+            @php
+                $kriteria = is_array($pengajuan->kriteria) ? $pengajuan->kriteria : json_decode($pengajuan->kriteria, true);
+            @endphp
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="text-xs text-gray-500">Pendidikan Minimal</label>
+                    <p class="font-medium">{{ $kriteria['pendidikan'] ?? '-' }}</p>
+                </div>
+                <div>
+                    <label class="text-xs text-gray-500">Jurusan</label>
+                    <p class="font-medium">{{ $kriteria['jurusan'] ?? '-' }}</p>
+                </div>
+                <div>
+                    <label class="text-xs text-gray-500">Pengalaman Minimal</label>
+                    <p class="font-medium">{{ $kriteria['pengalaman'] ?? '0' }} tahun</p>
+                </div>
+                <div>
+                    <label class="text-xs text-gray-500">IPK Minimal</label>
+                    <p class="font-medium">{{ $kriteria['ipk'] ?? '-' }}</p>
+                </div>
+                <div class="md:col-span-2">
+                    <label class="text-xs text-gray-500">Keahlian</label>
+                    <p class="font-medium">{{ $kriteria['keahlian'] ?? '-' }}</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Persyaratan -->
+        <div class="mb-6">
+            <h3 class="text-lg font-semibold mb-3">Persyaratan Lainnya</h3>
+            @php
+                $persyaratan = is_array($pengajuan->persyaratan) ? $pengajuan->persyaratan : json_decode($pengajuan->persyaratan, true);
+            @endphp
+            @if(!empty($persyaratan))
+                <ul class="list-disc list-inside space-y-1">
+                    @foreach($persyaratan as $item)
+                        <li class="text-gray-700">{{ $item }}</li>
+                    @endforeach
+                </ul>
+            @else
+                <p class="text-gray-500">-</p>
+            @endif
+        </div>
+        
+        <!-- Back Button -->
+        <div class="flex justify-end pt-4 border-t">
+            <a href="{{ route('divisi.pengajuan.index') }}" class="px-4 py-2 border rounded-lg hover:bg-gray-50">
+                Kembali
+            </a>
+        </div>
+    </div>
+</div>
+@endsection

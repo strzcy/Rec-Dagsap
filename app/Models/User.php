@@ -11,7 +11,8 @@ class User extends Authenticatable
     use HasFactory, Notifiable;
 
     protected $fillable = [
-        'username', 'name', 'email', 'password', 'role', 'divisi_id', 'no_telepon'
+        'username', 'name', 'email', 'password', 'role', 
+        'divisi_id', 'managed_divisi_id', 'no_telepon'
     ];
 
     protected $hidden = [
@@ -26,7 +27,6 @@ class User extends Authenticatable
         ];
     }
 
-    // Ganti default username untuk login (bukan email)
     public function username()
     {
         return 'username';
@@ -34,7 +34,13 @@ class User extends Authenticatable
 
     public function divisi()
     {
-        return $this->belongsTo(Divisi::class);
+        return $this->belongsTo(Divisi::class, 'divisi_id');
+    }
+
+    // Management menangani divisi tertentu
+    public function managedDivisi()
+    {
+        return $this->belongsTo(Divisi::class, 'managed_divisi_id');
     }
 
     public function isDivisi()
@@ -54,7 +60,7 @@ class User extends Authenticatable
 
     public function pengajuan()
     {
-        return $this->hasMany(PengajuanTenagaKerja::class);
+        return $this->hasMany(PengajuanTenagaKerja::class, 'user_id');
     }
 
     public function approvedPengajuan()

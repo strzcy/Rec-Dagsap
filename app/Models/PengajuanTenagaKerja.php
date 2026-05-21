@@ -41,6 +41,6 @@ class PengajuanTenagaKerja extends Model
 
     public function lowongan()
     {
-        return $this->hasOne(Lowongan::class);
+        return $this->hasOne(Lowongan::class, 'pengajuan_id');
     }
 }

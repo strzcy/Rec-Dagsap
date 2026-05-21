@@ -24,6 +24,7 @@ class LowonganController extends Controller
     public function create()
     {
         // Ambil pengajuan yang sudah disetujui dan belum dibuat lowongan
+        // Perbaiki query: menggunakan pengajuan_id, bukan pengajuan_tenaga_kerja_id
         $pengajuans = PengajuanTenagaKerja::with('divisi')
             ->where('status', 'disetujui')
             ->whereDoesntHave('lowongan')
@@ -118,20 +119,5 @@ class LowonganController extends Controller
 
         return redirect()->route('hrd.lowongan.index')
             ->with('success', 'Lowongan berhasil dihapus!');
-    }
-    
-    public function toggleStatus(Lowongan $lowongan)
-    {
-        if ($lowongan->hrd_id !== Auth::id()) {
-            abort(403);
-        }
-        
-        $newStatus = $lowongan->status === 'publikasi' ? 'ditutup' : 'publikasi';
-        $lowongan->update(['status' => $newStatus]);
-        
-        $message = $newStatus === 'publikasi' ? 'Lowongan dibuka kembali!' : 'Lowongan ditutup!';
-        
-        return redirect()->route('hrd.lowongan.index')
-            ->with('success', $message);
     }
 }

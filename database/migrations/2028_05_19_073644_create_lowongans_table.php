@@ -10,8 +10,8 @@ return new class extends Migration
     {
         Schema::create('lowongans', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('pengajuan_id')->constrained('pengajuan_tenaga_kerjas');
-            $table->foreignId('hrd_id')->constrained('users');
+            $table->foreignId('pengajuan_id')->constrained('pengajuan_tenaga_kerjas')->onDelete('cascade');
+            $table->foreignId('hrd_id')->constrained('users')->onDelete('cascade');
             $table->string('judul');
             $table->string('banner_image')->nullable();
             $table->text('deskripsi');
