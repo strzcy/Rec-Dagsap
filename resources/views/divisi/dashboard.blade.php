@@ -3,7 +3,7 @@
 @section('title', 'Dashboard Divisi')
 
 @section('header', 'Dashboard Divisi')
-@section('subheader', 'Selamat datang, ' . Auth::user()->name)
+@section('subheader', 'Selamat datang, ' . Auth::user()->username)
 
 @section('content')
 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
