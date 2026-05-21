@@ -63,5 +63,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         Route::get('/pelamar/{pelamar}', [PelamarController::class, 'show'])->name('pelamar.show');
         Route::post('/pelamar/{pelamar}/kirim-interview', [PelamarController::class, 'kirimJadwalInterview'])->name('pelamar.kirim-interview');
         Route::post('/pelamar/{pelamar}/update-status', [PelamarController::class, 'updateStatus'])->name('pelamar.update-status');
+        Route::get('/pelamar/{pelamar}/download-cv', [PelamarController::class, 'downloadCv'])->name('pelamar.download-cv');
+        Route::get('/pelamar/{pelamar}/download-ijazah', [PelamarController::class, 'downloadIjazah'])->name('pelamar.download-ijazah');
     });
 });

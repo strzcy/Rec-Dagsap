@@ -128,31 +128,32 @@ class PelamarController extends Controller
             ->with('success', 'Status pelamar berhasil diupdate!');
     }
     
+    // Tambahkan method ini di dalam class PelamarController
     public function downloadCv(Pelamar $pelamar)
     {
         if ($pelamar->lowongan->hrd_id !== auth()->id()) {
             abort(403);
         }
-        
+    
         $path = storage_path('app/public/' . $pelamar->cv_path);
         if (file_exists($path)) {
             return response()->download($path, 'CV_' . $pelamar->nama_lengkap . '.pdf');
         }
-        
+    
         return back()->with('error', 'File tidak ditemukan.');
     }
-    
+
     public function downloadIjazah(Pelamar $pelamar)
     {
         if ($pelamar->lowongan->hrd_id !== auth()->id()) {
             abort(403);
         }
-        
+    
         $path = storage_path('app/public/' . $pelamar->ijazah_path);
         if (file_exists($path)) {
             return response()->download($path, 'Ijazah_' . $pelamar->nama_lengkap . '.pdf');
         }
-        
+    
         return back()->with('error', 'File tidak ditemukan.');
     }
     
