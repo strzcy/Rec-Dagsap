@@ -44,6 +44,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::middleware(['check.role:divisi'])->prefix('divisi')->name('divisi.')->group(function () {
         Route::get('/dashboard', [DivisiDashboardController::class, 'index'])->name('dashboard');
         Route::resource('pengajuan', PengajuanController::class);
+        
     });
     
     // Management Routes
