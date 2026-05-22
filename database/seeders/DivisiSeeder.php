@@ -10,11 +10,14 @@ class DivisiSeeder extends Seeder
     public function run(): void
     {
         $divisis = [
-            ['nama_divisi' => 'Teknologi Informasi', 'kode_divisi' => 'TI'],
-            ['nama_divisi' => 'Sumber Daya Manusia', 'kode_divisi' => 'SDM'],
-            ['nama_divisi' => 'Keuangan', 'kode_divisi' => 'KEU'],
-            ['nama_divisi' => 'Marketing', 'kode_divisi' => 'MKT'],
-            ['nama_divisi' => 'Operasional', 'kode_divisi' => 'OPS'],
+            ['nama_divisi' => 'FAT', 'kode_divisi' => 'FAT'],
+            ['nama_divisi' => 'HRD&GA', 'kode_divisi' => 'HRDGA'],
+            ['nama_divisi' => 'Internal Audit', 'kode_divisi' => 'IA'],
+            ['nama_divisi' => 'Maintenance', 'kode_divisi' => 'MTN'],
+            ['nama_divisi' => 'PPIC&Purchasing', 'kode_divisi' => 'PPIC'],
+            ['nama_divisi' => 'Produksi', 'kode_divisi' => 'PROD'],
+            ['nama_divisi' => 'QAQC', 'kode_divisi' => 'QAQC'],
+            ['nama_divisi' => 'Sales & Marketing', 'kode_divisi' => 'SALES'],
         ];
 
         foreach ($divisis as $divisi) {

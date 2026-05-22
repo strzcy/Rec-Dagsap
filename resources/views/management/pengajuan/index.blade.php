@@ -1,100 +1,29 @@
-@extends('layouts.app')
-
-@section('title', 'Approval Pengajuan Tenaga Kerja')
-
-@section('header', 'Approval Pengajuan Tenaga Kerja')
-@section('subheader', 'Review dan approve permintaan tenaga kerja dari divisi ' . ($divisi->nama_divisi ?? 'Anda'))
-
-@section('content')
-<div class="bg-white rounded-lg shadow overflow-hidden">
-    <div class="p-4 border-b bg-blue-50">
-        <div class="flex items-center">
-            <i class="fas fa-info-circle text-blue-600 mr-2"></i>
-            <span class="text-sm text-blue-700">Anda hanya dapat melihat pengajuan dari divisi <strong>{{ $divisi->nama_divisi ?? '-' }}</strong></span>
-        </div>
-    </div>
-    
-    <div class="p-4 border-b">
-        <form method="GET" class="flex gap-2 flex-wrap">
-            <select name="status" class="border rounded-lg px-3 py-2">
-                <option value="">Semua Status</option>
-                <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
-                <option value="disetujui" {{ request('status') == 'disetujui' ? 'selected' : '' }}>Disetujui</option>
-                <option value="ditolak" {{ request('status') == 'ditolak' ? 'selected' : '' }}>Ditolak</option>
-            </select>
-            <button type="submit" class="bg-primary text-white px-4 py-2 rounded-lg">Filter</button>
-            @if(request('status'))
-            <a href="{{ route('management.pengajuan.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded-lg">Reset</a>
+<td class="px-6 py-4">
+    <div class="flex space-x-2">
+        <a href="{{ route('management.pengajuan.show', $pengajuan) }}" class="text-primary hover:underline">
+            @if($pengajuan->status == 'pending')
+                <i class="fas fa-check-circle mr-1"></i> Review
+            @else
+                <i class="fas fa-eye mr-1"></i> Detail
             @endif
-        </form>
+        </a>
+        @if($pengajuan->status == 'disetujui')
+            @php
+                $hrd = \App\Models\User::where('role', 'hrd')->first();
+                $pesan = "Permisi kami dari Management " . $pengajuan->divisi->nama_divisi . 
+                         " ingin memberi tahu bahwa pada tanggal " . date('d/m/Y H:i', strtotime($pengajuan->approved_at ?? now())) . 
+                         " kami membutuhkan tenaga kerja untuk bagian " . $pengajuan->posisi . 
+                         " dengan total " . $pengajuan->jumlah . " unit kerja, " .
+                         "mohon segera untuk memposting Lowongan Kerjanya ya, Terimakasih";
+                $encodedPesan = urlencode($pesan);
+                $noHrd = $hrd->no_telepon ?? '6281294491075';
+            @endphp
+            <a href="https://api.whatsapp.com/send?phone={{ $noHrd }}&text={{ $encodedPesan }}" 
+               target="_blank"
+               class="text-green-600 hover:text-green-800"
+               title="Ingatkan HRD">
+                <i class="fab fa-whatsapp text-lg"></i>
+            </a>
+        @endif
     </div>
-    
-    <div class="overflow-x-auto">
-        <table class="w-full">
-            <thead class="bg-gray-50">
-                <tr>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">No</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Divisi</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Posisi</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Jenis</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Jumlah</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Pengaju</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Aksi</th>
-                </tr>
-            </thead>
-            <tbody class="divide-y divide-gray-200">
-                @forelse($pengajuans as $index => $pengajuan)
-                <tr class="hover:bg-gray-50">
-                    <td class="px-6 py-4">{{ $index + 1 }}</td>
-                    <td class="px-6 py-4">
-                        <span class="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-800">
-                            {{ $pengajuan->divisi->nama_divisi ?? '-' }}
-                        </span>
-                    </td>
-                    <td class="px-6 py-4 font-medium">{{ $pengajuan->posisi }}</td>
-                    <td class="px-6 py-4">
-                        <span class="px-2 py-1 text-xs rounded-full {{ $pengajuan->jenis == 'penambahan' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' }}">
-                            {{ $pengajuan->jenis == 'penambahan' ? 'Penambahan' : 'Penggantian' }}
-                        </span>
-                    </td>
-                    <td class="px-6 py-4">{{ $pengajuan->jumlah }}</td>
-                    <td class="px-6 py-4">{{ $pengajuan->user->name ?? '-' }} ({{ $pengajuan->user->username ?? '-' }})</td>
-                    <td class="px-6 py-4">
-                        @if($pengajuan->status == 'pending')
-                            <span class="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-800">Menunggu</span>
-                        @elseif($pengajuan->status == 'disetujui')
-                            <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">Disetujui</span>
-                        @else
-                            <span class="px-2 py-1 text-xs rounded-full bg-red-100 text-red-800">Ditolak</span>
-                        @endif
-                    </td>
-                    <td class="px-6 py-4">
-                        <a href="{{ route('management.pengajuan.show', $pengajuan) }}" class="text-primary hover:underline">
-                            @if($pengajuan->status == 'pending')
-                                <i class="fas fa-check-circle mr-1"></i> Review & Approve
-                            @else
-                                <i class="fas fa-eye mr-1"></i> Lihat Detail
-                            @endif
-                        </a>
-                    </td>
-                </tr>
-                @empty
-                <tr>
-                    <td colspan="8" class="px-6 py-8 text-center text-gray-500">
-                        <i class="fas fa-inbox text-4xl mb-2 block"></i>
-                        Tidak ada pengajuan dari divisi {{ $divisi->nama_divisi ?? '' }}
-                    </td>
-                </tr>
-                @endforelse
-            </tbody>
-        </table>
-    </div>
-    
-    @if($pengajuans->hasPages())
-    <div class="p-4 border-t">
-        {{ $pengajuans->links() }}
-    </div>
-    @endif
-</div>
-@endsection
+</td>

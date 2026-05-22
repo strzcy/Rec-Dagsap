@@ -156,6 +156,38 @@
             </a>
         </div>
         @endif
+
+        <!-- Tombol Ingatkan HRD - HANYA TAMPIL JIKA STATUS SUDAH DISETUJUI -->
+        @if($pengajuan->status == 'disetujui')
+        <div class="mt-4 pt-4 border-t">
+            <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <div class="flex items-center justify-between flex-wrap gap-3">
+                    <div>
+                        <i class="fas fa-bell text-blue-600 text-xl mr-2"></i>
+                        <span class="font-medium text-blue-800">Pengajuan sudah disetujui!</span>
+                        <p class="text-sm text-blue-600 mt-1">Ingatkan HRD untuk segera memposting lowongan ini.</p>
+                    </div>
+                    @php
+                        $hrd = \App\Models\User::where('role', 'hrd')->first();
+                        $pesan = "Permisi kami dari Management " . $pengajuan->divisi->nama_divisi . 
+                                 " ingin memberi tahu bahwa pada tanggal " . date('d/m/Y H:i', strtotime($pengajuan->approved_at ?? now())) . 
+                                 " kami membutuhkan tenaga kerja untuk bagian " . $pengajuan->posisi . 
+                                 " dengan total " . $pengajuan->jumlah . " unit kerja, " .
+                                 "mohon segera untuk memposting Lowongan Kerjanya ya, Terimakasih";
+                        $encodedPesan = urlencode($pesan);
+                        $noHrd = $hrd->no_telepon ?? '081294491075';
+                    @endphp
+                    <a href="https://api.whatsapp.com/send?phone={{ $noHrd }}&text={{ $encodedPesan }}" 
+                       target="_blank"
+                       class="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition">
+                        <i class="fab fa-whatsapp mr-2"></i>
+                        Ingatkan HRD via WhatsApp
+                    </a>
+                </div>
+            </div>
+        </div>
+        @endif
+
     </div>
 </div>
 
