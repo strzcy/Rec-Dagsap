@@ -14,6 +14,12 @@ class PengajuanApprovalController extends Controller
         // Management hanya melihat pengajuan dari divisi yang mereka tangani
         $managedDivisiId = Auth::user()->managed_divisi_id;
         
+        if (!$managedDivisiId) {
+            // Jika management tidak punya divisi yang ditangani
+            return redirect()->route('management.dashboard')
+                ->with('error', 'Anda tidak ditugaskan untuk divisi manapun.');
+        }
+        
         $query = PengajuanTenagaKerja::with(['divisi', 'user'])
             ->where('divisi_id', $managedDivisiId);
         
@@ -23,14 +29,19 @@ class PengajuanApprovalController extends Controller
         
         $pengajuans = $query->orderBy('created_at', 'desc')->paginate(10);
         
-        return view('management.pengajuan.index', compact('pengajuans'));
+        // Ambil informasi divisi yang dikelola
+        $divisi = Auth::user()->managedDivisi;
+        
+        return view('management.pengajuan.index', compact('pengajuans', 'divisi'));
     }
 
     public function show(PengajuanTenagaKerja $pengajuan)
     {
+        $managedDivisiId = Auth::user()->managed_divisi_id;
+        
         // Cek apakah management ini berhak mengakses pengajuan ini
-        if ($pengajuan->divisi_id !== Auth::user()->managed_divisi_id) {
-            abort(403, 'Anda tidak memiliki akses ke pengajuan ini.');
+        if ($pengajuan->divisi_id !== $managedDivisiId) {
+            abort(403, 'Anda tidak memiliki akses ke pengajuan ini. Anda hanya bisa mengakses pengajuan dari divisi ' . optional(Auth::user()->managedDivisi)->nama_divisi);
         }
         
         return view('management.pengajuan.show', compact('pengajuan'));
@@ -38,7 +49,9 @@ class PengajuanApprovalController extends Controller
 
     public function approve(Request $request, PengajuanTenagaKerja $pengajuan)
     {
-        if ($pengajuan->divisi_id !== Auth::user()->managed_divisi_id) {
+        $managedDivisiId = Auth::user()->managed_divisi_id;
+        
+        if ($pengajuan->divisi_id !== $managedDivisiId) {
             abort(403);
         }
         
@@ -53,12 +66,14 @@ class PengajuanApprovalController extends Controller
         ]);
 
         return redirect()->route('management.pengajuan.index')
-            ->with('success', 'Pengajuan berhasil disetujui!');
+            ->with('success', 'Pengajuan dari divisi ' . $pengajuan->divisi->nama_divisi . ' berhasil disetujui!');
     }
 
     public function reject(Request $request, PengajuanTenagaKerja $pengajuan)
     {
-        if ($pengajuan->divisi_id !== Auth::user()->managed_divisi_id) {
+        $managedDivisiId = Auth::user()->managed_divisi_id;
+        
+        if ($pengajuan->divisi_id !== $managedDivisiId) {
             abort(403);
         }
         
@@ -76,6 +91,6 @@ class PengajuanApprovalController extends Controller
         ]);
 
         return redirect()->route('management.pengajuan.index')
-            ->with('success', 'Pengajuan ditolak!');
+            ->with('success', 'Pengajuan dari divisi ' . $pengajuan->divisi->nama_divisi . ' ditolak!');
     }
 }

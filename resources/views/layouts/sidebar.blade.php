@@ -29,11 +29,13 @@
             <!-- Menu untuk MANAGEMENT -->
             <div class="px-4 mb-4">
                 <div class="bg-primary-light rounded-lg p-3 text-center">
-                    <p class="text-primary text-sm font-semibold">Management</p>
-                    <p class="text-gray-600 text-xs">Level Approval 1</p>
+                    <p class="text-primary text-sm font-semibold">{{ auth()->user()->username }}</p>
+                    <p class="text-gray-600 text-xs">
+                        Mengelola: {{ auth()->user()->managedDivisi->nama_divisi ?? 'Tidak ada divisi' }}
+                    </p>
                 </div>
             </div>
-            
+        
             <nav class="mt-4">
                 <a href="{{ route('management.dashboard') }}" class="flex items-center px-6 py-3 text-gray-700 hover:bg-primary-light hover:text-primary transition">
                     <i class="fas fa-tachometer-alt w-5"></i>
@@ -42,6 +44,13 @@
                 <a href="{{ route('management.pengajuan.index') }}?status=pending" class="flex items-center px-6 py-3 text-gray-700 hover:bg-primary-light hover:text-primary transition">
                     <i class="fas fa-clock w-5"></i>
                     <span class="mx-3">Pending Approval</span>
+                    @php
+                        $pendingCount = \App\Models\PengajuanTenagaKerja::where('divisi_id', auth()->user()->managed_divisi_id)
+                            ->where('status', 'pending')->count();
+                    @endphp
+                    @if($pendingCount > 0)
+                        <span class="ml-auto bg-red-500 text-white text-xs rounded-full px-2 py-1">{{ $pendingCount }}</span>
+                    @endif
                 </a>
                 <a href="{{ route('management.pengajuan.index') }}" class="flex items-center px-6 py-3 text-gray-700 hover:bg-primary-light hover:text-primary transition">
                     <i class="fas fa-history w-5"></i>

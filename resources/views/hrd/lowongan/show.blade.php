@@ -80,7 +80,7 @@
             <a href="{{ route('hrd.lowongan.index') }}" class="px-4 py-2 border rounded-lg hover:bg-gray-50">
                 Kembali
             </a>
-        </div>
+        </div>  
     </div>
 </div>
 @endsection

@@ -6,6 +6,21 @@
 @section('subheader', 'Selamat datang, ' . Auth::user()->name)
 
 @section('content')
+@if(isset($error))
+<div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+    {{ $error }}
+</div>
+@else
+<div class="mb-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+    <div class="flex items-center">
+        <i class="fas fa-building text-blue-600 text-xl mr-3"></i>
+        <div>
+            <p class="text-sm text-blue-600">Anda bertugas mengelola divisi:</p>
+            <p class="font-bold text-blue-800">{{ $divisi->nama_divisi ?? '-' }} ({{ $divisi->kode_divisi ?? '-' }})</p>
+        </div>
+    </div>
+</div>
+
 <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
     <div class="bg-white rounded-lg shadow p-6">
         <div class="text-center">
@@ -16,7 +31,7 @@
     <div class="bg-white rounded-lg shadow p-6">
         <div class="text-center">
             <p class="text-3xl font-bold text-yellow-600">{{ $pendingPengajuan }}</p>
-            <p class="text-gray-500 text-sm">Pending</p>
+            <p class="text-gray-500 text-sm">Perlu Disetujui</p>
         </div>
     </div>
     <div class="bg-white rounded-lg shadow p-6">
@@ -33,74 +48,62 @@
     </div>
 </div>
 
-<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-    <div class="bg-white rounded-lg shadow">
-        <div class="p-4 border-b">
-            <h3 class="font-semibold">Pengajuan Terbaru</h3>
-        </div>
-        <div class="overflow-x-auto">
-            <table class="w-full">
-                <thead class="bg-gray-50">
-                    <tr>
-                        <th class="px-4 py-2 text-left text-xs">Divisi</th>
-                        <th class="px-4 py-2 text-left text-xs">Posisi</th>
-                        <th class="px-4 py-2 text-left text-xs">Status</th>
-                        <th class="px-4 py-2 text-left text-xs">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($recentPengajuan as $pengajuan)
-                    <tr class="border-t">
-                        <td class="px-4 py-2">{{ $pengajuan->divisi->nama_divisi ?? '-' }}</td>
-                        <td class="px-4 py-2">{{ $pengajuan->posisi }}</td>
-                        <td class="px-4 py-2">
-                            <span class="px-2 py-1 text-xs rounded-full {{ $pengajuan->status == 'pending' ? 'bg-yellow-100 text-yellow-800' : ($pengajuan->status == 'disetujui' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800') }}">
-                                {{ $pengajuan->status }}
-                            </span>
-                        </td>
-                        <td class="px-4 py-2">
-                            <a href="{{ route('management.pengajuan.show', $pengajuan) }}" class="text-primary hover:underline">Review</a>
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>    
-        </div>
-    </div>
-    
-    <div class="bg-white rounded-lg shadow">
-        <div class="p-4 border-b">
-            <h3 class="font-semibold">Statistik Per Divisi</h3>
-        </div>
-        <div class="p-4">
-            @foreach($statPerDivisi as $stat)
-            <div class="mb-3">
-                <div class="flex justify-between text-sm mb-1">
-                    <span>{{ $stat->divisi->nama_divisi ?? 'Unknown' }}</span>
-                    <span>{{ $stat->total }} pengajuan</span>
-                </div>
-                <div class="w-full bg-gray-200 rounded-full h-2">
-                    <div class="bg-primary rounded-full h-2" style="width: {{ min(100, ($stat->total / max(1, $totalPengajuan)) * 100) }}%"></div>
-                </div>
-            </div>
-            @endforeach
-        </div>
-    </div>
-</div>
-
 <div class="bg-white rounded-lg shadow">
     <div class="p-4 border-b">
-        <h3 class="font-semibold">Informasi Sistem</h3>
+        <h3 class="font-semibold">Pengajuan Terbaru - Divisi {{ $divisi->nama_divisi ?? '' }}</h3>
     </div>
-    <div class="p-4 grid grid-cols-2 gap-4">
-        <div>
-            <p class="text-gray-500 text-sm">Total Divisi</p>
-            <p class="text-2xl font-bold">{{ $totalDivisi }}</p>
-        </div>
-        <div>
-            <p class="text-gray-500 text-sm">Total User Divisi</p>
-            <p class="text-2xl font-bold">{{ $totalUserDivisi }}</p>
-        </div>
+    <div class="overflow-x-auto">
+        <table class="w-full">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th class="px-4 py-2 text-left text-xs">Posisi</th>
+                    <th class="px-4 py-2 text-left text-xs">Jenis</th>
+                    <th class="px-4 py-2 text-left text-xs">Status</th>
+                    <th class="px-4 py-2 text-left text-xs">Pengaju</th>
+                    <th class="px-4 py-2 text-left text-xs">Tanggal</th>
+                    <th class="px-4 py-2 text-left text-xs">Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse($recentPengajuan as $pengajuan)
+                <tr class="border-t">
+                    <td class="px-4 py-2">{{ $pengajuan->posisi }}</td>
+                    <td class="px-4 py-2">{{ $pengajuan->jenis }}</td>
+                    <td class="px-4 py-2">
+                        <span class="px-2 py-1 text-xs rounded-full {{ $pengajuan->status == 'pending' ? 'bg-yellow-100 text-yellow-800' : ($pengajuan->status == 'disetujui' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800') }}">
+                            {{ $pengajuan->status }}
+                        </span>
+                    </td>
+                    <td class="px-4 py-2">{{ $pengajuan->user->name ?? '-' }}</td>
+                    <td class="px-4 py-2">{{ $pengajuan->created_at->format('d/m/Y') }}</td>
+                    <td class="px-4 py-2">
+                        <a href="{{ route('management.pengajuan.show', $pengajuan) }}" class="text-primary hover:underline">
+                            @if($pengajuan->status == 'pending')
+                                Review
+                            @else
+                                Lihat
+                            @endif
+                        </a>
+                    </td>
+                </tr>
+                @empty
+                <tr class="border-t">
+                    <td colspan="6" class="px-4 py-8 text-center text-gray-500">
+                        <i class="fas fa-inbox text-4xl mb-2 block"></i>
+                        Belum ada pengajuan dari divisi {{ $divisi->nama_divisi ?? '' }}
+                    </td>
+                </tr>
+                @endforelse
+            </tbody>
+        </table>
     </div>
+    @if($pendingPengajuan > 0)
+    <div class="p-4 border-t">
+        <a href="{{ route('management.pengajuan.index') }}?status=pending" class="text-primary hover:underline">
+            Lihat semua pengajuan yang perlu disetujui →
+        </a>
+    </div>
+    @endif
 </div>
+@endif
 @endsection

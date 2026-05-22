@@ -16,7 +16,7 @@
                     @if($pengajuan->status == 'pending')
                         <span class="text-yellow-700">Menunggu Approval</span>
                     @elseif($pengajuan->status == 'disetujui')
-                        <span class="text-green-700">Disetujui oleh {{ $pengajuan->approvedBy->name ?? 'Management' }} pada {{ $pengajuan->approved_at ? $pengajuan->approved_at->format('d/m/Y H:i') : '-' }}</span>
+                        <span class="text-green-700">Disetujui pada {{ $pengajuan->approved_at ? \Carbon\Carbon::parse($pengajuan->approved_at)->format('d/m/Y H:i') : '-' }}</span>
                     @else
                         <span class="text-red-700">Ditolak</span>
                     @endif
@@ -136,12 +136,62 @@
             @endif
         </div>
         
-        <!-- Back Button -->
+        <!-- ACTION BUTTONS - HANYA TAMPIL JIKA STATUS PENDING -->
+        @if($pengajuan->status == 'pending')
+        <div class="flex justify-end space-x-3 pt-4 border-t">
+            <button onclick="openRejectModal()" class="px-6 py-2 border border-red-500 text-red-500 rounded-lg hover:bg-red-50">
+                <i class="fas fa-times mr-2"></i> Tolak
+            </button>
+            <form action="{{ route('management.pengajuan.approve', $pengajuan) }}" method="POST" class="inline">
+                @csrf
+                <button type="submit" class="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
+                    <i class="fas fa-check mr-2"></i> Setujui
+                </button>
+            </form>
+        </div>
+        @else
         <div class="flex justify-end pt-4 border-t">
             <a href="{{ route('management.pengajuan.index') }}" class="px-4 py-2 border rounded-lg hover:bg-gray-50">
-                Kembali
+                <i class="fas fa-arrow-left mr-2"></i> Kembali
             </a>
         </div>
+        @endif
     </div>
 </div>
+
+<!-- Modal Reject -->
+<div id="rejectModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-lg p-6 w-full max-w-md">
+        <h3 class="text-lg font-semibold mb-4">Tolak Pengajuan</h3>
+        <form action="{{ route('management.pengajuan.reject', $pengajuan) }}" method="POST">
+            @csrf
+            <textarea name="alasan_penolakan" rows="4" class="w-full border rounded-lg px-3 py-2 mb-4" placeholder="Masukkan alasan penolakan..." required></textarea>
+            <div class="flex justify-end space-x-3">
+                <button type="button" onclick="closeRejectModal()" class="px-4 py-2 border rounded-lg hover:bg-gray-50">Batal</button>
+                <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">Kirim</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@push('scripts')
+<script>
+    function openRejectModal() {
+        document.getElementById('rejectModal').classList.remove('hidden');
+        document.getElementById('rejectModal').classList.add('flex');
+    }
+    
+    function closeRejectModal() {
+        document.getElementById('rejectModal').classList.add('hidden');
+        document.getElementById('rejectModal').classList.remove('flex');
+    }
+    
+    // Close modal when clicking outside
+    document.getElementById('rejectModal')?.addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeRejectModal();
+        }
+    });
+</script>
+@endpush
 @endsection
