@@ -5,6 +5,7 @@ namespace App\Http\Controllers\HRD;
 use App\Http\Controllers\Controller;
 use App\Models\Lowongan;
 use App\Models\Pelamar;
+use App\Models\PengajuanTenagaKerja;
 use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
@@ -25,6 +26,12 @@ class DashboardController extends Controller
         $totalPelamar = Pelamar::whereHas('lowongan', function($q) use ($hrdId) {
             $q->where('hrd_id', $hrdId);
         })->count();
+        
+        // Pengajuan yang sudah disetujui dan belum dibuat lowongan
+        $pendingLowongan = PengajuanTenagaKerja::with('divisi')
+            ->where('status', 'disetujui')
+            ->whereDoesntHave('lowongan')
+            ->get();
         
         // Statistik status pelamar
         $statStatus = Pelamar::whereHas('lowongan', function($q) use ($hrdId) {
@@ -51,6 +58,7 @@ class DashboardController extends Controller
             'activeLowongan',
             'closedLowongan',
             'totalPelamar',
+            'pendingLowongan',
             'statStatus',
             'recentPelamar',
             'recentLowongan'

@@ -136,7 +136,7 @@
             @endif
         </div>
         
-        <!-- ACTION BUTTONS - HANYA TAMPIL JIKA STATUS PENDING -->
+        <!-- ACTION BUTTONS -->
         @if($pengajuan->status == 'pending')
         <div class="flex justify-end space-x-3 pt-4 border-t">
             <button onclick="openRejectModal()" class="px-6 py-2 border border-red-500 text-red-500 rounded-lg hover:bg-red-50">
@@ -149,14 +149,8 @@
                 </button>
             </form>
         </div>
-        @else
-        <div class="flex justify-end pt-4 border-t">
-            <a href="{{ route('management.pengajuan.index') }}" class="px-4 py-2 border rounded-lg hover:bg-gray-50">
-                <i class="fas fa-arrow-left mr-2"></i> Kembali
-            </a>
-        </div>
         @endif
-
+        
         <!-- Tombol Ingatkan HRD - HANYA TAMPIL JIKA STATUS SUDAH DISETUJUI -->
         @if($pengajuan->status == 'disetujui')
         <div class="mt-4 pt-4 border-t">
@@ -169,13 +163,18 @@
                     </div>
                     @php
                         $hrd = \App\Models\User::where('role', 'hrd')->first();
+                        $tanggalDibutuhkan = $pengajuan->tanggal_dibutuhkan ? date('d/m/Y', strtotime($pengajuan->tanggal_dibutuhkan)) : 'secepatnya';
                         $pesan = "Permisi kami dari Management " . $pengajuan->divisi->nama_divisi . 
-                                 " ingin memberi tahu bahwa pada tanggal " . date('d/m/Y H:i', strtotime($pengajuan->approved_at ?? now())) . 
-                                 " kami membutuhkan tenaga kerja untuk bagian " . $pengajuan->posisi . 
+                                 " ingin memberi tahu bahwa kami membutuhkan tenaga kerja untuk bagian " . $pengajuan->posisi . 
                                  " dengan total " . $pengajuan->jumlah . " unit kerja, " .
-                                 "mohon segera untuk memposting Lowongan Kerjanya ya, Terimakasih";
+                                 "dibutuhkan pada tanggal " . $tanggalDibutuhkan . ". " .
+                                 "Mohon segera untuk memposting Lowongan Kerjanya ya, Terimakasih";
                         $encodedPesan = urlencode($pesan);
-                        $noHrd = $hrd->no_telepon ?? '081294491075';
+                        $noHrd = $hrd->no_telepon ?? '6281294491075';
+                        // Pastikan format 62, bukan 08
+                        if (substr($noHrd, 0, 1) == '0') {
+                            $noHrd = '62' . substr($noHrd, 1);
+                        }
                     @endphp
                     <a href="https://api.whatsapp.com/send?phone={{ $noHrd }}&text={{ $encodedPesan }}" 
                        target="_blank"
@@ -187,7 +186,12 @@
             </div>
         </div>
         @endif
-
+        
+        <div class="flex justify-end pt-4">
+            <a href="{{ route('management.pengajuan.index') }}" class="px-4 py-2 border rounded-lg hover:bg-gray-50">
+                <i class="fas fa-arrow-left mr-2"></i> Kembali
+            </a>
+        </div>
     </div>
 </div>
 
@@ -218,7 +222,6 @@
         document.getElementById('rejectModal').classList.remove('flex');
     }
     
-    // Close modal when clicking outside
     document.getElementById('rejectModal')?.addEventListener('click', function(e) {
         if (e.target === this) {
             closeRejectModal();

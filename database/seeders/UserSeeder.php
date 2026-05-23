@@ -11,26 +11,26 @@ class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        // HRD (global, 1 user) - username susah ditebak
+        // HRD - username sederhana
         User::create([
-            'username' => 'Hrd_D4gs4p_2024',
+            'username' => 'hrd_dagsap',
             'name' => 'HRD Dagsap',
             'email' => 'hrd@dagsap.com',
-            'password' => Hash::make('D4gs4p@HRD2024!'),
+            'password' => Hash::make('hrd_dagsap123'),
             'role' => 'hrd',
-            'no_telepon' => '6281294491075' // Nomor HRD untuk WhatsApp
+            'no_telepon' => '6281294491075' // Format 62
         ]);
 
-        // Management per divisi dengan username unik
+        // Management per divisi
         $managementData = [
-            'FAT' => ['username' => 'M4n4g3r_F4T_88', 'password' => 'F4T@M4n4g3r2024!'],
-            'HRD&GA' => ['username' => 'G4_4dm1n_77', 'password' => 'HRDGA@4dm1n2024!'],
-            'Internal Audit' => ['username' => '4ud1t0r_X99', 'password' => '14@4ud1t0r2024!'],
-            'Maintenance' => ['username' => 'Mtn_Sup3r_55', 'password' => 'MTN@Sup3r2024!'],
-            'PPIC&Purchasing' => ['username' => 'Ppic_Pr0c_44', 'password' => 'PPIC@Pr0c2024!'],
-            'Produksi' => ['username' => 'Pr0d_M4n4g3r_33', 'password' => 'PROD@M4n4g3r2024!'],
-            'QAQC' => ['username' => 'Q4qc_Ch13f_22', 'password' => 'QAQC@Ch13f2024!'],
-            'Sales & Marketing' => ['username' => 'S4l3s_D1r_11', 'password' => 'SALES@D1r2024!'],
+            'FAT' => ['username' => 'manager_fat', 'password' => 'manager_fat123'],
+            'HRD&GA' => ['username' => 'manager_hrdga', 'password' => 'manager_hrdga123'],
+            'Internal Audit' => ['username' => 'manager_audit', 'password' => 'manager_audit123'],
+            'Maintenance' => ['username' => 'manager_mtn', 'password' => 'manager_mtn123'],
+            'PPIC&Purchasing' => ['username' => 'manager_ppic', 'password' => 'manager_ppic123'],
+            'Produksi' => ['username' => 'manager_prod', 'password' => 'manager_prod123'],
+            'QAQC' => ['username' => 'manager_qaqc', 'password' => 'manager_qaqc123'],
+            'Sales & Marketing' => ['username' => 'manager_sales', 'password' => 'manager_sales123'],
         ];
 
         foreach ($managementData as $divisiNama => $cred) {
@@ -43,21 +43,21 @@ class UserSeeder extends Seeder
                     'password' => Hash::make($cred['password']),
                     'role' => 'management',
                     'managed_divisi_id' => $divisi->id,
-                    'no_telepon' => '0812345678' . (90 + $divisi->id)
+                    'no_telepon' => '6281234567' . (90 + $divisi->id)
                 ]);
             }
         }
 
-        // Divisi users dengan username unik
+        // Divisi users
         $divisiUsers = [
-            'FAT' => ['username' => 'F4T_0p3r4t0r_99', 'password' => 'F4T@Us3r2024!', 'name' => 'Operator FAT'],
-            'HRD&GA' => ['username' => 'Hrdg4_St4ff_88', 'password' => 'HRDGA@St4ff2024!', 'name' => 'Staff HRDGA'],
-            'Internal Audit' => ['username' => '14_4ud1t0r_77', 'password' => 'IA@4ud1t0r2024!', 'name' => 'Auditor Internal'],
-            'Maintenance' => ['username' => 'Mtn_T3kn1k_66', 'password' => 'MTN@T3kn1k2024!', 'name' => 'Teknik Maintenance'],
-            'PPIC&Purchasing' => ['username' => 'Ppic_St4ff_55', 'password' => 'PPIC@St4ff2024!', 'name' => 'Staff PPIC'],
-            'Produksi' => ['username' => 'Pr0d_0p3r4t0r_44', 'password' => 'PROD@0p3r4t0r2024!', 'name' => 'Operator Produksi'],
-            'QAQC' => ['username' => 'Q4qc_1nsp3k_33', 'password' => 'QAQC@1nsp3k2024!', 'name' => 'Inspector QAQC'],
-            'Sales & Marketing' => ['username' => 'S4l3s_Ex3c_22', 'password' => 'SALES@Ex3c2024!', 'name' => 'Sales Executive'],
+            'FAT' => ['username' => 'user_fat', 'password' => 'user_fat123', 'name' => 'Staff FAT'],
+            'HRD&GA' => ['username' => 'user_hrdga', 'password' => 'user_hrdga123', 'name' => 'Staff HRDGA'],
+            'Internal Audit' => ['username' => 'user_audit', 'password' => 'user_audit123', 'name' => 'Staff Audit'],
+            'Maintenance' => ['username' => 'user_mtn', 'password' => 'user_mtn123', 'name' => 'Staff Maintenance'],
+            'PPIC&Purchasing' => ['username' => 'user_ppic', 'password' => 'user_ppic123', 'name' => 'Staff PPIC'],
+            'Produksi' => ['username' => 'user_prod', 'password' => 'user_prod123', 'name' => 'Staff Produksi'],
+            'QAQC' => ['username' => 'user_qaqc', 'password' => 'user_qaqc123', 'name' => 'Staff QAQC'],
+            'Sales & Marketing' => ['username' => 'user_sales', 'password' => 'user_sales123', 'name' => 'Staff Sales'],
         ];
 
         foreach ($divisiUsers as $divisiNama => $cred) {
@@ -70,7 +70,7 @@ class UserSeeder extends Seeder
                     'password' => Hash::make($cred['password']),
                     'role' => 'divisi',
                     'divisi_id' => $divisi->id,
-                    'no_telepon' => '0812345678' . (80 + $divisi->id)
+                    'no_telepon' => '6281234567' . (80 + $divisi->id)
                 ]);
             }
         }
