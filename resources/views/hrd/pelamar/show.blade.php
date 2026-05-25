@@ -5,7 +5,38 @@
 @section('header', 'Detail Pelamar')
 @section('subheader', 'Informasi lengkap pelamar')
 
+@push('styles')
+<style>
+    @media print {
+        .no-print {
+            display: none !important;
+        }
+        body {
+            background: white;
+            padding: 20px;
+        }
+        .bg-white {
+            background: white !important;
+            box-shadow: none !important;
+        }
+        .shadow {
+            box-shadow: none !important;
+        }
+        .rounded-lg {
+            border-radius: 0 !important;
+        }
+    }
+</style>
+@endpush
+
 @section('content')
+<!-- Tombol Print di kanan atas -->
+<div class="flex justify-end mb-4 no-print">
+    <button onclick="window.print()" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-dark flex items-center">
+        <i class="fas fa-print mr-2"></i> Print / Cetak
+    </button>
+</div>
+
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
     <!-- Informasi Pelamar -->
     <div class="lg:col-span-2">
@@ -57,6 +88,15 @@
                         <label class="text-xs text-gray-500">Tahun Lulus</label>
                         <p class="font-medium">{{ $pelamar->tahun_lulus }}</p>
                     </div>
+                    @php
+                        $ipkJawaban = $pelamar->formulirJawaban->where('field_name', 'ipk')->first();
+                    @endphp
+                    @if($ipkJawaban)
+                    <div>
+                        <label class="text-xs text-gray-500">IPK</label>
+                        <p class="font-medium">{{ $ipkJawaban->jawaban }}</p>
+                    </div>
+                    @endif
                     <div class="md:col-span-2">
                         <label class="text-xs text-gray-500">Pengalaman Kerja</label>
                         <p class="font-medium">{{ nl2br(e($pelamar->pengalaman_kerja)) ?: '-' }}</p>
@@ -69,13 +109,18 @@
             <div class="p-4 border-b">
                 <h3 class="font-semibold text-lg">Dokumen</h3>
             </div>
-            <div class="p-6 flex gap-4">
+            <div class="p-6 flex gap-4 no-print">
                 <a href="{{ route('hrd.pelamar.download-cv', $pelamar) }}" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-dark">
                     <i class="fas fa-download mr-2"></i> Download CV
                 </a>
                 <a href="{{ route('hrd.pelamar.download-ijazah', $pelamar) }}" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-dark">
                     <i class="fas fa-download mr-2"></i> Download Ijazah
                 </a>
+            </div>
+            <!-- Tampilkan info dokumen saat print -->
+            <div class="p-6 print-only hidden">
+                <p><strong>CV:</strong> {{ $pelamar->cv_path ? 'Terlampir' : '-' }}</p>
+                <p><strong>Ijazah:</strong> {{ $pelamar->ijazah_path ? 'Terlampir' : '-' }}</p>
             </div>
         </div>
     </div>
@@ -109,7 +154,7 @@
             </div>
         </div>
         
-        <div class="bg-white rounded-lg shadow mb-6">
+        <div class="bg-white rounded-lg shadow mb-6 no-print">
             <div class="p-4 border-b">
                 <h3 class="font-semibold text-lg">Update Status</h3>
             </div>
@@ -137,7 +182,7 @@
             </div>
         </div>
         
-        <div class="bg-white rounded-lg shadow">
+        <div class="bg-white rounded-lg shadow no-print">
             <div class="p-4 border-b">
                 <h3 class="font-semibold text-lg">Jadwal Interview</h3>
             </div>
@@ -179,3 +224,19 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    // Tambahkan class untuk print styling
+    window.onbeforeprint = function() {
+        document.querySelectorAll('.no-print').forEach(el => {
+            el.style.display = 'none';
+        });
+    };
+    window.onafterprint = function() {
+        document.querySelectorAll('.no-print').forEach(el => {
+            el.style.display = '';
+        });
+    };
+</script>
+@endpush

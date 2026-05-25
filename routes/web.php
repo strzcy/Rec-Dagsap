@@ -19,8 +19,10 @@ use App\Http\Controllers\Frontend\ApplyController;
 */
 Route::get('/', [LandingController::class, 'index'])->name('frontend.home');
 Route::get('/lowongan', [LandingController::class, 'lowongan'])->name('frontend.lowongan');
+Route::get('/lowongan/{lowongan}/detail', [ApplyController::class, 'detail'])->name('frontend.detail');
 Route::get('/lowongan/{lowongan}/apply', [ApplyController::class, 'index'])->name('frontend.apply');
 Route::post('/lowongan/{lowongan}/apply', [ApplyController::class, 'store'])->name('frontend.apply.store');
+Route::get('/apply/success/{pelamar}', [ApplyController::class, 'success'])->name('frontend.apply.success');
 
 /*
 |--------------------------------------------------------------------------
@@ -44,7 +46,6 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::middleware(['check.role:divisi'])->prefix('divisi')->name('divisi.')->group(function () {
         Route::get('/dashboard', [DivisiDashboardController::class, 'index'])->name('dashboard');
         Route::resource('pengajuan', PengajuanController::class);
-        
     });
     
     // Management Routes

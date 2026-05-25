@@ -50,23 +50,28 @@ class PengajuanApprovalController extends Controller
     public function approve(Request $request, PengajuanTenagaKerja $pengajuan)
     {
         $managedDivisiId = Auth::user()->managed_divisi_id;
-        
+    
         if ($pengajuan->divisi_id !== $managedDivisiId) {
             abort(403);
         }
-        
+    
         if ($pengajuan->status !== 'pending') {
             return back()->with('error', 'Pengajuan sudah diproses sebelumnya!');
         }
 
+        $request->validate([
+            'disetujui_oleh' => 'required|string|max:255',
+        ]);
+
         $pengajuan->update([
             'status' => 'disetujui',
             'approved_by' => Auth::id(),
+            'disetujui_oleh' => $request->disetujui_oleh,
             'approved_at' => now(),
         ]);
 
         return redirect()->route('management.pengajuan.index')
-            ->with('success', 'Pengajuan dari divisi ' . $pengajuan->divisi->nama_divisi . ' berhasil disetujui!');
+            ->with('success', 'Pengajuan berhasil disetujui!');
     }
 
     public function reject(Request $request, PengajuanTenagaKerja $pengajuan)

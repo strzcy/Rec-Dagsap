@@ -89,6 +89,7 @@
                                class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-dark transition text-sm">
                                 Lamar Sekarang →
                             </a>
+                            <a href="{{ route('frontend.detail', $lowongan) }}" class="text-primary hover:underline">Lihat Selengkapnya →</a>
                         </div>
                     </div>
                 </div>

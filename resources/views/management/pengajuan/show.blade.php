@@ -142,12 +142,29 @@
             <button onclick="openRejectModal()" class="px-6 py-2 border border-red-500 text-red-500 rounded-lg hover:bg-red-50">
                 <i class="fas fa-times mr-2"></i> Tolak
             </button>
-            <form action="{{ route('management.pengajuan.approve', $pengajuan) }}" method="POST" class="inline">
-                @csrf
-                <button type="submit" class="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
-                    <i class="fas fa-check mr-2"></i> Setujui
-                </button>
-            </form>
+            <button onclick="openApproveModal()" class="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
+                <i class="fas fa-check mr-2"></i> Setujui
+            </button>
+        </div>
+
+        <!-- Modal Approve -->
+        <div id="approveModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+            <div class="bg-white rounded-lg p-6 w-full max-w-md">
+                <h3 class="text-lg font-semibold mb-4">Setujui Pengajuan</h3>
+                <form action="{{ route('management.pengajuan.approve', $pengajuan) }}" method="POST">
+                    @csrf
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Disetujui Oleh (Nama Lengkap) *</label>
+                        <input type="text" name="disetujui_oleh" class="w-full border rounded-lg px-3 py-2" 
+                               placeholder="Contoh: Budi Santoso, M.M." required>
+                        <p class="text-xs text-gray-500 mt-1">Isi dengan nama lengkap yang menyetujui</p>
+                    </div>
+                    <div class="flex justify-end space-x-3">
+                        <button type="button" onclick="closeApproveModal()" class="px-4 py-2 border rounded-lg hover:bg-gray-50">Batal</button>
+                        <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">Setujui</button>
+                    </div>
+                </form>
+            </div>
         </div>
         @endif
         
@@ -226,7 +243,25 @@
         if (e.target === this) {
             closeRejectModal();
         }
+    }
+
+    function openApproveModal() {
+        document.getElementById('approveModal').classList.remove('hidden');
+        document.getElementById('approveModal').classList.add('flex');
+    }
+
+    function closeApproveModal() {
+        document.getElementById('approveModal').classList.add('hidden');
+        document.getElementById('approveModal').classList.remove('flex');
+    }
+
+    document.getElementById('approveModal')?.addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeApproveModal();
+        }
     });
+    
+    );
 </script>
 @endpush
 @endsection

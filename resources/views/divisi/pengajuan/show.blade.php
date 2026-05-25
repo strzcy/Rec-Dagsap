@@ -37,16 +37,26 @@
             </div>
             <div>
                 <label class="text-xs text-gray-500">Diajukan Oleh</label>
-                <p class="font-medium">{{ $pengajuan->user->name ?? '-' }} ({{ $pengajuan->user->username ?? '-' }})</p>
+                <p class="font-medium">{{ $pengajuan->diajukan_oleh ?? $pengajuan->user->name ?? '-' }}</p>
             </div>
             <div>
                 <label class="text-xs text-gray-500">Tanggal Pengajuan</label>
-                <p class="font-medium">{{ $pengajuan->created_at->format('d/m/Y H:i') }}</p>
+                <p class="font-medium">{{ $pengajuan->created_at->setTimezone('Asia/Jakarta')->format('d/m/Y H:i') }} WIB</p>
             </div>
             <div>
-                <label class="text-xs text-gray-500">Jenis Kebutuhan</label>
-                <p class="font-medium">{{ $pengajuan->jenis == 'penambahan' ? 'Penambahan' : 'Penggantian' }}</p>
+                <label class="text-xs text-gray-500">Tanggal Dibutuhkan</label>
+                <p class="font-medium">{{ $pengajuan->tanggal_dibutuhkan ? \Carbon\Carbon::parse($pengajuan->tanggal_dibutuhkan)->format('d/m/Y') : '-' }}</p>
             </div>
+            @if($pengajuan->status == 'disetujui')
+            <div>
+                <label class="text-xs text-gray-500">Disetujui Oleh</label>
+                <p class="font-medium">{{ $pengajuan->disetujui_oleh ?? $pengajuan->approvedBy->name ?? '-' }}</p>
+            </div>
+            <div>
+                <label class="text-xs text-gray-500">Tanggal Disetujui</label>
+                <p class="font-medium">{{ $pengajuan->approved_at ? \Carbon\Carbon::parse($pengajuan->approved_at)->setTimezone('Asia/Jakarta')->format('d/m/Y H:i') . ' WIB' : '-' }}</p>
+            </div>
+            @endif
         </div>
         
         <!-- Detail Pekerjaan -->

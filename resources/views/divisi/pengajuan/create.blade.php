@@ -14,6 +14,14 @@
         <div class="border-b pb-4 mb-6">
             <h2 class="text-xl font-semibold text-primary">PERMINTAAN TENAGA KERJA</h2>
         </div>
+
+        <!-- Tambahkan setelah header form -->
+        <div class="mb-6">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Diajukan Oleh (Nama Lengkap) *</label>
+            <input type="text" name="diajukan_oleh" class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:border-primary" 
+                placeholder="Contoh: Ahmad Supriyadi, S.T." required>
+            <p class="text-xs text-gray-500 mt-1">Isi dengan nama lengkap pengaju</p>
+        </div>
         
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
             <div>
