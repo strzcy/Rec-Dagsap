@@ -18,7 +18,6 @@ class PengajuanController extends Controller
         return view('divisi.pengajuan.index', compact('pengajuans'));
     }
 
-
     public function create()
     {
         return view('divisi.pengajuan.create');
@@ -26,6 +25,8 @@ class PengajuanController extends Controller
 
     public function store(Request $request)
     {
+        // Debug: dd($request->all());
+        
         $validated = $request->validate([
             'jenis' => 'required|in:penambahan,penggantian',
             'posisi' => 'required|string|max:255',
@@ -51,18 +52,18 @@ class PengajuanController extends Controller
             'ipk' => $validated['kriteria_ipk'] ?? '',
             'keahlian' => $validated['kriteria_keahlian'] ?? '',
         ];
-    
+        
         $persyaratan = array_filter($request->persyaratan ?? []);
         if ($validated['jenis'] == 'penggantian' && $request->menggantikan) {
             $persyaratan[] = "Menggantikan karyawan: " . $request->menggantikan;
         }
-    
+        
         $tugas = array_filter($request->tugas ?? []);
 
         $pengajuanData = [
             'divisi_id' => Auth::user()->divisi_id,
             'user_id' => Auth::id(),
-            'diajukan_oleh' => $validated['diajukan_oleh'],
+            'diajukan_oleh' => $validated['diajukan_oleh'], // Pastikan ini terisi
             'jenis' => $validated['jenis'],
             'posisi' => $validated['posisi'],
             'jumlah' => $validated['jumlah'],
@@ -78,5 +79,14 @@ class PengajuanController extends Controller
 
         return redirect()->route('divisi.pengajuan.index')
             ->with('success', 'Pengajuan tenaga kerja berhasil dikirim!');
+    }
+
+    public function show(PengajuanTenagaKerja $pengajuan)
+    {
+        if ($pengajuan->user_id !== Auth::id()) {
+            abort(403, 'Anda tidak memiliki akses ke pengajuan ini.');
+        }
+        
+        return view('divisi.pengajuan.show', compact('pengajuan'));
     }
 }

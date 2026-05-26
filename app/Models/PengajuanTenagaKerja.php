@@ -12,8 +12,9 @@ class PengajuanTenagaKerja extends Model
     protected $table = 'pengajuan_tenaga_kerjas';
 
     protected $fillable = [
-        'divisi_id', 'user_id', 'jenis', 'posisi', 'jumlah', 
-        'kriteria', 'persyaratan', 'deskripsi_pekerjaan', 
+        'divisi_id', 'user_id', 'diajukan_oleh', 'disetujui_oleh',
+        'jenis', 'posisi', 'jumlah', 'tanggal_dibutuhkan',
+        'kriteria', 'persyaratan', 'deskripsi_pekerjaan', 'tugas',
         'status', 'alasan_penolakan', 'approved_by', 'approved_at'
     ];
 
