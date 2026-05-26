@@ -23,6 +23,8 @@ Route::get('/lowongan/{lowongan}/detail', [ApplyController::class, 'detail'])->n
 Route::get('/lowongan/{lowongan}/apply', [ApplyController::class, 'index'])->name('frontend.apply');
 Route::post('/lowongan/{lowongan}/apply', [ApplyController::class, 'store'])->name('frontend.apply.store');
 Route::get('/apply/success/{pelamar}', [ApplyController::class, 'success'])->name('frontend.apply.success');
+Route::get('/apply/detail/{pelamar}', [ApplyController::class, 'detailForm'])->name('frontend.apply.detail_form');
+Route::post('/apply/detail/{pelamar}', [ApplyController::class, 'storeDetail'])->name('frontend.apply.store_detail');
 
 /*
 |--------------------------------------------------------------------------

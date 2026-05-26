@@ -66,4 +66,8 @@ class Pelamar extends Model
         
         return $lolos;
     }
+    public function detail()
+    {
+        return $this->hasOne(DetailPelamar::class);
+    }
 }
