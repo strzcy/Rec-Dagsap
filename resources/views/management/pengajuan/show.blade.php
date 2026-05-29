@@ -16,7 +16,7 @@
                     @if($pengajuan->status == 'pending')
                         <span class="text-yellow-700">Menunggu Approval</span>
                     @elseif($pengajuan->status == 'disetujui')
-                        <span class="text-green-700">Disetujui pada {{ $pengajuan->approved_at ? \Carbon\Carbon::parse($pengajuan->approved_at)->format('d/m/Y H:i') : '-' }}</span>
+                        <span class="text-green-700">Disetujui oleh {{ $pengajuan->disetujui_oleh ?? $pengajuan->user->name ?? '-' }} pada {{ $pengajuan->approved_at ? \Carbon\Carbon::parse($pengajuan->approved_at)->format('d/m/Y H:i') : '-' }}</span>
                     @else
                         <span class="text-red-700">Ditolak</span>
                     @endif
@@ -37,11 +37,11 @@
             </div>
             <div>
                 <label class="text-xs text-gray-500">Diajukan Oleh</label>
-                <p class="font-medium">{{ $pengajuan->user->name ?? '-' }} ({{ $pengajuan->user->username ?? '-' }})</p>
+                <p class="font-medium">{{ $pengajuan->diajukan_oleh ?? $pengajuan->user->name ?? '-' }}</p>
             </div>
             <div>
                 <label class="text-xs text-gray-500">Tanggal Pengajuan</label>
-                <p class="font-medium">{{ $pengajuan->created_at->format('d/m/Y H:i') }}</p>
+                <p class="font-medium">{{ $pengajuan->created_at->setTimezone('Asia/Jakarta')->format('d/m/Y H:i') }} WIB</p>
             </div>
             <div>
                 <label class="text-xs text-gray-500">Tanggal Dibutuhkan</label>
@@ -139,36 +139,16 @@
         <!-- ACTION BUTTONS -->
         @if($pengajuan->status == 'pending')
         <div class="flex justify-end space-x-3 pt-4 border-t">
-            <button onclick="openRejectModal()" class="px-6 py-2 border border-red-500 text-red-500 rounded-lg hover:bg-red-50">
+            <button type="button" onclick="openRejectModal()" class="px-6 py-2 border border-red-500 text-red-500 rounded-lg hover:bg-red-50">
                 <i class="fas fa-times mr-2"></i> Tolak
             </button>
-            <button onclick="openApproveModal()" class="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
+            <button type="button" onclick="openApproveModal()" class="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
                 <i class="fas fa-check mr-2"></i> Setujui
             </button>
         </div>
-
-        <!-- Modal Approve -->
-        <div id="approveModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-            <div class="bg-white rounded-lg p-6 w-full max-w-md">
-                <h3 class="text-lg font-semibold mb-4">Setujui Pengajuan</h3>
-                <form action="{{ route('management.pengajuan.approve', $pengajuan) }}" method="POST">
-                    @csrf
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Disetujui Oleh (Nama Lengkap) *</label>
-                        <input type="text" name="disetujui_oleh" class="w-full border rounded-lg px-3 py-2" 
-                               placeholder="Contoh: Budi Santoso, M.M." required>
-                        <p class="text-xs text-gray-500 mt-1">Isi dengan nama lengkap yang menyetujui</p>
-                    </div>
-                    <div class="flex justify-end space-x-3">
-                        <button type="button" onclick="closeApproveModal()" class="px-4 py-2 border rounded-lg hover:bg-gray-50">Batal</button>
-                        <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">Setujui</button>
-                    </div>
-                </form>
-            </div>
-        </div>
         @endif
         
-        <!-- Tombol Ingatkan HRD - HANYA TAMPIL JIKA STATUS SUDAH DISETUJUI -->
+        <!-- Tombol Ingatkan HRD -->
         @if($pengajuan->status == 'disetujui')
         <div class="mt-4 pt-4 border-t">
             <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
@@ -188,7 +168,6 @@
                                  "Mohon segera untuk memposting Lowongan Kerjanya ya, Terimakasih";
                         $encodedPesan = urlencode($pesan);
                         $noHrd = $hrd->no_telepon ?? '6281294491075';
-                        // Pastikan format 62, bukan 08
                         if (substr($noHrd, 0, 1) == '0') {
                             $noHrd = '62' . substr($noHrd, 1);
                         }
@@ -212,11 +191,31 @@
     </div>
 </div>
 
+<!-- Modal Approve -->
+<div id="approveModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-lg p-6 w-full max-w-md">
+        <h3 class="text-lg font-semibold mb-4">Setujui Pengajuan</h3>
+        <form action="{{ route('management.pengajuan.approve', $pengajuan) }}" method="POST" id="approveForm">
+            @csrf
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Disetujui Oleh *</label>
+                <input type="text" name="disetujui_oleh" class="w-full border rounded-lg px-3 py-2" 
+                       placeholder="Contoh: Budi Santoso, M.M." required>
+                <p class="text-xs text-gray-500 mt-1">Isi dengan nama lengkap yang menyetujui</p>
+            </div>
+            <div class="flex justify-end space-x-3">
+                <button type="button" onclick="closeApproveModal()" class="px-4 py-2 border rounded-lg hover:bg-gray-50">Batal</button>
+                <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">Setujui</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <!-- Modal Reject -->
 <div id="rejectModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
     <div class="bg-white rounded-lg p-6 w-full max-w-md">
         <h3 class="text-lg font-semibold mb-4">Tolak Pengajuan</h3>
-        <form action="{{ route('management.pengajuan.reject', $pengajuan) }}" method="POST">
+        <form action="{{ route('management.pengajuan.reject', $pengajuan) }}" method="POST" id="rejectForm">
             @csrf
             <textarea name="alasan_penolakan" rows="4" class="w-full border rounded-lg px-3 py-2 mb-4" placeholder="Masukkan alasan penolakan..." required></textarea>
             <div class="flex justify-end space-x-3">
@@ -228,40 +227,51 @@
 </div>
 
 @push('scripts')
-<script>
+<script>    
+    function openApproveModal() {
+        const modal = document.getElementById('approveModal');
+        if (modal) {
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+    }
+    
+    function closeApproveModal() {
+        const modal = document.getElementById('approveModal');
+        if (modal) {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+    }
+    
     function openRejectModal() {
-        document.getElementById('rejectModal').classList.remove('hidden');
-        document.getElementById('rejectModal').classList.add('flex');
+        const modal = document.getElementById('rejectModal');
+        if (modal) {
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
     }
     
     function closeRejectModal() {
-        document.getElementById('rejectModal').classList.add('hidden');
-        document.getElementById('rejectModal').classList.remove('flex');
-    }
-    
-    document.getElementById('rejectModal')?.addEventListener('click', function(e) {
-        if (e.target === this) {
-            closeRejectModal();
+        const modal = document.getElementById('rejectModal');
+        if (modal) {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
         }
     }
-
-    function openApproveModal() {
-        document.getElementById('approveModal').classList.remove('hidden');
-        document.getElementById('approveModal').classList.add('flex');
-    }
-
-    function closeApproveModal() {
-        document.getElementById('approveModal').classList.add('hidden');
-        document.getElementById('approveModal').classList.remove('flex');
-    }
-
+    
+    // Close modal when clicking outside
     document.getElementById('approveModal')?.addEventListener('click', function(e) {
         if (e.target === this) {
             closeApproveModal();
         }
     });
     
-    );
+    document.getElementById('rejectModal')?.addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeRejectModal();
+        }
+    });
 </script>
 @endpush
 @endsection

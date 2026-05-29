@@ -7,6 +7,12 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Tambahan sedikit konfigurasi warna jika Tailwind custom 'primary' belum terdefinisi */
+        .bg-primary { background-color: #1e40af; }
+        .text-primary { color: #1e40af; }
+        .hover\:bg-primary-dark:hover { background-color: #1e3a8a; }
+    </style>
 </head>
 <body class="bg-gray-100 font-[Inter]">
     <div class="container mx-auto px-4 py-8 max-w-5xl">
@@ -27,14 +33,12 @@
                 <form action="{{ route('frontend.apply.store_detail', $pelamar) }}" method="POST" id="fullForm">
                     @csrf
                     
-                    <!-- Posisi yang dilamar -->
                     <div class="mb-6">
                         <label class="block font-semibold mb-2">Posisi yang dilamar:</label>
                         <input type="text" name="posisi_dilamar" value="{{ $pelamar->lowongan->judul }}" 
                                class="w-full border rounded-lg px-3 py-2 bg-gray-100" readonly>
                     </div>
                     
-                    <!-- A. DATA PRIBADI -->
                     <div class="mb-8 border-b pb-4">
                         <h2 class="text-xl font-bold text-primary mb-4">A. DATA PRIBADI</h2>
                         
@@ -91,6 +95,7 @@
                                     <option value="B">B</option>
                                     <option value="AB">AB</option>
                                     <option value="O">O</option>
+                                    <option value="Tidak Tahu">Tidak Tahu</option>
                                 </select>
                             </div>
                         </div>
@@ -169,7 +174,6 @@
                         </div>
                     </div>
                     
-                    <!-- Tombol Submit -->
                     <div class="flex justify-end space-x-3 pt-4 border-t">
                         <a href="{{ url('/') }}" class="px-4 py-2 border rounded-lg hover:bg-gray-50">Batal</a>
                         <button type="submit" class="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark">
@@ -180,5 +184,34 @@
             </div>
         </div>
     </div>
+
+    <script>
+        // Validasi angka tidak boleh minus
+        document.querySelectorAll('input[type="number"]').forEach(input => {
+            input.addEventListener('input', function() {
+                if (this.value < 0) {
+                    this.value = 0;
+                }
+            });
+        });
+        
+        // Validasi tinggi dan berat badan
+        const tinggiBadan = document.querySelector('input[name="tinggi_badan"]');
+        const beratBadan = document.querySelector('input[name="berat_badan"]');
+        
+        if (tinggiBadan) {
+            tinggiBadan.addEventListener('input', function() {
+                if (this.value < 0) this.value = 0;
+                if (this.value > 250) this.value = 250;
+            });
+        }
+        
+        if (beratBadan) {
+            beratBadan.addEventListener('input', function() {
+                if (this.value < 0) this.value = 0;
+                if (this.value > 300) this.value = 300;
+            });
+        }
+    </script>
 </body>
 </html>
