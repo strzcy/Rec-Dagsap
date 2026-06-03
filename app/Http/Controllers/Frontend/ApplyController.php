@@ -104,18 +104,16 @@ class ApplyController extends Controller
     
     public function detailForm(Pelamar $pelamar)
     {
-        // Cek apakah pelamar lolos tahap 1
         if ($pelamar->status !== 'lolos_tahap1') {
             return redirect('/')->with('error', 'Anda belum memenuhi syarat untuk mengisi formulir ini.');
         }
-        
-        // Cek apakah sudah pernah mengisi
+    
         if (DetailPelamar::where('pelamar_id', $pelamar->id)->exists()) {
             return redirect()->route('frontend.apply.success', $pelamar)
                 ->with('info', 'Anda sudah mengisi data diri sebelumnya.');
         }
-        
-        return view('frontend.apply.detail_form', compact('pelamar'));
+    
+        return view('frontend.apply.wizard', compact('pelamar'));
     }
     
     public function storeDetail(Request $request, Pelamar $pelamar)
