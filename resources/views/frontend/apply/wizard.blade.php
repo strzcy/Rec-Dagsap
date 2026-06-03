@@ -1,4 +1,4 @@
-@extends('layouts.frontend')
+@extends('layouts.nav-fe')
 
 @section('title', 'Form Isian Data Diri - Dagsap Recruitment')
 
@@ -6,6 +6,7 @@
 <style>
     .step {
         transition: all 0.3s ease;
+        cursor: pointer;
     }
     .step-active {
         background-color: #424862;
@@ -16,6 +17,11 @@
         background-color: #10b981;
         color: white;
         border-color: #10b981;
+    }
+    .step-pending {
+        background-color: #e5e7eb;
+        color: #6b7280;
+        border-color: #d1d5db;
     }
     .form-section {
         display: none;
@@ -28,11 +34,16 @@
         from { opacity: 0; transform: translateY(10px); }
         to { opacity: 1; transform: translateY(0); }
     }
+    input:focus, select:focus, textarea:focus {
+        outline: none;
+        border-color: #424862;
+        ring: 2px solid #424862;
+    }
 </style>
 @endpush
 
 @section('content')
-<div class="container mx-auto px-4 py-8 max-w-5xl">
+<div class="container mx-auto px-4 py-8 max-w-5xl mt-16">
     <div class="bg-white rounded-xl shadow-md overflow-hidden">
         <div class="bg-primary text-white p-4">
             <h1 class="text-2xl font-bold">Form Isian Data Diri Pelamar</h1>
@@ -40,24 +51,31 @@
         </div>
         
         <div class="p-6">
+            <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
+                <p class="text-yellow-800 text-sm">
+                    <i class="fas fa-info-circle mr-2"></i>
+                    Bacalah petunjuk pengisiannya dengan baik dan isilah dengan data yang benar sesuai identitas diri anda.
+                </p>
+            </div>
+            
             <!-- Progress Steps -->
             <div class="mb-8">
                 <div class="flex justify-between items-center">
-                    <div class="step text-center flex-1" id="step1-indicator">
-                        <div class="w-10 h-10 rounded-full border-2 border-gray-300 flex items-center justify-center mx-auto mb-2 step-pending" id="step1-circle">1</div>
-                        <span class="text-sm step-pending-text">A. Data Pribadi</span>
+                    <div class="step text-center flex-1" data-step="1">
+                        <div class="w-10 h-10 rounded-full border-2 flex items-center justify-center mx-auto mb-2 step-pending" id="step1-circle">1</div>
+                        <span class="text-sm step-pending-text" id="step1-text">A. Data Pribadi</span>
                     </div>
-                    <div class="step text-center flex-1" id="step2-indicator">
-                        <div class="w-10 h-10 rounded-full border-2 border-gray-300 flex items-center justify-center mx-auto mb-2 step-pending" id="step2-circle">2</div>
-                        <span class="text-sm step-pending-text">B. Pendidikan</span>
+                    <div class="step text-center flex-1" data-step="2">
+                        <div class="w-10 h-10 rounded-full border-2 flex items-center justify-center mx-auto mb-2 step-pending" id="step2-circle">2</div>
+                        <span class="text-sm step-pending-text" id="step2-text">B. Pendidikan</span>
                     </div>
-                    <div class="step text-center flex-1" id="step3-indicator">
-                        <div class="w-10 h-10 rounded-full border-2 border-gray-300 flex items-center justify-center mx-auto mb-2 step-pending" id="step3-circle">3</div>
-                        <span class="text-sm step-pending-text">C. Keterampilan</span>
+                    <div class="step text-center flex-1" data-step="3">
+                        <div class="w-10 h-10 rounded-full border-2 flex items-center justify-center mx-auto mb-2 step-pending" id="step3-circle">3</div>
+                        <span class="text-sm step-pending-text" id="step3-text">C. Keterampilan</span>
                     </div>
-                    <div class="step text-center flex-1" id="step4-indicator">
-                        <div class="w-10 h-10 rounded-full border-2 border-gray-300 flex items-center justify-center mx-auto mb-2 step-pending" id="step4-circle">4</div>
-                        <span class="text-sm step-pending-text">D. Bahasa & Lainnya</span>
+                    <div class="step text-center flex-1" data-step="4">
+                        <div class="w-10 h-10 rounded-full border-2 flex items-center justify-center mx-auto mb-2 step-pending" id="step4-circle">4</div>
+                        <span class="text-sm step-pending-text" id="step4-text">D. Bahasa & Lainnya</span>
                     </div>
                 </div>
             </div>
@@ -80,16 +98,22 @@
                     @include('frontend.apply.sections.section_c')
                 </div>
                 
-                <!-- Section D: Bahasa, Kekuatan, Kelemahan, Pekerjaan, DLL -->
+                <!-- Section D: Bahasa, Kekuatan, Kelemahan, Pekerjaan, DLL sampai L -->
                 <div class="form-section" id="section-D">
                     @include('frontend.apply.sections.section_d')
                 </div>
                 
                 <!-- Navigation Buttons -->
                 <div class="flex justify-between pt-4 border-t mt-6">
-                    <button type="button" id="prevBtn" class="px-6 py-2 border rounded-lg hover:bg-gray-50 hidden">← Sebelumnya</button>
-                    <button type="button" id="nextBtn" class="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark ml-auto">Selanjutnya →</button>
-                    <button type="submit" id="submitBtn" class="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 hidden">Simpan & Selesai</button>
+                    <button type="button" id="prevBtn" class="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 hidden">
+                        <i class="fas fa-arrow-left mr-2"></i> Sebelumnya
+                    </button>
+                    <button type="button" id="nextBtn" class="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark ml-auto">
+                        Selanjutnya <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
+                    <button type="submit" id="submitBtn" class="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 hidden">
+                        <i class="fas fa-save mr-2"></i> Simpan & Selesai
+                    </button>
                 </div>
             </form>
         </div>
@@ -102,11 +126,9 @@
     const totalSteps = 4;
     
     function updateSteps() {
-        // Update circles
         for (let i = 1; i <= totalSteps; i++) {
             const circle = document.getElementById(`step${i}-circle`);
-            const indicator = document.getElementById(`step${i}-indicator`);
-            const text = indicator.querySelector('span');
+            const text = document.getElementById(`step${i}-text`);
             
             if (i < currentStep) {
                 circle.className = 'w-10 h-10 rounded-full border-2 border-green-500 flex items-center justify-center mx-auto mb-2 step-completed';
@@ -123,7 +145,6 @@
             }
         }
         
-        // Show/hide sections
         for (let i = 1; i <= totalSteps; i++) {
             const section = document.getElementById(`section-${String.fromCharCode(64 + i)}`);
             if (section) {
@@ -135,7 +156,6 @@
             }
         }
         
-        // Update buttons
         const prevBtn = document.getElementById('prevBtn');
         const nextBtn = document.getElementById('nextBtn');
         const submitBtn = document.getElementById('submitBtn');
@@ -194,7 +214,6 @@
         }
     });
     
-    // Validasi angka tidak boleh minus
     document.querySelectorAll('input[type="number"]').forEach(input => {
         input.addEventListener('input', function() {
             if (this.value < 0) {

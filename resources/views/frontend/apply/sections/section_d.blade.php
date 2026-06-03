@@ -1,0 +1,229 @@
+<div>
+    <!-- E. KEKUATAN & KELEMAHAN -->
+    <h2 class="text-xl font-bold text-primary mb-4 border-b pb-2">E. KEKUATAN &amp; KELEMAHAN</h2>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        <div>
+            <label class="block text-sm font-medium mb-1">Kekuatan / Kelebihan</label>
+            <textarea name="kekuatan" rows="3" class="w-full border rounded-lg px-3 py-2" placeholder="Tuliskan kekuatan/kelebihan Anda..."></textarea>
+        </div>
+        <div>
+            <label class="block text-sm font-medium mb-1">Kelemahan / Kekurangan</label>
+            <textarea name="kelemahan" rows="3" class="w-full border rounded-lg px-3 py-2" placeholder="Tuliskan kelemahan/kekurangan Anda..."></textarea>
+        </div>
+    </div>
+    
+    <!-- F. RIWAYAT PEKERJAAN -->
+    <h2 class="text-xl font-bold text-primary mb-4 border-b pb-2">F. RIWAYAT PEKERJAAN</h2>
+    
+    <div id="pekerjaan-container">
+        <div class="pekerjaan-item bg-gray-50 p-4 rounded-lg mb-3">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div><input type="text" name="pekerjaan_perusahaan[]" placeholder="Nama Perusahaan" class="w-full border rounded-lg px-3 py-2"></div>
+                <div><input type="date" name="pekerjaan_tgl_masuk[]" placeholder="Tanggal Masuk" class="w-full border rounded-lg px-3 py-2"></div>
+                <div><input type="date" name="pekerjaan_tgl_keluar[]" placeholder="Tanggal Keluar" class="w-full border rounded-lg px-3 py-2"></div>
+                <div><input type="text" name="pekerjaan_jabatan[]" placeholder="Jabatan Terakhir" class="w-full border rounded-lg px-3 py-2"></div>
+                <div><input type="text" name="pekerjaan_gaji[]" placeholder="Gaji Terakhir" class="w-full border rounded-lg px-3 py-2"></div>
+                <div><input type="text" name="pekerjaan_alasan[]" placeholder="Alasan Keluar" class="w-full border rounded-lg px-3 py-2"></div>
+            </div>
+            <button type="button" class="remove-pekerjaan text-red-500 text-sm mt-2 hover:text-red-700">Hapus</button>
+        </div>
+    </div>
+    <button type="button" id="tambah-pekerjaan" class="text-primary text-sm hover:text-primary-dark mt-2 mb-6">
+        <i class="fas fa-plus mr-1"></i> Tambah Pengalaman Kerja
+    </button>
+    
+    <div class="mb-6">
+        <label class="block text-sm font-medium mb-2">Bidang minat pada pekerjaan:</label>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+            <label><input type="checkbox" name="bidang_minat[]" value="Logistic & Distribution"> Logistic & Distribution</label>
+            <label><input type="checkbox" name="bidang_minat[]" value="Sales/Marketing"> Sales/Marketing</label>
+            <label><input type="checkbox" name="bidang_minat[]" value="Finance, Accounting, & Tax"> Finance, Accounting, & Tax</label>
+            <label><input type="checkbox" name="bidang_minat[]" value="Production"> Production</label>
+            <label><input type="checkbox" name="bidang_minat[]" value="Business Development"> Business Development</label>
+            <label><input type="checkbox" name="bidang_minat[]" value="Human Resources"> Human Resources</label>
+            <label><input type="checkbox" name="bidang_minat[]" value="General Affair"> General Affair</label>
+            <label><input type="checkbox" name="bidang_minat[]" value="QAQC"> QAQC</label>
+            <label><input type="checkbox" name="bidang_minat[]" value="Information Technology"> Information Technology</label>
+            <label><input type="checkbox" name="bidang_minat[]" value="Product Development"> Product Development</label>
+        </div>
+        <div class="mt-2"><input type="text" name="bidang_minat_lain" placeholder="Lainnya..." class="w-full md:w-1/2 border rounded-lg px-3 py-2"></div>
+    </div>
+    
+    <!-- G. REFERENSI -->
+    <h2 class="text-xl font-bold text-primary mb-4 border-b pb-2">G. REFERENSI</h2>
+    
+    <div id="referensi-container">
+        <div class="referensi-item bg-gray-50 p-4 rounded-lg mb-3">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div><input type="text" name="referensi_nama[]" placeholder="Nama Lengkap" class="w-full border rounded-lg px-3 py-2"></div>
+                <div><input type="text" name="referensi_alamat[]" placeholder="Alamat Lengkap" class="w-full border rounded-lg px-3 py-2"></div>
+                <div><input type="text" name="referensi_telp[]" placeholder="No. Telp/HP" class="w-full border rounded-lg px-3 py-2"></div>
+                <div><input type="text" name="referensi_hubungan[]" placeholder="Hubungan" class="w-full border rounded-lg px-3 py-2"></div>
+                <div><input type="text" name="referensi_lama_kenal[]" placeholder="Lama Kenal" class="w-full border rounded-lg px-3 py-2"></div>
+            </div>
+            <button type="button" class="remove-referensi text-red-500 text-sm mt-2 hover:text-red-700">Hapus</button>
+        </div>
+    </div>
+    <button type="button" id="tambah-referensi" class="text-primary text-sm hover:text-primary-dark mt-2 mb-6">
+        <i class="fas fa-plus mr-1"></i> Tambah Referensi
+    </button>
+    
+    <div class="mb-6">
+        <label class="block text-sm font-medium mb-2">Apakah Anda mempunyai saudara/kenalan yang bekerja di perusahaan kami?</label>
+        <div class="flex gap-4">
+            <label><input type="radio" name="punya_saudara_di_perusahaan" value="1" class="mr-1"> Ya</label>
+            <label><input type="radio" name="punya_saudara_di_perusahaan" value="0" class="mr-1" checked> Tidak</label>
+        </div>
+        
+        <div id="saudara-form" class="hidden mt-4">
+            <div id="saudara-container">
+                <div class="saudara-item bg-gray-50 p-4 rounded-lg mb-3">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div><input type="text" name="saudara_nama[]" placeholder="Nama Lengkap" class="w-full border rounded-lg px-3 py-2"></div>
+                        <div><input type="text" name="saudara_jabatan[]" placeholder="Jabatan/Unit Kerja" class="w-full border rounded-lg px-3 py-2"></div>
+                        <div><input type="text" name="saudara_lama_kenal[]" placeholder="Lama Kenal" class="w-full border rounded-lg px-3 py-2"></div>
+                        <div><input type="text" name="saudara_hubungan[]" placeholder="Hubungan" class="w-full border rounded-lg px-3 py-2"></div>
+                    </div>
+                    <button type="button" class="remove-saudara text-red-500 text-sm mt-2 hover:text-red-700">Hapus</button>
+                </div>
+            </div>
+            <button type="button" id="tambah-saudara" class="text-primary text-sm hover:text-primary-dark mt-2">+ Tambah Saudara/Kenalan</button>
+        </div>
+    </div>
+    
+    <!-- H. RIWAYAT KESEHATAN -->
+    <h2 class="text-xl font-bold text-primary mb-4 border-b pb-2">H. RIWAYAT KESEHATAN</h2>
+    
+    <div class="space-y-4 mb-6">
+        <div>
+            <label class="block text-sm font-medium mb-1">Apakah Anda pernah menderita sakit berat dan dirawat di rumah sakit selama 2 tahun terakhir?</label>
+            <div class="flex gap-4">
+                <label><input type="radio" name="pernah_sakit_berat" value="1" class="mr-1" onclick="toggleSakitBerat(true)"> Ya</label>
+                <label><input type="radio" name="pernah_sakit_berat" value="0" class="mr-1" checked onclick="toggleSakitBerat(false)"> Tidak</label>
+            </div>
+            <div id="sakit-berat-detail" class="hidden mt-2"><textarea name="sakit_berat_keterangan" rows="2" class="w-full border rounded-lg px-3 py-2" placeholder="Jelaskan kapan, dimana, nama penyakit, dan berapa lama..."></textarea></div>
+        </div>
+        
+        <div>
+            <label class="block text-sm font-medium mb-1">Apakah Anda mempunyai penyakit keturunan, cacat keturunan atau cacat akibat kecelakaan?</label>
+            <div class="flex gap-4">
+                <label><input type="radio" name="punya_penyakit_keturunan" value="1" class="mr-1" onclick="togglePenyakitKeturunan(true)"> Ya</label>
+                <label><input type="radio" name="punya_penyakit_keturunan" value="0" class="mr-1" checked onclick="togglePenyakitKeturunan(false)"> Tidak</label>
+            </div>
+            <div id="penyakit-keturunan-detail" class="hidden mt-2"><textarea name="penyakit_keturunan_keterangan" rows="2" class="w-full border rounded-lg px-3 py-2" placeholder="Jelaskan..."></textarea></div>
+        </div>
+        
+        <div>
+            <label class="block text-sm font-medium mb-1">Apakah Anda mempunyai gangguan penglihatan/memakai kacamata?</label>
+            <div class="flex gap-4">
+                <label><input type="radio" name="pakai_kacamata" value="1" class="mr-1" onclick="toggleKacamata(true)"> Ya</label>
+                <label><input type="radio" name="pakai_kacamata" value="0" class="mr-1" checked onclick="toggleKacamata(false)"> Tidak</label>
+            </div>
+            <div id="kacamata-detail" class="hidden mt-2"><input type="text" name="ukuran_kacamata" placeholder="Ukuran kacamata" class="w-full border rounded-lg px-3 py-2"></div>
+        </div>
+        
+        <div>
+            <label class="block text-sm font-medium mb-1">Apakah Anda mempunyai alergi?</label>
+            <div class="flex gap-4">
+                <label><input type="radio" name="punya_alergi" value="1" class="mr-1" onclick="toggleAlergi(true)"> Ya</label>
+                <label><input type="radio" name="punya_alergi" value="0" class="mr-1" checked onclick="toggleAlergi(false)"> Tidak</label>
+            </div>
+            <div id="alergi-detail" class="hidden mt-2"><textarea name="alergi_keterangan" rows="2" class="w-full border rounded-lg px-3 py-2" placeholder="Jelaskan alergi yang anda miliki..."></textarea></div>
+        </div>
+    </div>
+    
+    <!-- I. DATA KELUARGA (Ringkasan) -->
+    <h2 class="text-xl font-bold text-primary mb-4 border-b pb-2">I. DATA KELUARGA</h2>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        <div><input type="text" name="nama_pasangan" placeholder="Nama Istri/Suami" class="w-full border rounded-lg px-3 py-2"></div>
+        <div><input type="text" name="tempat_lahir_pasangan" placeholder="Tempat Lahir Pasangan" class="w-full border rounded-lg px-3 py-2"></div>
+        <div><input type="date" name="tanggal_lahir_pasangan" placeholder="Tanggal Lahir Pasangan" class="w-full border rounded-lg px-3 py-2"></div>
+        <div><input type="date" name="tanggal_menikah" placeholder="Tanggal Menikah" class="w-full border rounded-lg px-3 py-2"></div>
+    </div>
+    
+    <div class="mb-6">
+        <label class="block text-sm font-medium mb-1">Nama Ayah</label>
+        <input type="text" name="nama_ayah" class="w-full border rounded-lg px-3 py-2 mb-2">
+        <label class="block text-sm font-medium mb-1">Nama Ibu</label>
+        <input type="text" name="nama_ibu" class="w-full border rounded-lg px-3 py-2">
+    </div>
+    
+    <!-- J. REMUNERASI -->
+    <h2 class="text-xl font-bold text-primary mb-4 border-b pb-2">J. REMUNERASI</h2>
+    
+    <div class="mb-6">
+        <label class="block text-sm font-medium mb-1">Gaji per bulan yang diharapkan</label>
+        <input type="text" name="gaji_diharapkan" class="w-full md:w-1/2 border rounded-lg px-3 py-2" placeholder="Contoh: Rp 5.000.000 (bruto/netto)">
+    </div>
+    
+    <!-- K. WAKTU -->
+    <h2 class="text-xl font-bold text-primary mb-4 border-b pb-2">K. WAKTU</h2>
+    
+    <div class="mb-6">
+        <label class="block text-sm font-medium mb-1">Jika lamaran Anda diterima, berapa lama waktu yang Anda perlukan untuk dapat bergabung?</label>
+        <input type="text" name="waktu_bergabung" class="w-full md:w-1/2 border rounded-lg px-3 py-2" placeholder="Contoh: 2 minggu, 1 bulan, dll">
+    </div>
+    
+    <!-- L. PERNYATAAN -->
+    <h2 class="text-xl font-bold text-primary mb-4 border-b pb-2">L. PERNYATAAN</h2>
+    
+    <div class="mb-6 p-4 bg-gray-50 rounded-lg">
+        <p class="text-sm mb-4">Dengan ini saya menyatakan bahwa semua keterangan yang saya cantumkan dalam formulir ini adalah benar dan sah. Seandainya saya diterima dan kemudian terbukti bahwa salah satu saja keterangan saya tersebut tidak benar, maka saya bersedia mengundurkan diri tanpa persyaratan apapun dengan segera dari perusahaan ini.</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div><input type="text" name="tempat_pernyataan" placeholder="Tempat" class="w-full border rounded-lg px-3 py-2"></div>
+            <div><input type="date" name="tanggal_pernyataan" class="w-full border rounded-lg px-3 py-2"></div>
+        </div>
+        
+        <div class="mt-4">
+            <label class="inline-flex items-center">
+                <input type="checkbox" name="pernyataan_setuju" value="1" required class="mr-2">
+                <span class="text-sm">Saya menyatakan bahwa data yang saya isi adalah benar <span class="text-red-500">*</span></span>
+            </label>
+        </div>
+    </div>
+</div>
+
+@push('scripts')
+<script>
+    function toggleSakitBerat(show) {
+        document.getElementById('sakit-berat-detail').classList.toggle('hidden', !show);
+    }
+    function togglePenyakitKeturunan(show) {
+        document.getElementById('penyakit-keturunan-detail').classList.toggle('hidden', !show);
+    }
+    function toggleKacamata(show) {
+        document.getElementById('kacamata-detail').classList.toggle('hidden', !show);
+    }
+    function toggleAlergi(show) {
+        document.getElementById('alergi-detail').classList.toggle('hidden', !show);
+    }
+    
+    document.querySelectorAll('input[name="punya_saudara_di_perusahaan"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+            document.getElementById('saudara-form').classList.toggle('hidden', this.value === '0');
+        });
+    });
+    
+    // Dynamic add for pekerjaan, referensi, saudara
+    function setupDynamicAdd(btnId, containerId, itemClass, removeBtnClass) {
+        document.getElementById(btnId)?.addEventListener('click', function() {
+            const container = document.getElementById(containerId);
+            const template = container.children[0].cloneNode(true);
+            template.querySelectorAll('input, select, textarea').forEach(input => input.value = '');
+            container.appendChild(template);
+            template.querySelector(removeBtnClass)?.addEventListener('click', () => template.remove());
+        });
+    }
+    
+    setupDynamicAdd('tambah-pekerjaan', 'pekerjaan-container', '.pekerjaan-item', '.remove-pekerjaan');
+    setupDynamicAdd('tambah-referensi', 'referensi-container', '.referensi-item', '.remove-referensi');
+    setupDynamicAdd('tambah-saudara', 'saudara-container', '.saudara-item', '.remove-saudara');
+    
+    document.querySelectorAll('.remove-pekerjaan, .remove-referensi, .remove-saudara').forEach(btn => {
+        btn.addEventListener('click', function() { this.closest('.pekerjaan-item, .referensi-item, .saudara-item')?.remove(); });
+    });
+</script>
+@endpush
