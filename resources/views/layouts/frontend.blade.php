@@ -45,28 +45,18 @@
     </style>
 </head>
 <body id="tentang" class="bg-gray-50">
-    <nav class="bg-white shadow-md sticky top-0 z-50">
-        <div class="container mx-auto px-4 py-4">
-            <div class="flex justify-between items-center">
+    <nav class="bg-primary shadow-lg fixed top-0 left-0 w-full z-50">
+        <div class="px-4">
+            <div class="flex justify-between items-center py-3">
                 <div class="flex items-center">
-                    <a href="{{ url('/') }}" class="text-2xl font-bold text-primary">Dagsap<span class="text-gray-600">Recruitment</span></a>
+                    <a href="{{ url('/') }}" class="text-white text-xl font-bold">Dagsap Recruitment</a>
                 </div>
                 
                 <div class="hidden md:flex items-center space-x-6">
-                    <a href="{{ url('/#tentang') }}" class="text-gray-600 hover:text-primary font-medium transition">Tentang</a>
-                    <a href="{{ url('/#lowongan') }}" class="text-gray-600 hover:text-primary font-medium transition">Lowongan</a>
-                    <a href="{{ url('/#kontak') }}" class="text-gray-600 hover:text-primary font-medium transition">Kontak</a>
-                    @auth
-                        @if(auth()->user()->isDivisi() || auth()->user()->isManagement() || auth()->user()->isHrd())
-                            <a href="{{ url('/admin/divisi/dashboard') }}" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-dark transition">
-                                Dashboard
-                            </a>
-                        @endif
-                    @else
-                        <a href="{{ route('admin.login') }}" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-dark transition">
-                            Login Admin
-                        </a>
-                    @endauth
+                    <a href="{{ url('/#tentang') }}" class="text-white hover:text-gray-300 font-medium transition">Tentang</a>
+                    <a href="{{ url('/#lowongan') }}" class="text-white hover:text-gray-300 font-medium transition">Lowongan</a>
+                    <a href="{{ url('/#kontak') }}" class="text-white hover:text-gray-300 font-medium transition">Kontak</a>
+
                 </div>
 
                 <div class="md:hidden flex items-center">
@@ -80,13 +70,6 @@
                 <a href="{{ url('/#tentang') }}" class="text-gray-600 hover:text-primary font-medium transition py-1">Tentang</a>
                 <a href="{{ url('/#lowongan') }}" class="text-gray-600 hover:text-primary font-medium transition py-1">Lowongan</a>
                 <a href="{{ url('/#kontak') }}" class="text-gray-600 hover:text-primary font-medium transition py-1">Kontak</a>
-                @auth
-                    @if(auth()->user()->isDivisi() || auth()->user()->isManagement() || auth()->user()->isHrd())
-                        <a href="{{ url('/admin/divisi/dashboard') }}" class="bg-primary text-white px-4 py-2 rounded-lg text-center">Dashboard</a>
-                    @endif
-                @else
-                    <a href="{{ route('admin.login') }}" class="bg-primary text-white px-4 py-2 rounded-lg text-center">Login Admin</a>
-                @endauth
             </div>
         </div>
     </nav>
