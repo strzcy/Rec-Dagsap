@@ -1,105 +1,133 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cari Lowongan - Dagsap Recruitment</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        body { font-family: 'Inter', sans-serif; background: #f3f4f6; }
-        .card-hover:hover { transform: translateY(-5px); transition: all 0.3s ease; }
-    </style>
-</head>
-<body>
-    <!-- Navbar -->
-    <nav class="bg-primary shadow-md sticky top-0 z-50">
-        <div class="container mx-auto px-4 py-3">
-            <div class="flex justify-between items-center">
-                <a href="{{ url('/') }}" class="text-white text-xl font-bold">Dagsap Recruitment</a>
-                <a href="{{ route('admin.login') }}" class="text-white hover:text-gray-200">
-                    <i class="fas fa-user-lock mr-1"></i> Admin
-                </a>
-            </div>
-        </div>
-    </nav>
-    
-    <div class="container mx-auto px-4 py-8">
-        <!-- Search Form -->
-        <div class="bg-white rounded-lg shadow p-6 mb-8">
-            <form method="GET" class="flex flex-col md:flex-row gap-3">
-                <input type="text" name="search" placeholder="Cari posisi, divisi, atau kata kunci..." 
-                       value="{{ request('search') }}"
-                       class="flex-1 border rounded-lg px-4 py-3 focus:outline-none focus:border-primary">
-                <button type="submit" class="bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary-dark">
-                    <i class="fas fa-search mr-2"></i> Cari
-                </button>
-                @if(request('search'))
-                <a href="{{ route('frontend.lowongan') }}" class="bg-gray-500 text-white px-4 py-3 rounded-lg hover:bg-gray-600 text-center">
-                    Reset
-                </a>
-                @endif
-            </form>
-        </div>
-        
-        <!-- Results -->
-        <h2 class="text-xl font-semibold mb-4">Hasil Pencarian</h2>
-        
-        @if($lowongans->isEmpty())
-        <div class="bg-white rounded-lg shadow p-12 text-center">
-            <i class="fas fa-search text-6xl text-gray-300 mb-4"></i>
-            <p class="text-gray-500">Tidak ada lowongan yang ditemukan.</p>
-            <a href="{{ route('frontend.home') }}" class="text-primary hover:underline mt-2 inline-block">Kembali ke Beranda</a>
-        </div>
-        @else
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            @foreach($lowongans as $lowongan)
-            <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover transition duration-300">
-                @if($lowongan->banner_image)
-                <img src="{{ Storage::url($lowongan->banner_image) }}" alt="{{ $lowongan->judul }}" class="w-full h-40 object-cover">
-                @else
-                <div class="w-full h-40 bg-gradient-to-r from-primary to-primary-dark flex items-center justify-center">
-                    <i class="fas fa-briefcase text-white text-4xl opacity-50"></i>
-                </div>
-                @endif
-                <div class="p-5">
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="text-xs text-primary bg-primary-light px-2 py-1 rounded-full">
-                            {{ $lowongan->pengajuan->divisi->nama_divisi ?? '-' }}
-                        </span>
-                        <span class="text-xs text-gray-500">
-                            <i class="far fa-calendar-alt mr-1"></i>
-                            {{ \Carbon\Carbon::parse($lowongan->tanggal_selesai)->diffForHumans() }}
-                        </span>
-                    </div>
-                    <h3 class="text-lg font-bold text-gray-800 mb-2 line-clamp-2">{{ $lowongan->judul }}</h3>
-                    <p class="text-gray-600 text-sm mb-4 line-clamp-3">{{ Str::limit(strip_tags($lowongan->deskripsi), 100) }}</p>
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center text-gray-500 text-sm">
-                            <i class="fas fa-map-marker-alt mr-1"></i>
-                            <span>Jakarta</span>
-                        </div>
-                        <a href="{{ route('frontend.apply', $lowongan) }}" 
-                           class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-dark transition text-sm">
-                            Lamar →
-                        </a>
-                    </div>
-                </div>
-            </div>
-            @endforeach
-        </div>
-        
-        <div class="mt-8">
-            {{ $lowongans->links() }}
-        </div>
-        @endif
+@extends('layouts.frontend')
+
+@section('title', 'Lamar Pekerjaan - ' . $lowongan->judul)
+
+@section('content')
+<div class="container mx-auto px-4 py-8 max-w-4xl mt-16">
+    <!-- Header -->
+    <div class="bg-white rounded-t-xl shadow-md p-6 mb-6">
+        <a href="{{ url('/') }}" class="text-primary hover:underline mb-4 inline-block">
+            ← Kembali ke Beranda
+        </a>
+        <h1 class="text-2xl font-bold text-gray-800">Formulir Lamaran</h1>
+        <p class="text-gray-600">{{ $lowongan->judul }} - {{ $lowongan->pengajuan->divisi->nama_divisi ?? '-' }}</p>
     </div>
     
-    <footer class="bg-gray-800 text-white py-6 mt-8">
-        <div class="container mx-auto px-4 text-center">
-            <p>&copy; {{ date('Y') }} Dagsap Recruitment. All rights reserved.</p>
-        </div>
-    </footer>
-</body>
-</html>
+    <!-- Form -->
+    <div class="bg-white rounded-b-xl shadow-md p-6">
+        @if(session('error'))
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                {{ session('error') }}
+            </div>
+        @endif
+        
+        <form action="{{ route('frontend.apply.store', $lowongan) }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Identitas Diri -->
+                <div class="md:col-span-2">
+                    <h3 class="text-lg font-semibold text-primary mb-4 pb-2 border-b">Identitas Diri</h3>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap *</label>
+                    <input type="text" name="nama_lengkap" class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:border-primary" required>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Email *</label>
+                    <input type="email" name="email" class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:border-primary" required>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">No Telepon/WA *</label>
+                    <input type="tel" name="no_telepon" class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:border-primary" placeholder="628xxxxxxxxxx" required>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Tempat Lahir *</label>
+                    <input type="text" name="tempat_lahir" class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:border-primary" required>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Tanggal Lahir *</label>
+                    <input type="date" name="tanggal_lahir" class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:border-primary" required>
+                </div>
+                
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Alamat Lengkap *</label>
+                    <textarea name="alamat" rows="2" class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:border-primary" required></textarea>
+                </div>
+                
+                <!-- Pendidikan -->
+                <div class="md:col-span-2">
+                    <h3 class="text-lg font-semibold text-primary mb-4 pb-2 border-b">Pendidikan</h3>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Pendidikan Terakhir *</label>
+                    <select name="pendidikan_terakhir" class="w-full border rounded-lg px-3 py-2" required>
+                        <option value="">Pilih</option>
+                        <option value="SD">SD</option>
+                        <option value="SMP">SMP</option>
+                        <option value="SMA/SMK">SMA/SMK</option>
+                        <option value="D3">D3</option>
+                        <option value="S1">S1</option>
+                        <option value="S2">S2</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Jurusan *</label>
+                    <input type="text" name="jurusan" class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:border-primary" required>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Tahun Lulus *</label>
+                    <input type="number" name="tahun_lulus" min="1990" max="{{ date('Y') }}" class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:border-primary" required>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">IPK (jika S1/D3)</label>
+                    <input type="text" name="ipk" class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:border-primary" placeholder="Contoh: 3.50">
+                </div>
+                
+                <!-- Pengalaman Kerja -->
+                <div class="md:col-span-2">
+                    <h3 class="text-lg font-semibold text-primary mb-4 pb-2 border-b">Pengalaman Kerja</h3>
+                </div>
+                
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Pengalaman Kerja</label>
+                    <textarea name="pengalaman_kerja" rows="4" class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:border-primary" placeholder="Tuliskan pengalaman kerja Anda (posisi, perusahaan, tahun, dan tanggung jawab)..."></textarea>
+                </div>
+                
+                <!-- Upload Dokumen -->
+                <div class="md:col-span-2">
+                    <h3 class="text-lg font-semibold text-primary mb-4 pb-2 border-b">Dokumen Pendukung</h3>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">CV / Resume *</label>
+                    <input type="file" name="cv" accept=".pdf,.doc,.docx" class="w-full border rounded-lg px-3 py-2" required>
+                    <p class="text-xs text-gray-500 mt-1">PDF/DOC/DOCX, maks 5MB</p>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Ijazah / Transkrip Nilai *</label>
+                    <input type="file" name="ijazah" accept=".pdf,.jpg,.jpeg,.png" class="w-full border rounded-lg px-3 py-2" required>
+                    <p class="text-xs text-gray-500 mt-1">PDF/JPG/PNG, maks 5MB</p>
+                </div>
+            </div>
+            
+            <div class="flex justify-end space-x-3 mt-8 pt-4 border-t">
+                <a href="{{ url('/') }}" class="px-4 py-2 border rounded-lg hover:bg-gray-50">Batal</a>
+                <button type="submit" class="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark">
+                    Kirim Lamaran
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+@endsection

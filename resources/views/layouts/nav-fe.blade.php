@@ -49,7 +49,7 @@
         <div class="px-4">
             <div class="flex justify-between items-center py-3">
                 <div class="flex items-center">
-                    <a href="{{ url('/') }}" class="text-white text-xl font-bold">Dagsap Recruitment</a>
+                    <a class="text-white text-xl font-bold">Dagsap Recruitment</a>
                 </div>
 
                 <div class="md:hidden flex items-center">
