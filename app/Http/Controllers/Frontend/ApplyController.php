@@ -14,8 +14,6 @@ use Illuminate\Support\Facades\Log;
 
 class ApplyController extends Controller
 {
-    // Tidak perlu middleware auth karena frontend public
-    
     public function index(Lowongan $lowongan)
     {
         if ($lowongan->status !== 'publikasi' || $lowongan->tanggal_selesai < now()) {
@@ -77,7 +75,7 @@ class ApplyController extends Controller
             if ($lolos) {
                 $pelamar->update(['status' => 'lolos_tahap1']);
                 
-                return redirect()->route('frontend.apply.success', $pelamar)
+                return redirect()->route('frontend.apply.success', ['pelamar' => $pelamar->id])
                     ->with('success', 'Selamat! Anda lolos seleksi administrasi. Silakan lengkapi data diri Anda.');
             } else {
                 $pelamar->update([
@@ -85,7 +83,7 @@ class ApplyController extends Controller
                     'catatan' => 'Tidak memenuhi kriteria yang ditentukan'
                 ]);
                 
-                return redirect()->route('frontend.apply.success', $pelamar)
+                return redirect()->route('frontend.apply.success', ['pelamar' => $pelamar->id])
                     ->with('error', 'Maaf, Anda belum memenuhi kriteria yang ditentukan.');
             }
             
@@ -95,6 +93,7 @@ class ApplyController extends Controller
         }
     }
     
+    // HANYA SATU METHOD SUCCESS - TIDAK BOLEH DUPLIKAT
     public function success(Pelamar $pelamar)
     {
         $hasDetail = DetailPelamar::where('pelamar_id', $pelamar->id)->exists();
@@ -107,67 +106,86 @@ class ApplyController extends Controller
         if ($pelamar->status !== 'lolos_tahap1') {
             return redirect('/')->with('error', 'Anda belum memenuhi syarat untuk mengisi formulir ini.');
         }
-    
+        
         if (DetailPelamar::where('pelamar_id', $pelamar->id)->exists()) {
             return redirect()->route('frontend.apply.success', $pelamar)
                 ->with('info', 'Anda sudah mengisi data diri sebelumnya.');
         }
-    
+        
         return view('frontend.apply.wizard', compact('pelamar'));
     }
     
     public function storeDetail(Request $request, Pelamar $pelamar)
     {
-        // Cek apakah pelamar lolos tahap 1
         if ($pelamar->status !== 'lolos_tahap1') {
             return redirect('/')->with('error', 'Anda tidak memiliki akses.');
         }
         
-        $detailData = $request->validate([
+        // Validasi data
+        $validated = $request->validate([
             'nama_lengkap' => 'required|string|max:255',
             'jenis_kelamin' => 'required|in:L,P',
             'tempat_lahir' => 'required|string|max:100',
             'tanggal_lahir' => 'required|date',
-            'tinggi_badan' => 'nullable|string',
-            'berat_badan' => 'nullable|string',
+            'tinggi_badan' => 'nullable|numeric|min:0|max:250',
+            'berat_badan' => 'nullable|numeric|min:0|max:300',
             'kewarganegaraan' => 'nullable|string',
             'agama' => 'required|string',
             'golongan_darah' => 'nullable|string',
             'alamat_tinggal' => 'required|string',
-            'rt_rw_tinggal' => 'nullable|string',
-            'kelurahan_tinggal' => 'nullable|string',
-            'kecamatan_tinggal' => 'nullable|string',
-            'kabupaten_tinggal' => 'nullable|string',
-            'kota_tinggal' => 'nullable|string',
-            'provinsi_tinggal' => 'nullable|string',
-            'kode_pos_tinggal' => 'nullable|string',
-            'no_telp' => 'nullable|string',
             'no_hp' => 'required|string',
-            'no_wa' => 'nullable|string',
             'alamat_ktp' => 'required|string',
-            'rt_rw_ktp' => 'nullable|string',
-            'kelurahan_ktp' => 'nullable|string',
-            'kecamatan_ktp' => 'nullable|string',
-            'kabupaten_ktp' => 'nullable|string',
-            'kota_ktp' => 'nullable|string',
-            'provinsi_ktp' => 'nullable|string',
-            'kode_pos_ktp' => 'nullable|string',
             'no_ktp' => 'required|string',
-            'no_npwp' => 'nullable|string',
-            'no_bpjs_ketenagakerjaan' => 'nullable|string',
             'status_perkawinan' => 'required|string',
             'email' => 'required|email',
-            'hobby' => 'nullable|string',
-            'organisasi' => 'nullable|string',
+            'pernyataan_setuju' => 'required|accepted',
         ]);
+        
+        // Data yang perlu di-encode ke JSON
+        $detailData = [
+            'pelamar_id' => $pelamar->id,
+            'nama_lengkap' => $validated['nama_lengkap'],
+            'jenis_kelamin' => $validated['jenis_kelamin'],
+            'tempat_lahir' => $validated['tempat_lahir'],
+            'tanggal_lahir' => $validated['tanggal_lahir'],
+            'tinggi_badan' => $validated['tinggi_badan'] ?? null,
+            'berat_badan' => $validated['berat_badan'] ?? null,
+            'kewarganegaraan' => $validated['kewarganegaraan'] ?? 'Indonesia',
+            'agama' => $validated['agama'],
+            'golongan_darah' => $validated['golongan_darah'] ?? null,
+            'alamat_tinggal' => $validated['alamat_tinggal'],
+            'no_hp' => $validated['no_hp'],
+            'alamat_ktp' => $validated['alamat_ktp'],
+            'no_ktp' => $validated['no_ktp'],
+            'status_perkawinan' => $validated['status_perkawinan'],
+            'email' => $validated['email'],
+            'pernyataan_setuju' => $validated['pernyataan_setuju'] == '1',
+            'tempat_pernyataan' => $request->tempat_pernyataan ?? null,
+            'tanggal_pernyataan' => $request->tanggal_pernyataan ?? null,
+            'kekuatan' => $request->kekuatan ?? null,
+            'kelemahan' => $request->kelemahan ?? null,
+            'gaji_diharapkan' => $request->gaji_diharapkan ?? null,
+            'waktu_bergabung' => $request->waktu_bergabung ?? null,
+            'pernah_sakit_berat' => $request->pernah_sakit_berat == '1',
+            'sakit_berat_keterangan' => $request->sakit_berat_keterangan ?? null,
+            'punya_penyakit_keturunan' => $request->punya_penyakit_keturunan == '1',
+            'penyakit_keturunan_keterangan' => $request->penyakit_keturunan_keterangan ?? null,
+            'pakai_kacamata' => $request->pakai_kacamata == '1',
+            'ukuran_kacamata' => $request->ukuran_kacamata ?? null,
+            'punya_alergi' => $request->punya_alergi == '1',
+            'alergi_keterangan' => $request->alergi_keterangan ?? null,
+            'punya_pasangan' => $request->punya_pasangan == '1',
+            'punya_anak' => $request->punya_anak == '1',
+            'punya_saudara_di_perusahaan' => $request->punya_saudara_di_perusahaan == '1',
+        ];
         
         // Update data pelamar utama
         $pelamar->update([
-            'nama_lengkap' => $detailData['nama_lengkap'],
-            'no_telepon' => $detailData['no_hp'],
-            'tempat_lahir' => $detailData['tempat_lahir'],
-            'tanggal_lahir' => $detailData['tanggal_lahir'],
-            'alamat' => $detailData['alamat_tinggal'],
+            'nama_lengkap' => $validated['nama_lengkap'],
+            'no_telepon' => $validated['no_hp'],
+            'tempat_lahir' => $validated['tempat_lahir'],
+            'tanggal_lahir' => $validated['tanggal_lahir'],
+            'alamat' => $validated['alamat_tinggal'],
         ]);
         
         // Simpan detail
@@ -176,8 +194,11 @@ class ApplyController extends Controller
             $detailData
         );
         
+        // Update status ke psikotest
+        $pelamar->update(['status' => 'psikotest']);
+        
         return redirect()->route('frontend.apply.success', $pelamar)
-            ->with('success', 'Data diri berhasil disimpan! Terima kasih.');
+            ->with('success', 'Data diri berhasil disimpan! Terima kasih. Kami akan memproses lamaran Anda.');
     }
     
     public function detail(Lowongan $lowongan)

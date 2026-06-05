@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('pelamar_id')->constrained('pelamars')->onDelete('cascade');
             
-            // A. Data Pribadi
+            // A. DATA PRIBADI
             $table->string('nama_lengkap');
             $table->enum('jenis_kelamin', ['L', 'P']);
             $table->string('tempat_lahir');
@@ -44,36 +44,35 @@ return new class extends Migration
             $table->string('no_ktp');
             $table->string('no_npwp')->nullable();
             $table->string('no_bpjs_ketenagakerjaan')->nullable();
-            $table->string('no_bpjs_kesehatan')->nullable();
             $table->enum('status_perkawinan', ['Lajang', 'Nikah', 'Bercerai', 'Pasangan Meninggal']);
             $table->string('email');
             $table->string('hobby')->nullable();
             $table->text('organisasi')->nullable();
             
-            // B. Riwayat Pendidikan - Formal (disimpan sebagai JSON)
+            // B. PENDIDIKAN
             $table->json('pendidikan_formal')->nullable();
-            // Pelatihan/Kursus (JSON)
             $table->json('pelatihan')->nullable();
             
-            // C. Keterampilan (JSON)
+            // C. KETERAMPILAN
             $table->json('keterampilan')->nullable();
             
-            // D. Bahasa Asing (JSON)
+            // D. BAHASA ASING
             $table->json('bahasa_asing')->nullable();
             
-            // E. Kekuatan & Kelemahan (JSON)
-            $table->json('kekuatan_kelemahan')->nullable();
+            // E. KEKUATAN & KELEMAHAN
+            $table->text('kekuatan')->nullable();
+            $table->text('kelemahan')->nullable();
             
-            // F. Riwayat Pekerjaan
+            // F. RIWAYAT PEKERJAAN
             $table->json('pengalaman_kerja')->nullable();
             $table->json('bidang_minat')->nullable();
             
-            // G. Referensi
+            // G. REFERENSI
             $table->json('referensi')->nullable();
             $table->boolean('punya_saudara_di_perusahaan')->default(false);
             $table->json('saudara_di_perusahaan')->nullable();
             
-            // H. Riwayat Kesehatan
+            // H. RIWAYAT KESEHATAN
             $table->boolean('pernah_sakit_berat')->default(false);
             $table->text('sakit_berat_keterangan')->nullable();
             $table->boolean('punya_penyakit_keturunan')->default(false);
@@ -83,21 +82,34 @@ return new class extends Migration
             $table->boolean('punya_alergi')->default(false);
             $table->text('alergi_keterangan')->nullable();
             
-            // I. Data Keluarga
+            // I. DATA KELUARGA
+            // 1. Data Pasangan
+            $table->boolean('punya_pasangan')->default(false);
             $table->json('data_pasangan')->nullable();
+            
+            // 2. Data Anak
+            $table->boolean('punya_anak')->default(false);
             $table->json('data_anak')->nullable();
+            
+            // 3. Riwayat penyakit keluarga
             $table->json('riwayat_penyakit_keluarga')->nullable();
+            
+            // 4. Orang Tua
             $table->json('data_orang_tua')->nullable();
+            
+            // 5. Kontak Darurat
             $table->json('kontak_darurat')->nullable();
+            
+            // 6. Saudara Kandung
             $table->json('saudara_kandung')->nullable();
             
-            // J. Remunerasi
+            // J. REMUNERASI
             $table->string('gaji_diharapkan')->nullable();
             
-            // K. Waktu bergabung
+            // K. WAKTU
             $table->string('waktu_bergabung')->nullable();
             
-            // L. Pernyataan
+            // L. PERNYATAAN
             $table->boolean('pernyataan_setuju')->default(false);
             $table->string('tempat_pernyataan')->nullable();
             $table->date('tanggal_pernyataan')->nullable();

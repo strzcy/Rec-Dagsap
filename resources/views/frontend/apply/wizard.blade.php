@@ -223,6 +223,70 @@
     });
     
     updateSteps();
+
+    // Toggle functions for family forms
+    function togglePasanganForm(show) {
+        document.getElementById('pasangan-form').classList.toggle('hidden', !show);
+    }
+
+    function toggleAnakForm(show) {
+        document.getElementById('anak-form').classList.toggle('hidden', !show);
+    }
+
+    function toggleSaudaraForm(show) {
+        document.getElementById('saudara-form').classList.toggle('hidden', !show);
+    }
+
+    function toggleSakitBerat(show) {
+        document.getElementById('sakit-berat-detail').classList.toggle('hidden', !show);
+    }
+
+    function togglePenyakitKeturunan(show) {
+        document.getElementById('penyakit-keturunan-detail').classList.toggle('hidden', !show);
+    }
+
+    function toggleKacamata(show) {
+        document.getElementById('kacamata-detail').classList.toggle('hidden', !show);
+    }
+
+    function toggleAlergi(show) {
+        document.getElementById('alergi-detail').classList.toggle('hidden', !show);
+    }
+
+    // Setup dynamic add for all dynamic containers
+    function setupDynamicAdd(btnId, containerId, itemClass, removeBtnClass) {
+        document.getElementById(btnId)?.addEventListener('click', function() {
+            const container = document.getElementById(containerId);
+            const template = container.children[0].cloneNode(true);
+            template.querySelectorAll('input, select, textarea').forEach(input => {
+                if (input.type !== 'radio' && input.type !== 'checkbox') {
+                    input.value = '';
+                }
+                if (input.type === 'checkbox' || input.type === 'radio') {
+                    input.checked = false;
+                }
+            });
+            container.appendChild(template);
+            template.querySelector(removeBtnClass)?.addEventListener('click', () => template.remove());
+        });
+    }
+
+    setupDynamicAdd('tambah-pekerjaan', 'pekerjaan-container', '.pekerjaan-item', '.remove-pekerjaan');
+    setupDynamicAdd('tambah-referensi', 'referensi-container', '.referensi-item', '.remove-referensi');
+    setupDynamicAdd('tambah-saudara', 'saudara-container', '.saudara-item', '.remove-saudara');
+    setupDynamicAdd('tambah-anak', 'anak-container', '.anak-item', '.remove-anak');
+    setupDynamicAdd('tambah-penyakit', 'penyakit-keluarga-container', '.penyakit-item', '.remove-penyakit');
+    setupDynamicAdd('tambah-saudara-kandung', 'saudara-kandung-container', '.saudara-kandung-item', '.remove-saudara-kandung');
+
+    // Remove handlers for existing items
+    document.querySelectorAll('.remove-pekerjaan, .remove-referensi, .remove-saudara, .remove-anak, .remove-penyakit, .remove-saudara-kandung').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const container = this.closest('[id$="-container"]');
+            if (container && container.children.length > 1) {
+                this.closest('.pekerjaan-item, .referensi-item, .saudara-item, .anak-item, .penyakit-item, .saudara-kandung-item')?.remove();
+            }
+        });
+    });
 </script>
 @endpush
 @endsection
