@@ -29,9 +29,12 @@
 
 @section('content')
 <!-- Tombol Print -->
-<div class="flex justify-end mb-4 no-print">
-    <button onclick="window.print()" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-dark">
-        <i class="fas fa-print mr-2"></i> Print / Cetak Data Pelamar
+<div class="flex justify-end space-x-3 mb-4 no-print">
+    <a href="{{ route('hrd.pelamar.print', $pelamar) }}" target="_blank" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-dark">
+        <i class="fas fa-print mr-2"></i> Cetak Data (A4)
+    </a>
+    <button onclick="window.print()" class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700">
+        <i class="fas fa-print mr-2"></i> Print Halaman Ini
     </button>
 </div>
 
@@ -236,6 +239,141 @@
 </div>
 @endif
 
+<!-- Dokumen dengan Preview -->
+<div class="bg-white rounded-lg shadow mt-6">
+    <div class="p-4 border-b bg-primary text-white">
+        <h3 class="font-semibold text-lg">Dokumen Lamaran</h3>
+    </div>
+    <div class="p-6">
+        <!-- Preview CV -->
+        <div class="mb-6">
+            <label class="block text-sm font-medium text-gray-700 mb-2">CV / Resume</label>
+            @if($pelamar->cv_path)
+                <div class="border rounded-lg p-3 bg-gray-50">
+                    <div class="flex items-center justify-between flex-wrap gap-3">
+                        <div class="flex items-center">
+                            @php
+                                $cvExtension = pathinfo($pelamar->cv_path, PATHINFO_EXTENSION);
+                            @endphp
+                            @if($cvExtension == 'pdf')
+                                <i class="fas fa-file-pdf text-red-500 text-2xl mr-3"></i>
+                            @else
+                                <i class="fas fa-file-word text-blue-500 text-2xl mr-3"></i>
+                            @endif
+                            <div>
+                                <p class="text-sm font-medium">CV_{{ $pelamar->nama_lengkap }}.{{ $cvExtension }}</p>
+                                <p class="text-xs text-gray-500">Ukuran: {{ Storage::disk('public')->size($pelamar->cv_path) ? round(Storage::disk('public')->size($pelamar->cv_path) / 1024, 2) : 0 }} KB</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="previewFile('{{ Storage::url($pelamar->cv_path) }}', 'CV', '{{ $cvExtension }}')" class="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600">
+                                <i class="fas fa-eye mr-1"></i> Preview
+                            </button>
+                            <a href="{{ route('hrd.pelamar.download-cv', $pelamar) }}" class="bg-primary text-white px-3 py-1 rounded text-sm hover:bg-primary-dark">
+                                <i class="fas fa-download mr-1"></i> Download
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            @else
+                <p class="text-gray-500">Belum upload CV</p>
+            @endif
+        </div>
+        
+        <!-- Preview Ijazah -->
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Ijazah / Transkrip Nilai</label>
+            @if($pelamar->ijazah_path)
+                <div class="border rounded-lg p-3 bg-gray-50">
+                    <div class="flex items-center justify-between flex-wrap gap-3">
+                        <div class="flex items-center">
+                            @php
+                                $ijazahExtension = pathinfo($pelamar->ijazah_path, PATHINFO_EXTENSION);
+                            @endphp
+                            @if($ijazahExtension == 'pdf')
+                                <i class="fas fa-file-pdf text-red-500 text-2xl mr-3"></i>
+                            @elseif(in_array($ijazahExtension, ['jpg', 'jpeg', 'png']))
+                                <i class="fas fa-file-image text-green-500 text-2xl mr-3"></i>
+                            @else
+                                <i class="fas fa-file-alt text-blue-500 text-2xl mr-3"></i>
+                            @endif
+                            <div>
+                                <p class="text-sm font-medium">Ijazah_{{ $pelamar->nama_lengkap }}.{{ $ijazahExtension }}</p>
+                                <p class="text-xs text-gray-500">Ukuran: {{ Storage::disk('public')->size($pelamar->ijazah_path) ? round(Storage::disk('public')->size($pelamar->ijazah_path) / 1024, 2) : 0 }} KB</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="previewFile('{{ Storage::url($pelamar->ijazah_path) }}', 'Ijazah', '{{ $ijazahExtension }}')" class="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600">
+                                <i class="fas fa-eye mr-1"></i> Preview
+                            </button>
+                            <a href="{{ route('hrd.pelamar.download-ijazah', $pelamar) }}" class="bg-primary text-white px-3 py-1 rounded text-sm hover:bg-primary-dark">
+                                <i class="fas fa-download mr-1"></i> Download
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            @else
+                <p class="text-gray-500">Belum upload Ijazah</p>
+            @endif
+        </div>
+    </div>
+</div>
+
+<!-- Modal Preview File -->
+<div id="previewModal" class="fixed inset-0 bg-black bg-opacity-75 hidden items-center justify-center z-50 p-4">
+    <div class="bg-white rounded-lg w-full max-w-4xl max-h-[90vh] overflow-hidden">
+        <div class="flex justify-between items-center p-4 border-b">
+            <h3 class="font-semibold text-lg" id="previewTitle">Preview File</h3>
+            <button onclick="closePreview()" class="text-gray-500 hover:text-gray-700">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+        <div class="p-4 overflow-auto max-h-[calc(90vh-80px)]" id="previewContent">
+            <div id="pdfViewer" class="hidden">
+                <embed id="pdfEmbed" src="" type="application/pdf" class="w-full min-h-[600px]">
+            </div>
+            <div id="imageViewer" class="hidden">
+                <img id="imagePreview" src="" class="max-w-full max-h-[600px] mx-auto">
+            </div>
+            <div id="unsupportedViewer" class="hidden text-center py-10">
+                <i class="fas fa-file-alt text-6xl text-gray-400 mb-4"></i>
+                <p class="text-gray-600">File tidak dapat ditampilkan secara langsung.</p>
+                <a href="#" id="downloadLink" class="mt-4 inline-block bg-primary text-white px-4 py-2 rounded-lg">Download File</a>
+            </div>
+        </div>
+    </div>
+</div>      
+
+<!-- Modal Preview File -->
+<div id="previewModal" class="fixed inset-0 bg-black bg-opacity-75 hidden items-center justify-center z-50 p-4">
+    <div class="bg-white rounded-lg w-full max-w-4xl max-h-[90vh] overflow-hidden">
+        <div class="flex justify-between items-center p-4 border-b">
+            <h3 class="font-semibold text-lg" id="previewTitle">Preview File</h3>
+            <button onclick="closePreview()" class="text-gray-500 hover:text-gray-700">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+        <div class="p-4 overflow-auto max-h-[calc(90vh-80px)]">
+            <iframe id="previewFrame" src="" class="w-full min-h-[500px] border-0"></iframe>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Reject (jika belum ada) -->
+<div id="rejectModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-lg p-6 w-full max-w-md">
+        <h3 class="text-lg font-semibold mb-4">Konfirmasi Penolakan</h3>
+        <p>Apakah Anda yakin ingin menolak pelamar ini?</p>
+        <div class="flex justify-end space-x-3 mt-6">
+            <button onclick="closeRejectModal()" class="px-4 py-2 border rounded-lg">Batal</button>
+            <form action="" method="POST" id="rejectForm">
+                @csrf
+                <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded-lg">Tolak</button>
+            </form>
+        </div>
+    </div>
+</div>
+
 <!-- Status Update & Jadwal Interview (sama seperti sebelumnya) -->
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6 no-print">
     <!-- Update Status -->
@@ -311,10 +449,45 @@
 
 @push('scripts')
 <script>
+    function previewFile(url, title, extension) {
+        document.getElementById('previewTitle').innerText = 'Preview ' + title;
+        
+        // Sembunyikan semua viewer
+        document.getElementById('pdfViewer').classList.add('hidden');
+        document.getElementById('imageViewer').classList.add('hidden');
+        document.getElementById('unsupportedViewer').classList.add('hidden');
+        
+        if (extension === 'pdf') {
+            // Tampilkan PDF
+            document.getElementById('pdfViewer').classList.remove('hidden');
+            document.getElementById('pdfEmbed').src = url;
+        } else if (['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(extension.toLowerCase())) {
+            // Tampilkan Gambar
+            document.getElementById('imageViewer').classList.remove('hidden');
+            document.getElementById('imagePreview').src = url;
+        } else {
+            // File tidak didukung preview
+            document.getElementById('unsupportedViewer').classList.remove('hidden');
+            document.getElementById('downloadLink').href = url;
+        }
+        
+        document.getElementById('previewModal').classList.remove('hidden');
+        document.getElementById('previewModal').classList.add('flex');
+    }
+    
+    function closePreview() {
+        document.getElementById('previewModal').classList.add('hidden');
+        document.getElementById('previewModal').classList.remove('flex');
+        // Reset semua viewer
+        document.getElementById('pdfEmbed').src = '';
+        document.getElementById('imagePreview').src = '';
+    }
+    
     function openRejectModal() {
         document.getElementById('rejectModal').classList.remove('hidden');
         document.getElementById('rejectModal').classList.add('flex');
     }
+    
     function closeRejectModal() {
         document.getElementById('rejectModal').classList.add('hidden');
         document.getElementById('rejectModal').classList.remove('flex');

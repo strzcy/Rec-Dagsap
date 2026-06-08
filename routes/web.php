@@ -25,7 +25,8 @@ Route::post('/lowongan/{lowongan}/apply', [ApplyController::class, 'store'])->na
 Route::get('/apply/success/{pelamar}', [ApplyController::class, 'success'])->name('frontend.apply.success');
 Route::get('/apply/detail/{pelamar}', [ApplyController::class, 'detailForm'])->name('frontend.apply.detail_form');
 Route::post('/apply/detail/{pelamar}', [ApplyController::class, 'storeDetail'])->name('frontend.apply.store_detail');
-
+Route::get('/psikotest/{pelamar}', [ApplyController::class, 'psikotest'])->name('frontend.apply.psikotest');
+Route::post('/psikotest/{pelamar}', [ApplyController::class, 'submitPsikotest'])->name('frontend.apply.submit_psikotest');
 /*
 |--------------------------------------------------------------------------
 | Admin Routes (Login Required)
@@ -69,5 +70,6 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         Route::post('/pelamar/{pelamar}/update-status', [PelamarController::class, 'updateStatus'])->name('pelamar.update-status');
         Route::get('/pelamar/{pelamar}/download-cv', [PelamarController::class, 'downloadCv'])->name('pelamar.download-cv');
         Route::get('/pelamar/{pelamar}/download-ijazah', [PelamarController::class, 'downloadIjazah'])->name('pelamar.download-ijazah');
+        Route::get('/pelamar/{pelamar}/print', [PelamarController::class, 'printData'])->name('pelamar.print');
     });
 });

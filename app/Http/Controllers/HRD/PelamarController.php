@@ -187,4 +187,13 @@ class PelamarController extends Controller
             Log::error('Gagal mengirim email diterima: ' . $e->getMessage());
         }
     }
+
+    public function printData(Pelamar $pelamar)
+    {
+        if ($pelamar->lowongan->hrd_id !== auth()->id()) {
+            abort(403);
+        }
+    
+        return view('hrd.pelamar.print', compact('pelamar'));
+    }
 }
