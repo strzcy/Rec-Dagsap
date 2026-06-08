@@ -47,10 +47,6 @@
                     <h3 class="text-xl font-bold text-gray-800 mb-2">{{ $lowongan->judul }}</h3>
                     <p class="text-gray-600 text-sm mb-4 line-clamp-2">{{ Str::limit(strip_tags($lowongan->deskripsi), 100) }}</p>
                     <div class="flex items-center justify-between pt-2 border-t border-gray-100">
-                        <div class="flex items-center text-gray-500 text-sm">
-                            <i class="fas fa-map-marker-alt mr-1.5 text-primary"></i>
-                            <span>Jakarta</span>
-                        </div>
                         <a href="{{ route('frontend.detail', $lowongan) }}" class="text-primary font-semibold text-sm hover:underline flex items-center">
                             Detail Lowongan <i class="fas fa-arrow-right ml-1.5 text-xs"></i>
                         </a>

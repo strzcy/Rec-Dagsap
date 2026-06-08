@@ -45,7 +45,7 @@
 @section('content')
 <div class="container mx-auto px-4 py-8 max-w-5xl mt-16">
     <div class="bg-white rounded-xl shadow-md overflow-hidden">
-        <div class="bg-primary text-white p-4">
+        <div class="bg-primary text-white p-4 py-6">
             <h1 class="text-2xl font-bold">Form Isian Data Diri Pelamar</h1>
             <p class="text-sm opacity-90">PT Dagsap Endura Eatore</p>
         </div>
