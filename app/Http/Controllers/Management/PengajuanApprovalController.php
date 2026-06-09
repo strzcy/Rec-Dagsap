@@ -90,4 +90,15 @@ class PengajuanApprovalController extends Controller
         return redirect()->route('management.pengajuan.index')
             ->with('success', 'Pengajuan dari divisi ' . $pengajuan->divisi->nama_divisi . ' ditolak!');
     }
+
+    public function printData(PengajuanTenagaKerja $pengajuan)
+    {
+        $managedDivisiId = Auth::user()->managed_divisi_id;
+    
+        if ($pengajuan->departemen_dipilih !== $managedDivisiId) {
+            abort(403);
+        }
+    
+        return view('management.pengajuan.print', compact('pengajuan'));
+    }
 }

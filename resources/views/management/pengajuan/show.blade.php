@@ -151,6 +151,7 @@
                 <p class="text-gray-500">-</p>
             @endif
         </div>
+
         
         <!-- ACTION BUTTONS -->
         @if($pengajuan->status == 'pending')
@@ -175,22 +176,22 @@
                         <p class="text-sm text-blue-600 mt-1">Ingatkan HRD untuk segera memposting lowongan ini.</p>
                     </div>
                     @php
-                        $hrd = \App\Models\User::where('role', 'hrd')->first();
-                        $tanggalDibutuhkan = $pengajuan->tanggal_dibutuhkan ? date('d/m/Y', strtotime($pengajuan->tanggal_dibutuhkan)) : 'secepatnya';
-                        $pesan = "Permisi kami dari Management " . $pengajuan->divisi->nama_divisi . 
-                                 " ingin memberi tahu bahwa kami membutuhkan tenaga kerja untuk bagian " . $pengajuan->posisi . 
-                                 " dengan total " . $pengajuan->jumlah . " unit kerja, " .
-                                 "dibutuhkan pada tanggal " . $tanggalDibutuhkan . ". " .
-                                 "Mohon segera untuk memposting Lowongan Kerjanya ya, Terimakasih";
-                        $encodedPesan = urlencode($pesan);
-                        $noHrd = $hrd->no_telepon ?? '6281294491075';
-                        if (substr($noHrd, 0, 1) == '0') {
-                            $noHrd = '62' . substr($noHrd, 1);
+                    $hrd = \App\Models\User::where('role', 'hrd')->first();
+                    $tanggalDibutuhkan = $pengajuan->tanggal_dibutuhkan ? date('d/m/Y', strtotime($pengajuan->tanggal_dibutuhkan)) : 'secepatnya';
+                    $pesan = "Permisi kami dari Management " . $pengajuan->divisi->nama_divisi . 
+                    " ingin memberi tahu bahwa kami membutuhkan tenaga kerja untuk bagian " . $pengajuan->posisi . 
+                    " dengan total " . $pengajuan->jumlah . " unit kerja, " .
+                    "dibutuhkan pada tanggal " . $tanggalDibutuhkan . ". " .
+                    "Mohon segera untuk memposting Lowongan Kerjanya ya, Terimakasih";
+                    $encodedPesan = urlencode($pesan);
+                    $noHrd = $hrd->no_telepon ?? '6281294491075';
+                    if (substr($noHrd, 0, 1) == '0') {
+                        $noHrd = '62' . substr($noHrd, 1);
                         }
-                    @endphp
-                    <a href="https://api.whatsapp.com/send?phone={{ $noHrd }}&text={{ $encodedPesan }}" 
-                       target="_blank"
-                       class="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition">
+                        @endphp
+                        <a href="https://api.whatsapp.com/send?phone={{ $noHrd }}&text={{ $encodedPesan }}" 
+                        target="_blank"
+                        class="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition">
                         <i class="fab fa-whatsapp mr-2"></i>
                         Ingatkan HRD via WhatsApp
                     </a>
@@ -199,10 +200,23 @@
         </div>
         @endif
         
-        <div class="flex justify-end pt-4">
-            <a href="{{ route('management.pengajuan.index') }}" class="px-4 py-2 border rounded-lg hover:bg-gray-50">
-                <i class="fas fa-arrow-left mr-2"></i> Kembali
-            </a>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:20px;">
+
+            <div>
+                <a href="{{ route('management.pengajuan.index') }}"
+                   class="px-4 py-2 border rounded-lg hover:bg-gray-50">
+                    <i class="fas fa-arrow-left mr-2"></i> Kembali
+                </a>
+            </div>
+
+            <div class="no-print">
+                <a href="{{ route('management.pengajuan.print', $pengajuan) }}"
+                   target="_blank"
+                   class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700">
+                    <i class="fas fa-print mr-2"></i> Print PTK
+                </a>
+            </div>
+
         </div>
     </div>
 </div>

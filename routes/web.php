@@ -58,6 +58,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         Route::get('/pengajuan/{pengajuan}', [PengajuanApprovalController::class, 'show'])->name('pengajuan.show');
         Route::post('/pengajuan/{pengajuan}/approve', [PengajuanApprovalController::class, 'approve'])->name('pengajuan.approve');
         Route::post('/pengajuan/{pengajuan}/reject', [PengajuanApprovalController::class, 'reject'])->name('pengajuan.reject');
+        Route::get('/pengajuan/{pengajuan}/print', [PengajuanApprovalController::class, 'printData'])->name('pengajuan.print');
     });
     
     // HRD Routes
