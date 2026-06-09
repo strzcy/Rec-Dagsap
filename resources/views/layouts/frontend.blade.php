@@ -48,28 +48,61 @@
     <nav class="bg-primary shadow-lg fixed top-0 left-0 w-full z-50">
         <div class="px-4">
             <div class="flex justify-between items-center py-3">
+
+                <!-- Logo -->
                 <div class="flex items-center">
-                    <a href="{{ url('/') }}" class="text-white text-xl font-bold">Dagsap Recruitment</a>
+                    <a href="{{ url('/') }}" class="text-white text-xl font-bold">
+                        Dagsap Recruitment
+                    </a>
                 </div>
-                
+
+                <!-- Desktop Menu -->
                 <div class="hidden md:flex items-center space-x-6">
-                    <a href="{{ url('/#tentang') }}" class="text-white hover:text-gray-300 font-medium transition">Tentang</a>
-                    <a href="{{ url('/#lowongan') }}" class="text-white hover:text-gray-300 font-medium transition">Lowongan</a>
-                    <a href="{{ url('/#kontak') }}" class="text-white hover:text-gray-300 font-medium transition">Kontak</a>
+                    <a href="{{ url('/#tentang') }}"
+                       class="text-white hover:text-gray-300 font-medium transition">
+                        Tentang
+                    </a>
 
+                    <a href="{{ url('/#lowongan') }}"
+                       class="text-white hover:text-gray-300 font-medium transition">
+                        Lowongan
+                    </a>
+
+                    <a href="{{ url('/#kontak') }}"
+                       class="text-white hover:text-gray-300 font-medium transition">
+                        Kontak
+                    </a>
                 </div>
 
-                <div class="md:hidden flex items-center">
-                    <button id="hamburger-btn" class="text-gray-600 focus:outline-none">
-                        <i class="fas fa-bars text-2xl" id="burger-icon"></i>
+                <!-- Mobile Hamburger -->
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="text-white focus:outline-none">
+                        <i class="fas fa-bars text-xl"></i>
                     </button>
                 </div>
+
             </div>
 
-            <div id="mobile-menu" class="hidden md:hidden mt-4 pt-4 border-t border-gray-100 flex flex-col space-y-3 pb-2">
-                <a href="{{ url('/#tentang') }}" class="text-gray-600 hover:text-primary font-medium transition py-1">Tentang</a>
-                <a href="{{ url('/#lowongan') }}" class="text-gray-600 hover:text-primary font-medium transition py-1">Lowongan</a>
-                <a href="{{ url('/#kontak') }}" class="text-gray-600 hover:text-primary font-medium transition py-1">Kontak</a>
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="hidden md:hidden pb-3">
+                <div class="pt-2 pb-3 space-y-2">
+
+                    <a href="{{ url('/#tentang') }}"
+                       class="block text-white hover:text-gray-200 px-2 py-1">
+                        Tentang
+                    </a>
+
+                    <a href="{{ url('/#lowongan') }}"
+                       class="block text-white hover:text-gray-200 px-2 py-1">
+                        Lowongan
+                    </a>
+
+                    <a href="{{ url('/#kontak') }}"
+                       class="block text-white hover:text-gray-200 px-2 py-1">
+                        Kontak
+                    </a>
+
+                </div>
             </div>
         </div>
     </nav>
@@ -138,27 +171,9 @@
     </footer>
 
     <script>
-        const burgerBtn = document.getElementById('hamburger-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-        const burgerIcon = document.getElementById('burger-icon');
-
-        if (burgerBtn) {
-            burgerBtn.addEventListener('click', () => {
-                mobileMenu.classList.toggle('hidden');
-                if (mobileMenu.classList.contains('hidden')) {
-                    burgerIcon.className = 'fas fa-bars text-2xl';
-                } else {
-                    burgerIcon.className = 'fas fa-xmark text-2xl';
-                }
-            });
-        }
-
-        const mobileLinks = mobileMenu ? mobileMenu.querySelectorAll('a') : [];
-        mobileLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                mobileMenu.classList.add('hidden');
-                if (burgerIcon) burgerIcon.className = 'fas fa-bars text-2xl';
-            });
+        document.getElementById('mobile-menu-button')?.addEventListener('click', function () {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
         });
     </script>
     @stack('scripts')

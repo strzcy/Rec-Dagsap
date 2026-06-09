@@ -1,5 +1,4 @@
 @extends('layouts.frontend')
-
 @section('title', 'Dagsap Recruitment - Karir Bersama Dagsap')
 
 @section('content')

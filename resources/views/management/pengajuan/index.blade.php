@@ -6,14 +6,7 @@
 @section('subheader', 'Review dan approve permintaan tenaga kerja dari divisi ' . ($divisi->nama_divisi ?? 'Anda'))
 
 @section('content')
-<div class="bg-white rounded-lg shadow overflow-hidden">
-    <div class="p-4 border-b bg-blue-50">
-        <div class="flex items-center">
-            <i class="fas fa-info-circle text-blue-600 mr-2"></i>
-            <span class="text-sm text-blue-700">Anda hanya dapat melihat pengajuan dari divisi <strong>{{ $divisi->nama_divisi ?? '-' }}</strong></span>
-        </div>
-    </div>
-    
+<div class="bg-white rounded-lg shadow overflow-hidden">  
     <div class="p-4 border-b">
         <form method="GET" class="flex gap-2 flex-wrap">
             <select name="status" class="border rounded-lg px-3 py-2">

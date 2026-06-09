@@ -11,16 +11,6 @@
     {{ $error }}
 </div>
 @else
-<div class="mb-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-    <div class="flex items-center">
-        <i class="fas fa-building text-blue-600 text-xl mr-3"></i>
-        <div>
-            <p class="text-sm text-blue-600">Anda bertugas mengelola divisi:</p>
-            <p class="font-bold text-blue-800">{{ $divisi->nama_divisi ?? '-' }} ({{ $divisi->kode_divisi ?? '-' }})</p>
-        </div>
-    </div>
-</div>
-
 <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
     <div class="bg-white rounded-lg shadow p-6">
         <div class="text-center">
