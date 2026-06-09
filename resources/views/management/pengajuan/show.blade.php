@@ -33,16 +33,32 @@
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6 pb-6 border-b">
             <div>
                 <label class="text-xs text-gray-500">Nama Pemohon</label>
-                <p class="font-medium">{{ $pengajuan->diajukan_oleh ?? $pengajuan->user->name ?? '-' }}</p>
+                <p class="font-medium">{{ $pengajuan->nama_pemohon ?? '-' }}</p>
             </div>
             <div>
-                <label class="text-xs text-gray-500">Departemen Pemohon</label>
+                <label class="text-xs text-gray-500">Departemen</label>
                 <p class="font-medium">{{ $pengajuan->divisi->nama_divisi ?? '-' }}</p>
+            </div>
+            <div>
+                <label class="text-xs text-gray-500">Jabatan</label>
+                <p class="font-medium">{{ $pengajuan->jabatan_pemohon ?? '-' }}</p>
+            </div>
+            <div>
+                <label class="text-xs text-gray-500">No. HP</label>
+                <p class="font-medium">{{ $pengajuan->no_hp_pemohon ?? '-' }}</p>
+            </div>
+            <div>
+                <label class="text-xs text-gray-500">NIP/NIK</label>
+                <p class="font-medium">{{ $pengajuan->nip_pemohon ?? '-' }}</p>
             </div>
             <div>
                 <label class="text-xs text-gray-500">Tanggal Pengajuan</label>
                 <p class="font-medium">{{ $pengajuan->created_at->setTimezone('Asia/Jakarta')->format('d/m/Y H:i') }} WIB</p>
             </div>
+        </div>
+
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6 pb-6 border-b">
             <div>
                 <label class="text-xs text-gray-500">Tanggal Dibutuhkan</label>
                 <p class="font-medium">{{ $pengajuan->tanggal_dibutuhkan ? \Carbon\Carbon::parse($pengajuan->tanggal_dibutuhkan)->format('d/m/Y') : '-' }}</p>

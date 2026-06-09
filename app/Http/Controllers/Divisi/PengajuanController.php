@@ -20,18 +20,35 @@ class PengajuanController extends Controller
 
     public function create()
     {
-        return view('divisi.pengajuan.create');
+        $divisis = \App\Models\Divisi::all();
+        return view('divisi.pengajuan.create', compact('divisis'));
     }
 
     public function store(Request $request)
     {
-        // Debug: dd($request->all());
-        
         $validated = $request->validate([
+            // Identitas Pemohon
+            'nama_pemohon' => 'required|string|max:255',
+            'nip_pemohon' => 'required|string|max:50',
+            'jabatan_pemohon' => 'required|string|max:255',
+            'no_hp_pemohon' => 'required|string|max:20',
+            'departemen_dipilih' => 'required|exists:divisis,id',
+        
+            // Data PTK
             'jenis' => 'required|in:penambahan,penggantian',
             'posisi' => 'required|string|max:255',
             'jumlah' => 'required|integer|min:1',
-            'tanggal_dibutuhkan' => 'required|date',
+            'tanggal_dibutuhkan' => [
+                'required',
+                'date',
+                'after:today',
+                function ($attribute, $value, $fail) {
+                    $minDate = now()->addDays(31);
+                    if (strtotime($value) < strtotime($minDate)) {
+                        $fail("Tanggal dibutuhkan harus minimal 31 hari dari sekarang (minimal " . $minDate->format('d/m/Y') . ")");
+                    }
+                },
+            ],
             'deskripsi_pekerjaan' => 'required|string',
             'kriteria_pendidikan' => 'required|string',
             'kriteria_jurusan' => 'nullable|string',
@@ -41,7 +58,6 @@ class PengajuanController extends Controller
             'tugas' => 'nullable|array',
             'persyaratan' => 'nullable|array',
             'menggantikan' => 'nullable|string',
-            'diajukan_oleh' => 'required|string|max:255', // Wajib diisi
         ]);
 
         // Build kriteria JSON
@@ -52,18 +68,26 @@ class PengajuanController extends Controller
             'ipk' => $validated['kriteria_ipk'] ?? '',
             'keahlian' => $validated['kriteria_keahlian'] ?? '',
         ];
-        
+    
         $persyaratan = array_filter($request->persyaratan ?? []);
         if ($validated['jenis'] == 'penggantian' && $request->menggantikan) {
             $persyaratan[] = "Menggantikan karyawan: " . $request->menggantikan;
         }
-        
+    
         $tugas = array_filter($request->tugas ?? []);
 
         $pengajuanData = [
-            'divisi_id' => Auth::user()->divisi_id,
+            // Identitas Pemohon
+            'nama_pemohon' => $validated['nama_pemohon'],
+            'nip_pemohon' => $validated['nip_pemohon'],
+            'jabatan_pemohon' => $validated['jabatan_pemohon'],
+            'no_hp_pemohon' => $validated['no_hp_pemohon'],
+            'departemen_dipilih' => $validated['departemen_dipilih'],
+            'divisi_id' => $validated['departemen_dipilih'], // untuk kompatibilitas
             'user_id' => Auth::id(),
-            'diajukan_oleh' => $validated['diajukan_oleh'], // Pastikan ini terisi
+            'diajukan_oleh' => $validated['nama_pemohon'], // auto isi dari nama_pemohon
+        
+            // Data PTK
             'jenis' => $validated['jenis'],
             'posisi' => $validated['posisi'],
             'jumlah' => $validated['jumlah'],

@@ -48,31 +48,15 @@ class UserSeeder extends Seeder
             }
         }
 
-        // Divisi users
-        $divisiUsers = [
-            'FAT' => ['username' => 'user_fat', 'password' => 'user_fat123', 'name' => 'Staff FAT'],
-            'HRD&GA' => ['username' => 'user_hrdga', 'password' => 'user_hrdga123', 'name' => 'Staff HRDGA'],
-            'Internal Audit' => ['username' => 'user_audit', 'password' => 'user_audit123', 'name' => 'Staff Audit'],
-            'Maintenance' => ['username' => 'user_mtn', 'password' => 'user_mtn123', 'name' => 'Staff Maintenance'],
-            'PPIC&Purchasing' => ['username' => 'user_ppic', 'password' => 'user_ppic123', 'name' => 'Staff PPIC'],
-            'Produksi' => ['username' => 'user_prod', 'password' => 'user_prod123', 'name' => 'Staff Produksi'],
-            'QAQC' => ['username' => 'user_qaqc', 'password' => 'user_qaqc123', 'name' => 'Staff QAQC'],
-            'Sales & Marketing' => ['username' => 'user_sales', 'password' => 'user_sales123', 'name' => 'Staff Sales'],
-        ];
-
-        foreach ($divisiUsers as $divisiNama => $cred) {
-            $divisi = Divisi::where('nama_divisi', $divisiNama)->first();
-            if ($divisi) {
-                User::create([
-                    'username' => $cred['username'],
-                    'name' => $cred['name'],
-                    'email' => strtolower(str_replace(' ', '.', $divisiNama)) . '.user@dagsap.com',
-                    'password' => Hash::make($cred['password']),
-                    'role' => 'divisi',
-                    'divisi_id' => $divisi->id,
-                    'no_telepon' => '6281234567' . (80 + $divisi->id)
-                ]);
-            }
-        }
+        
+        User::create([
+            'username' => 'user_dagsap',
+            'name' => 'User Divisi',
+            'email' => 'user.divisi@dagsap.com',
+            'password' => Hash::make('user_dagsap123'),
+            'role' => 'divisi',
+            'divisi_id' => null, // tidak terikat divisi tertentu
+            'no_telepon' => '628123456789'
+        ]);
     }
 }

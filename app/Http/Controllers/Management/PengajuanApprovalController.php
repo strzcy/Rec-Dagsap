@@ -11,27 +11,19 @@ class PengajuanApprovalController extends Controller
 {
     public function index(Request $request)
     {
-        // Management hanya melihat pengajuan dari divisi yang mereka tangani
         $managedDivisiId = Auth::user()->managed_divisi_id;
-        
-        if (!$managedDivisiId) {
-            // Jika management tidak punya divisi yang ditangani
-            return redirect()->route('management.dashboard')
-                ->with('error', 'Anda tidak ditugaskan untuk divisi manapun.');
-        }
-        
-        $query = PengajuanTenagaKerja::with(['divisi', 'user'])
-            ->where('divisi_id', $managedDivisiId);
-        
+    
+        // Management melihat pengajuan berdasarkan departemen_dipilih
+        $query = PengajuanTenagaKerja::with(['departemen', 'user'])
+            ->where('departemen_dipilih', $managedDivisiId);
+    
         if ($request->has('status') && $request->status != '') {
             $query->where('status', $request->status);
         }
-        
+    
         $pengajuans = $query->orderBy('created_at', 'desc')->paginate(10);
-        
-        // Ambil informasi divisi yang dikelola
         $divisi = Auth::user()->managedDivisi;
-        
+    
         return view('management.pengajuan.index', compact('pengajuans', 'divisi'));
     }
 

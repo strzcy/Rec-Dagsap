@@ -12,10 +12,27 @@ class PengajuanTenagaKerja extends Model
     protected $table = 'pengajuan_tenaga_kerjas';
 
     protected $fillable = [
-        'divisi_id', 'user_id', 'diajukan_oleh', 'disetujui_oleh',
-        'jenis', 'posisi', 'jumlah', 'tanggal_dibutuhkan',
-        'kriteria', 'persyaratan', 'deskripsi_pekerjaan', 'tugas',
-        'status', 'alasan_penolakan', 'approved_by', 'approved_at'
+        'divisi_id', 
+        'departemen_dipilih', 
+        'user_id', 
+        'nama_pemohon', 
+        'nip_pemohon', 
+        'jabatan_pemohon', 
+        'no_hp_pemohon',
+        'diajukan_oleh', 
+        'disetujui_oleh',
+        'jenis', 
+        'posisi', 
+        'jumlah', 
+        'tanggal_dibutuhkan',
+        'kriteria', 
+        'persyaratan', 
+        'deskripsi_pekerjaan', 
+        'tugas',
+        'status', 
+        'alasan_penolakan', 
+        'approved_by', 
+        'approved_at'
     ];
 
     protected $casts = [
@@ -27,7 +44,12 @@ class PengajuanTenagaKerja extends Model
 
     public function divisi()
     {
-        return $this->belongsTo(Divisi::class);
+        return $this->belongsTo(Divisi::class, 'divisi_id');
+    }
+
+    public function departemen()
+    {
+        return $this->belongsTo(Divisi::class, 'departemen_dipilih');
     }
 
     public function user()
