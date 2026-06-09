@@ -18,7 +18,8 @@
                 <option value="{{ $pengajuan->id }}" 
                         data-posisi="{{ $pengajuan->posisi }}"
                         data-divisi="{{ $pengajuan->divisi->nama_divisi }}"
-                        data-jumlah="{{ $pengajuan->jumlah }}">
+                        data-jumlah="{{ $pengajuan->jumlah }}"
+                        data-tanggal_dibutuhkan="{{ $pengajuan->tanggal_dibutuhkan ? \Carbon\Carbon::parse($pengajuan->tanggal_dibutuhkan)->format('d/m/Y') : '-' }}">
                     [{{ $pengajuan->divisi->nama_divisi }}] - {{ $pengajuan->posisi }} ({{ $pengajuan->jumlah }} orang)
                 </option>
                 @endforeach
@@ -63,13 +64,17 @@
             </div>
         </div>
         
-        <!-- Preview Informasi Pengajuan -->
+        <!-- Informasi Tambahan dari Pengajuan -->
         <div id="preview_pengajuan" class="mb-6 p-4 bg-gray-50 rounded-lg hidden">
             <h4 class="font-semibold text-primary mb-2">Informasi dari Pengajuan:</h4>
             <div class="grid grid-cols-2 gap-3 text-sm">
                 <div><span class="text-gray-500">Divisi:</span> <span id="preview_divisi" class="font-medium"></span></div>
                 <div><span class="text-gray-500">Posisi:</span> <span id="preview_posisi" class="font-medium"></span></div>
                 <div><span class="text-gray-500">Jumlah:</span> <span id="preview_jumlah" class="font-medium"></span> orang</div>
+                <div>
+                    <span class="text-gray-500">Dibutuhkan pada:</span> 
+                    <span id="preview_tanggal_dibutuhkan" class="font-medium text-red-600"></span>
+                </div>
             </div>
         </div>
         
@@ -94,10 +99,11 @@
         const posisi = selectedOption.getAttribute('data-posisi');
         const divisi = selectedOption.getAttribute('data-divisi');
         const jumlah = selectedOption.getAttribute('data-jumlah');
+        const tanggalDibutuhkan = selectedOption.getAttribute('data-tanggal_dibutuhkan');
         
         if (posisi) {
             judulInput.value = `Lowongan ${posisi} - ${divisi}`;
-            deskripsiInput.value = `Kami membuka lowongan untuk posisi ${posisi} di Divisi ${divisi}.\n\nKualifikasi:\n- Memenuhi kriteria yang telah ditentukan\n- Bersedia bekerja dengan target\n- Memiliki integritas tinggi\n\nJumlah yang dibutuhkan: ${jumlah} orang\n\nKirimkan lamaran Anda sebelum batas waktu yang ditentukan.`;
+            deskripsiInput.value = `Kami membuka lowongan untuk posisi ${posisi} di Departemen ${divisi}.\n\nKualifikasi:\n- Memenuhi kriteria yang telah ditentukan\n- Bersedia bekerja dengan target\n- Memiliki integritas tinggi\n\nJumlah yang dibutuhkan: ${jumlah} orang\n\nDibutuhkan pada: ${tanggalDibutuhkan}\n\nKirimkan lamaran Anda sebelum batas waktu yang ditentukan.`;
             
             document.getElementById('preview_divisi').textContent = divisi;
             document.getElementById('preview_posisi').textContent = posisi;

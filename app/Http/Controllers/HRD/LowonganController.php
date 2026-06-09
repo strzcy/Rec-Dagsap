@@ -120,4 +120,16 @@ class LowonganController extends Controller
         return redirect()->route('hrd.lowongan.index')
             ->with('success', 'Lowongan berhasil dihapus!');
     }
+
+    public function printData(Lowongan $lowongan)
+    {
+        if ($lowongan->hrd_id !== Auth::id()) {
+            abort(403);
+        }
+    
+        $pengajuan = $lowongan->pengajuan;
+    
+        // Gunakan view yang sama dengan management
+        return view('management.pengajuan.print', compact('pengajuan'));
+    }
 }

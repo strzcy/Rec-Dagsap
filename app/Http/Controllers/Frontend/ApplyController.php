@@ -40,11 +40,11 @@ class ApplyController extends Controller
             'cv' => 'required|file|mimes:pdf,doc,docx|max:5120',
             'ijazah' => 'required|file|mimes:pdf,jpg,jpeg,png|max:5120',
         ]);
-        
+    
         try {
             $cvPath = $request->file('cv')->store('cvs', 'public');
             $ijazahPath = $request->file('ijazah')->store('ijazahs', 'public');
-            
+        
             $pelamar = Pelamar::create([
                 'lowongan_id' => $lowongan->id,
                 'nama_lengkap' => $validated['nama_lengkap'],
@@ -61,7 +61,7 @@ class ApplyController extends Controller
                 'ijazah_path' => $ijazahPath,
                 'status' => 'pending',
             ]);
-            
+        
             if ($request->filled('ipk')) {
                 FormulirJawaban::create([
                     'pelamar_id' => $pelamar->id,
@@ -69,24 +69,35 @@ class ApplyController extends Controller
                     'jawaban' => $request->ipk
                 ]);
             }
-            
+        
             $lolos = $this->checkKelulusan($pelamar, $lowongan);
-            
+        
             if ($lolos) {
                 $pelamar->update(['status' => 'lolos_tahap1']);
-                
+            
                 return redirect()->route('frontend.apply.success', ['pelamar' => $pelamar->id])
                     ->with('success', 'Selamat! Anda lolos seleksi administrasi. Silakan lengkapi data diri Anda.');
             } else {
-                $pelamar->update([
-                    'status' => 'ditolak',
-                    'catatan' => 'Tidak memenuhi kriteria yang ditentukan'
-                ]);
-                
-                return redirect()->route('frontend.apply.success', ['pelamar' => $pelamar->id])
-                    ->with('error', 'Maaf, Anda belum memenuhi kriteria yang ditentukan.');
-            }
+                // HAPUS DATA PELAMAR YANG TIDAK LOLOS
+                \Storage::disk('public')->delete($cvPath);
+                \Storage::disk('public')->delete($ijazahPath);
             
+                if ($pelamar->formulirJawaban) {
+                    $pelamar->formulirJawaban()->delete();
+                }
+            
+                // Simpan ID untuk redirect sebelum dihapus
+                $pelamarId = $pelamar->id;
+                $pelamarNama = $pelamar->nama_lengkap;
+            
+                $pelamar->forceDelete();
+            
+                // Redirect ke halaman gagal dengan session error
+                return redirect()->route('frontend.apply.failed')
+                    ->with('error', 'Maaf, ' . $pelamarNama . '! Anda belum memenuhi kriteria yang ditentukan.')
+                    ->with('reason', 'Berdasarkan kriteria yang dibutuhkan, pendidikan atau kualifikasi Anda belum sesuai dengan persyaratan lowongan ini.');
+            }
+        
         } catch (\Exception $e) {
             Log::error('Error saat apply: ' . $e->getMessage());
             return back()->with('error', 'Terjadi kesalahan saat mengirim lamaran. Silakan coba lagi.');
@@ -522,19 +533,33 @@ class ApplyController extends Controller
     {
         $pengajuan = $lowongan->pengajuan;
         $kriteria = is_array($pengajuan->kriteria) ? $pengajuan->kriteria : json_decode($pengajuan->kriteria, true);
-        
+    
+        // Cek pendidikan
         $tingkat_pendidikan = [
             'SD' => 1, 'SMP' => 2, 'SMA/SMK' => 3, 
             'D3' => 4, 'S1' => 5, 'S2' => 6
         ];
-        
+    
         $pendidikan_pelamar = $tingkat_pendidikan[$pelamar->pendidikan_terakhir] ?? 0;
         $pendidikan_required = $tingkat_pendidikan[$kriteria['pendidikan'] ?? 'SMA/SMK'] ?? 0;
-        
+    
         if ($pendidikan_pelamar < $pendidikan_required) {
             return false;
         }
-        
+    
+        // Cek jurusan (jika ada)
+        if (!empty($kriteria['jurusan']) && !str_contains(strtolower($pelamar->jurusan), strtolower($kriteria['jurusan']))) {
+            return false;
+        }
+    
+        // Cek IPK (jika ada)
+        if (!empty($kriteria['ipk'])) {
+            $ipkJawaban = $pelamar->formulirJawaban()->where('field_name', 'ipk')->first();
+            if ($ipkJawaban && floatval($ipkJawaban->jawaban) < floatval($kriteria['ipk'])) {
+                return false;
+            }
+        }
+    
         return true;
     }
 
@@ -561,4 +586,8 @@ class ApplyController extends Controller
         return redirect()->route('frontend.apply.success', $pelamar)
             ->with('success', 'Terima kasih telah mengikuti psikotest. HRD akan menghubungi Anda untuk jadwal interview.');
     }
+    public function failed()
+    {
+        return view('frontend.apply.failed');
+    }   
 }

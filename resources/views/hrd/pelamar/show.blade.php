@@ -393,7 +393,6 @@
                         <option value="lolos_psikotest" {{ $pelamar->status == 'lolos_psikotest' ? 'selected' : '' }}>Lolos Psikotest</option>
                         <option value="interview" {{ $pelamar->status == 'interview' ? 'selected' : '' }}>Interview</option>
                         <option value="diterima" {{ $pelamar->status == 'diterima' ? 'selected' : '' }}>Diterima</option>
-                        <option value="ditolak" {{ $pelamar->status == 'ditolak' ? 'selected' : '' }}>Ditolak</option>
                     </select>
                 </div>
                 <div class="mb-4">

@@ -83,9 +83,9 @@ class PengajuanController extends Controller
             'jabatan_pemohon' => $validated['jabatan_pemohon'],
             'no_hp_pemohon' => $validated['no_hp_pemohon'],
             'departemen_dipilih' => $validated['departemen_dipilih'],
-            'divisi_id' => $validated['departemen_dipilih'], // untuk kompatibilitas
+            'divisi_id' => $validated['departemen_dipilih'],
             'user_id' => Auth::id(),
-            'diajukan_oleh' => $validated['nama_pemohon'], // auto isi dari nama_pemohon
+            'diajukan_oleh' => $validated['nama_pemohon'],
         
             // Data PTK
             'jenis' => $validated['jenis'],
@@ -101,8 +101,16 @@ class PengajuanController extends Controller
 
         PengajuanTenagaKerja::create($pengajuanData);
 
+        // Set session untuk popup
         return redirect()->route('divisi.pengajuan.index')
-            ->with('success', 'Pengajuan tenaga kerja berhasil dikirim!');
+            ->with('success_submit', true)
+            ->with('success_message', 'Pengajuan tenaga kerja berhasil dikirim!')
+            ->with('ptk_data', [
+                'posisi' => $validated['posisi'],
+                'divisi' => \App\Models\Divisi::find($validated['departemen_dipilih'])->nama_divisi,
+                'jumlah' => $validated['jumlah'],
+                'tanggal_dibutuhkan' => \Carbon\Carbon::parse($validated['tanggal_dibutuhkan'])->format('d/m/Y')
+            ]);
     }
 
     public function show(PengajuanTenagaKerja $pengajuan)

@@ -27,7 +27,6 @@
                 <option value="lolos_psikotest" {{ request('status') == 'lolos_psikotest' ? 'selected' : '' }}>Lolos Psikotest</option>
                 <option value="interview" {{ request('status') == 'interview' ? 'selected' : '' }}>Interview</option>
                 <option value="diterima" {{ request('status') == 'diterima' ? 'selected' : '' }}>Diterima</option>
-                <option value="ditolak" {{ request('status') == 'ditolak' ? 'selected' : '' }}>Ditolak</option>
             </select>
             <button type="submit" class="bg-primary text-white px-4 py-2 rounded-lg">Filter</button>
             <a href="{{ route('hrd.pelamar.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded-lg text-center">Reset</a>

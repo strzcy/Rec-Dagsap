@@ -73,7 +73,42 @@
             </div>
         </div>
         
+        <!-- Informasi Tambahan dari Pengajuan -->
+        <div class="mb-6">
+            <h3 class="text-lg font-semibold mb-3">Informasi Pengajuan</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-50 p-4 rounded-lg">
+                <div>
+                    <label class="text-xs text-gray-500">Nama Pemohon</label>
+                    <p>{{ $lowongan->pengajuan->nama_pemohon ?? '-' }}</p>
+                </div>
+                <div>
+                    <label class="text-xs text-gray-500">NIP/NIK Pemohon</label>
+                    <p>{{ $lowongan->pengajuan->nip_pemohon ?? '-' }}</p>
+                </div>
+                <div>
+                    <label class="text-xs text-gray-500">Jabatan Pemohon</label>
+                    <p>{{ $lowongan->pengajuan->jabatan_pemohon ?? '-' }}</p>
+                </div>
+                <div>
+                    <label class="text-xs text-gray-500">No. HP Pemohon</label>
+                    <p>{{ $lowongan->pengajuan->no_hp_pemohon ?? '-' }}</p>
+                </div>
+                <div>
+                    <label class="text-xs text-gray-500">Tanggal Dibutuhkan</label>
+                    <p class="font-medium text-red-600">{{ $lowongan->pengajuan->tanggal_dibutuhkan ? \Carbon\Carbon::parse($lowongan->pengajuan->tanggal_dibutuhkan)->format('d/m/Y') : '-' }}</p>
+                </div>
+                <div>
+                    <label class="text-xs text-gray-500">Disetujui Oleh</label>
+                    <p>{{ $lowongan->pengajuan->disetujui_oleh ?? '-' }}</p>
+                </div>
+            </div>
+        </div>
+        
         <div class="flex justify-end space-x-3 pt-4 border-t">
+            <a href="{{ route('hrd.lowongan.print', $lowongan) }}" target="_blank" 
+               class="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700">
+                <i class="fas fa-print mr-2"></i> Print PTK
+            </a>
             <a href="{{ route('hrd.lowongan.edit', $lowongan) }}" class="px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600">
                 Edit
             </a>
