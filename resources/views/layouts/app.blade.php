@@ -80,11 +80,6 @@
                 justify-content: center;
             }
 
-            .w-64.bg-white.shadow-lg.min-h-screen {
-                display: none !important;
-            }
-
-
             .main-content {
                 padding: 1rem !important;
                 margin-bottom: 70px !important;
@@ -184,7 +179,7 @@
     <!-- Desktop Layout with Sidebar -->
     <div class="flex">
         <!-- Desktop Sidebar -->
-        <div class="desktop-sidebar pt-12">
+        <div class="desktop-sidebar pt-12 hidden md:block">
             @auth
                 @if(auth()->user()->isDivisi() || auth()->user()->isManagement() || auth()->user()->isHrd())
                     @include('layouts.sidebar')

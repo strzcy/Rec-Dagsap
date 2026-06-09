@@ -1,4 +1,4 @@
-<aside class="w-64 bg-white shadow-lg min-h-screen">
+<aside class="w-64 bg-white shadow-lg h-full ">
     <div class="py-4">
         <!-- Menu berdasarkan role -->
         @if(auth()->user()->isDivisi())
