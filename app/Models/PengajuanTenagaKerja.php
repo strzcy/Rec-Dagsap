@@ -68,4 +68,8 @@ class PengajuanTenagaKerja extends Model
     {
         return $this->hasOne(Lowongan::class, 'pengajuan_id');
     }
+    public function scopeByNik($query, $nik)
+    {
+        return $query->where('nip_pemohon', $nik);
+    }
 }

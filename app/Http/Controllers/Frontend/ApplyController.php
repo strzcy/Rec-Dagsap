@@ -30,7 +30,7 @@ class ApplyController extends Controller
             'email' => 'required|email|max:255',
             'no_telepon' => 'required|string|max:20',
             'tempat_lahir' => 'required|string|max:100',
-            'tanggal_lahir' => 'required|date',
+            'tanggal_lahir' => 'required|date|before_or_equal:today',
             'alamat' => 'required|string',
             'pendidikan_terakhir' => 'required|string|max:50',
             'jurusan' => 'required|string|max:100',
@@ -78,7 +78,7 @@ class ApplyController extends Controller
                 return redirect()->route('frontend.apply.success', ['pelamar' => $pelamar->id])
                     ->with('success', 'Selamat! Anda lolos seleksi administrasi. Silakan lengkapi data diri Anda.');
             } else {
-                // HAPUS DATA PELAMAR YANG TIDAK LOLOS
+                // Hapus data pelamar yang tidak lolos
                 \Storage::disk('public')->delete($cvPath);
                 \Storage::disk('public')->delete($ijazahPath);
             
@@ -86,13 +86,9 @@ class ApplyController extends Controller
                     $pelamar->formulirJawaban()->delete();
                 }
             
-                // Simpan ID untuk redirect sebelum dihapus
-                $pelamarId = $pelamar->id;
                 $pelamarNama = $pelamar->nama_lengkap;
-            
                 $pelamar->forceDelete();
             
-                // Redirect ke halaman gagal dengan session error
                 return redirect()->route('frontend.apply.failed')
                     ->with('error', 'Maaf, ' . $pelamarNama . '! Anda belum memenuhi kriteria yang ditentukan.')
                     ->with('reason', 'Berdasarkan kriteria yang dibutuhkan, pendidikan atau kualifikasi Anda belum sesuai dengan persyaratan lowongan ini.');
@@ -100,7 +96,7 @@ class ApplyController extends Controller
         
         } catch (\Exception $e) {
             Log::error('Error saat apply: ' . $e->getMessage());
-            return back()->with('error', 'Terjadi kesalahan saat mengirim lamaran. Silakan coba lagi.');
+            return back()->withInput()->with('error', 'Terjadi kesalahan saat mengirim lamaran. Silakan coba lagi.');
         }
     }
     
@@ -534,35 +530,79 @@ class ApplyController extends Controller
         $pengajuan = $lowongan->pengajuan;
         $kriteria = is_array($pengajuan->kriteria) ? $pengajuan->kriteria : json_decode($pengajuan->kriteria, true);
     
-        // Cek pendidikan
+        // Urutan pendidikan dari rendah ke tinggi
         $tingkat_pendidikan = [
-            'SD' => 1, 'SMP' => 2, 'SMA/SMK' => 3, 
-            'D3' => 4, 'S1' => 5, 'S2' => 6
+            'SD' => 1,
+            'SMP' => 2, 
+            'SMA/SMK' => 3,
+            'D1' => 4,
+            'D2' => 4,
+            'D3' => 4,
+            'S1' => 5,
+            'S2' => 6,
+            'S3' => 7
         ];
     
+        // Pendidikan pelamar (default ke 0 jika tidak ditemukan)
         $pendidikan_pelamar = $tingkat_pendidikan[$pelamar->pendidikan_terakhir] ?? 0;
-        $pendidikan_required = $tingkat_pendidikan[$kriteria['pendidikan'] ?? 'SMA/SMK'] ?? 0;
     
-        if ($pendidikan_pelamar < $pendidikan_required) {
+        // Pendidikan yang dibutuhkan (default ke SMA/SMK = 3)
+        $pendidikan_dibutuhkan = $tingkat_pendidikan[$kriteria['pendidikan'] ?? 'SMA/SMK'] ?? 3;
+    
+        // LOGIKA: Pelamar lolos jika pendidikannya >= yang dibutuhkan
+        // Contoh: S1 (5) >= S1 (5) → lolos
+        // Contoh: S2 (6) >= S1 (5) → lolos (lebih tinggi)
+        // Contoh: SMA (3) >= S1 (5) → TIDAK lolos
+        if ($pendidikan_pelamar < $pendidikan_dibutuhkan) {
+            \Log::info('Gagal pendidikan: ' . $pelamar->pendidikan_terakhir . ' vs ' . ($kriteria['pendidikan'] ?? 'SMA/SMK'));
             return false;
         }
     
-        // Cek jurusan (jika ada)
-        if (!empty($kriteria['jurusan']) && !str_contains(strtolower($pelamar->jurusan), strtolower($kriteria['jurusan']))) {
-            return false;
-        }
-    
-        // Cek IPK (jika ada)
-        if (!empty($kriteria['ipk'])) {
-            $ipkJawaban = $pelamar->formulirJawaban()->where('field_name', 'ipk')->first();
-            if ($ipkJawaban && floatval($ipkJawaban->jawaban) < floatval($kriteria['ipk'])) {
-                return false;
+        // Cek jurusan (jika ada dan tidak kosong)
+        if (!empty($kriteria['jurusan']) && trim($kriteria['jurusan']) !== '') {
+            $jurusan_pelamar = strtolower($pelamar->jurusan);
+            $jurusan_dibutuhkan = strtolower($kriteria['jurusan']);
+        
+            // Cek apakah jurusan pelamar mengandung kata kunci yang dibutuhkan
+            if (!str_contains($jurusan_pelamar, $jurusan_dibutuhkan)) {
+                \Log::info('Gagal jurusan: ' . $pelamar->jurusan . ' tidak mengandung ' . $kriteria['jurusan']);
+                // Jurusan tidak match, tapi tidak langsung gagal jika tidak wajib
+                // Bisa dikomentari dulu jika ingin lebih longgar
+                // return false;
             }
         }
     
+        // Cek IPK (jika ada)
+        if (!empty($kriteria['ipk']) && is_numeric($kriteria['ipk'])) {
+            $ipk_pelamar = $pelamar->formulirJawaban()->where('field_name', 'ipk')->first();
+            if ($ipk_pelamar && is_numeric($ipk_pelamar->jawaban)) {
+                if (floatval($ipk_pelamar->jawaban) < floatval($kriteria['ipk'])) {
+                    \Log::info('Gagal IPK: ' . $ipk_pelamar->jawaban . ' < ' . $kriteria['ipk']);
+                    // return false;
+                }
+            }
+        }
+    
+        // Cek pengalaman kerja (jika ada)
+        if (!empty($kriteria['pengalaman']) && is_numeric($kriteria['pengalaman']) && $kriteria['pengalaman'] > 0) {
+            // Parsing pengalaman kerja dari teks (sederhana)
+            $pengalaman_text = strtolower($pelamar->pengalaman_kerja ?? '');
+            $tahun_dibutuhkan = intval($kriteria['pengalaman']);
+        
+            // Cari angka tahun dalam teks pengalaman
+            preg_match_all('/(\d+)\s*tahun/', $pengalaman_text, $matches);
+            $pengalaman_pelamar = !empty($matches[1]) ? max($matches[1]) : 0;
+        
+            if ($pengalaman_pelamar < $tahun_dibutuhkan) {
+                \Log::info('Gagal pengalaman: ' . $pengalaman_pelamar . ' < ' . $tahun_dibutuhkan);
+                // Tidak langsung gagal, pengalaman bisa diabaikan jika tidak wajib
+                // return false;
+            }
+        }
+    
+        // SEMUA CEK LULUS
         return true;
     }
-
     public function psikotest(Pelamar $pelamar)
     {
         if ($pelamar->status !== 'lolos_tahap1') {

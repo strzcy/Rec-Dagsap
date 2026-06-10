@@ -19,7 +19,7 @@
                     <i class="fas fa-plus-circle w-5"></i>
                     <span class="mx-3">Ajukan Tenaga Kerja</span>
                 </a>
-                <a href="{{ route('divisi.pengajuan.index') }}" class="flex items-center px-6 py-3 text-gray-700 hover:bg-primary-light hover:text-primary transition {{ request()->routeIs('divisi.pengajuan.index') ? 'bg-primary-light text-primary' : '' }}">
+                <a href="{{ route('divisi.pengajuan.verify') }}" class="flex items-center px-6 py-3 text-gray-700 hover:bg-primary-light hover:text-primary transition">
                     <i class="fas fa-list w-5"></i>
                     <span class="mx-3">Riwayat Pengajuan</span>
                 </a>

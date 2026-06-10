@@ -4,14 +4,22 @@ namespace App\Http\Controllers\Divisi;
 
 use App\Http\Controllers\Controller;
 use App\Models\PengajuanTenagaKerja;
+use App\Models\Divisi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class PengajuanController extends Controller
 {
+    // HANYA SATU METHOD INDEX - TIDAK BOLEH DUPLIKAT
     public function index()
     {
-        $pengajuans = PengajuanTenagaKerja::where('user_id', Auth::id())
+        $nik = session('verified_nik');
+        
+        if (!$nik) {
+            return redirect()->route('divisi.pengajuan.verify');
+        }
+        
+        $pengajuans = PengajuanTenagaKerja::where('nip_pemohon', $nik)
             ->orderBy('created_at', 'desc')
             ->paginate(10);
         
@@ -20,7 +28,7 @@ class PengajuanController extends Controller
 
     public function create()
     {
-        $divisis = \App\Models\Divisi::all();
+        $divisis = Divisi::all();
         return view('divisi.pengajuan.create', compact('divisis'));
     }
 
@@ -101,13 +109,18 @@ class PengajuanController extends Controller
 
         PengajuanTenagaKerja::create($pengajuanData);
 
-        // Set session untuk popup
-        return redirect()->route('divisi.pengajuan.index')
+        // HAPUS SESSION VERIFIED NIK AGAR USER HARUS VERIFIKASI ULANG
+        session()->forget('verified_nik');
+    
+        $divisiNama = \App\Models\Divisi::find($validated['departemen_dipilih'])->nama_divisi;
+    
+        // Redirect ke DASHBOARD (bukan ke create atau index)
+        return redirect()->route('divisi.dashboard')
             ->with('success_submit', true)
             ->with('success_message', 'Pengajuan tenaga kerja berhasil dikirim!')
             ->with('ptk_data', [
                 'posisi' => $validated['posisi'],
-                'divisi' => \App\Models\Divisi::find($validated['departemen_dipilih'])->nama_divisi,
+                'divisi' => $divisiNama,
                 'jumlah' => $validated['jumlah'],
                 'tanggal_dibutuhkan' => \Carbon\Carbon::parse($validated['tanggal_dibutuhkan'])->format('d/m/Y')
             ]);
@@ -115,10 +128,40 @@ class PengajuanController extends Controller
 
     public function show(PengajuanTenagaKerja $pengajuan)
     {
-        if ($pengajuan->user_id !== Auth::id()) {
+        // Cek sesuai NIK
+        $nik = session('verified_nik');
+        if ($pengajuan->nip_pemohon != $nik) {
             abort(403, 'Anda tidak memiliki akses ke pengajuan ini.');
         }
         
         return view('divisi.pengajuan.show', compact('pengajuan'));
+    }
+    
+    public function verifyForm()
+    {
+        // Hapus session lama
+        session()->forget('verified_nik');
+        return view('divisi.pengajuan.verify_nik');
+    }
+
+    public function verify(Request $request)
+    {
+        $request->validate([
+            'nik' => 'required|string'
+        ]);
+        
+        $nik = $request->nik;
+        
+        // Cek apakah ada pengajuan dengan NIK tersebut
+        $exists = PengajuanTenagaKerja::where('nip_pemohon', $nik)->exists();
+        
+        if (!$exists) {
+            return back()->with('error', 'NIK/NIP tidak ditemukan. Pastikan Anda menggunakan NIK yang sama saat mengajukan PTK.');
+        }
+        
+        // Simpan NIK ke session
+        session(['verified_nik' => $nik]);
+        
+        return redirect()->route('divisi.pengajuan.index');
     }
 }

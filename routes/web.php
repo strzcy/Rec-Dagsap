@@ -49,7 +49,13 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     // Divisi Routes
     Route::middleware(['check.role:divisi'])->prefix('divisi')->name('divisi.')->group(function () {
         Route::get('/dashboard', [DivisiDashboardController::class, 'index'])->name('dashboard');
-        Route::resource('pengajuan', PengajuanController::class);
+    
+        // Verifikasi NIK untuk riwayat
+        Route::get('/pengajuan/verify', [PengajuanController::class, 'verifyForm'])->name('pengajuan.verify');
+        Route::post('/pengajuan/verify', [PengajuanController::class, 'verify'])->name('pengajuan.verify.post');
+    
+        Route::resource('pengajuan', PengajuanController::class)->except(['index']);
+        Route::get('/pengajuan', [PengajuanController::class, 'index'])->name('pengajuan.index');
     });
     
     // Management Routes
