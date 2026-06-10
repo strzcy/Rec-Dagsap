@@ -31,6 +31,8 @@ class PengajuanTenagaKerja extends Model
         'tugas',
         'status', 
         'alasan_penolakan', 
+        'disetujui_oleh',
+        'jabatan_penyetuju',
         'approved_by', 
         'approved_at'
     ];

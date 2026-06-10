@@ -53,12 +53,14 @@ class PengajuanApprovalController extends Controller
 
         $request->validate([
             'disetujui_oleh' => 'required|string|max:255',
+            'jabatan_penyetuju' => 'required|string|max:255',
         ]);
 
         $pengajuan->update([
             'status' => 'disetujui',
             'approved_by' => Auth::id(),
             'disetujui_oleh' => $request->disetujui_oleh,
+            'jabatan_penyetuju' => $request->jabatan_penyetuju,
             'approved_at' => now(),
         ]);
 

@@ -316,7 +316,7 @@
         <div class="signature-area">
             <div class="sign-box">
                 <span class="signature-title">Diajukan Oleh</span>
-                <div class="sign-name">{{ $pengajuan->nama_pemohon ?? '-' }}</div>
+                <div class="sign-name">{{ $pengajuan->nama_pemohon ?? '' }}</div>
                 <b>PEMOHON</b>
             </div>
 
@@ -324,8 +324,8 @@
                 <span class="signature-title">Diketahui Oleh</span>
                 <div class="flex-container">
                     <div class="sub-sign">
-                        <div class="sign-name">{{ $pengajuan->disetujui_oleh ?? '-' }}</div>
-                        <b>JABATAN</b>
+                        <div class="sign-name">{{ $pengajuan->disetujui_oleh ?? 'Pending / Tidak disetujui' }}</div>
+                        <b style="text-transform: uppercase;">{{ $pengajuan->jabatan_penyetuju ?? '-' }}</b>
                     </div>
                     <div class="sub-sign">
                         <div class="sign-name" style="color: transparent;">hrd</div>

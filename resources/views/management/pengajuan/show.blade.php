@@ -12,11 +12,23 @@
         <div class="mb-6 p-4 rounded-lg {{ $pengajuan->status == 'pending' ? 'bg-yellow-50 border border-yellow-200' : ($pengajuan->status == 'disetujui' ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200') }}">
             <div class="flex items-center justify-between flex-wrap">
                 <div>
-                    <span class="font-semibold">Status: </span>
+                    <span class="font-semibold">Informasi : </span>
                     @if($pengajuan->status == 'pending')
                         <span class="text-yellow-700">Menunggu Approval</span>
                     @elseif($pengajuan->status == 'disetujui')
-                        <span class="text-green-700">Disetujui oleh {{ $pengajuan->disetujui_oleh ?? $pengajuan->user->name ?? '-' }} pada {{ $pengajuan->approved_at ? \Carbon\Carbon::parse($pengajuan->approved_at)->format('d/m/Y H:i') : '-' }}</span>
+                    <div>
+                        <label class="text-xs text-gray-500">Disetujui Oleh</label>
+                        <p class="font-medium">{{ $pengajuan->disetujui_oleh ?? '-' }}</p>
+                    </div>
+                    <div>
+                        <label class="text-xs text-gray-500">Jabatan Penyetuju</label>
+                        <p class="font-medium">{{ $pengajuan->jabatan_penyetuju ?? '-' }}</p>
+                    </div>
+                    <div>
+                        <label class="text-xs text-gray-500">Tanggal Disetujui</label>
+                        <p class="font-medium">{{ $pengajuan->approved_at ? \Carbon\Carbon::parse($pengajuan->approved_at)->format('d/m/Y H:i') . ' WIB' : '-' }}</p>
+                    </div>    
+                    
                     @else
                         <span class="text-red-700">Ditolak</span>
                     @endif
@@ -228,10 +240,15 @@
         <form action="{{ route('management.pengajuan.approve', $pengajuan) }}" method="POST" id="approveForm">
             @csrf
             <div class="mb-4">
-                <label class="block text-sm font-medium text-gray-700 mb-2">Disetujui Oleh *</label>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Disetujui Oleh (Nama Lengkap) <span class="text-red-500">*</span></label>
                 <input type="text" name="disetujui_oleh" class="w-full border rounded-lg px-3 py-2" 
                        placeholder="Contoh: Budi Santoso, M.M." required>
-                <p class="text-xs text-gray-500 mt-1">Isi dengan nama lengkap yang menyetujui</p>
+            </div>
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Jabatan Penyetuju <span class="text-red-500">*</span></label>
+                <input type="text" name="jabatan_penyetuju" class="w-full border rounded-lg px-3 py-2" 
+                       placeholder="Contoh: Manager Operasional" required>
+                <p class="text-xs text-gray-500 mt-1">Isi dengan jabatan Anda saat ini</p>
             </div>
             <div class="flex justify-end space-x-3">
                 <button type="button" onclick="closeApproveModal()" class="px-4 py-2 border rounded-lg hover:bg-gray-50">Batal</button>
