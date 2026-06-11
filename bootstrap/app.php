@@ -1,5 +1,15 @@
 <?php
 
+if (!function_exists('iconv')) {
+    function iconv($from_encoding, $to_encoding, $str) {
+        try {
+            return mb_convert_encoding($str, $to_encoding, $from_encoding);
+        } catch (\Throwable $e) {
+            return $str;
+        }
+    }
+}
+
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
