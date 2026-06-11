@@ -12,16 +12,7 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         // HRD - username sederhana
-        User::create([
-            'username' => 'hrd_dagsap',
-            'name' => 'HRD Dagsap',
-            'email' => 'hrd@dagsap.com',
-            'password' => Hash::make('hrd_dagsap123'),
-            'role' => 'hrd',
-            'no_telepon' => '6281294491075' // Format 62
-        ]);
-
-        // Management per divisi
+        
         $managementData = [
             'FAT' => ['username' => 'fat', 'password' => 'fat123'],
             'HRD&GA' => ['username' => 'hrdga', 'password' => 'hrdga123'],
