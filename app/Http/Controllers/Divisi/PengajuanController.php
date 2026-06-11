@@ -174,6 +174,7 @@ class PengajuanController extends Controller
         $pengajuan = $lowongan->pengajuan;
         
         // Data untuk QR Code (jadikan string biasa, bukan JSON biar lebih simple)
+        $qrDataManager = "Tanda Tangan Digital Pemohon\n";
         $qrData = "PTK-" . str_pad($pengajuan->id, 6, '0', STR_PAD_LEFT) . "\n";
         $qrData .= "Posisi: " . $pengajuan->posisi . "\n";
         $qrData .= "Divisi: " . ($pengajuan->departemen->nama_divisi ?? '') . "\n";

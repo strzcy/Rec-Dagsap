@@ -143,6 +143,7 @@ class LowonganController extends Controller
             ->generate($qrDataManager);
     
         // QR Code Pemohon
+        $qrDataManager = "Tanda Tangan Digital Pemohon\n";
         $qrDataPemohon = "PTK-" . str_pad($pengajuan->id, 6, '0', STR_PAD_LEFT) . "\n";
         $qrDataPemohon .= "Posisi: " . $pengajuan->posisi . "\n";
         $qrDataPemohon .= "Divisi: " . ($pengajuan->departemen->nama_divisi ?? '') . "\n";
