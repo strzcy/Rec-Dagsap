@@ -12,7 +12,7 @@
             <div>
 
             <div class="text-2xlbg-bl text-white px-4 py-2 rounded-lg" style="text-align:center;">
-                <a href="{{ route('divisi.dashboard') }}" class=" px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark" style="text-align:center;">
+                <a href="{{ route('divisi.pengajuan.create') }}" class=" px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark" style="text-align:center;">
                     Ajukan Form PTK
                 </a>
             </div>                  

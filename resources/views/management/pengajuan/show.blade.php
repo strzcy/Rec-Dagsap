@@ -8,39 +8,6 @@
 @section('content')
 <div class="bg-white rounded-lg shadow">
     <div class="p-6">
-        <!-- Status Banner -->
-        <div class="mb-6 p-4 rounded-lg {{ $pengajuan->status == 'pending' ? 'bg-yellow-50 border border-yellow-200' : ($pengajuan->status == 'disetujui' ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200') }}">
-            <div class="flex items-center justify-between flex-wrap">
-                <div>
-                    <span class="font-semibold">Informasi : </span>
-                    @if($pengajuan->status == 'pending')
-                        <span class="text-yellow-700">Menunggu Approval</span>
-                    @elseif($pengajuan->status == 'disetujui')
-                    <div>
-                        <label class="text-xs text-gray-500">Disetujui Oleh</label>
-                        <p class="font-medium">{{ $pengajuan->disetujui_oleh ?? '-' }}</p>
-                    </div>
-                    <div>
-                        <label class="text-xs text-gray-500">Jabatan Penyetuju</label>
-                        <p class="font-medium">{{ $pengajuan->jabatan_penyetuju ?? '-' }}</p>
-                    </div>
-                    <div>
-                        <label class="text-xs text-gray-500">Tanggal Disetujui</label>
-                        <p class="font-medium">{{ $pengajuan->approved_at ? \Carbon\Carbon::parse($pengajuan->approved_at)->format('d/m/Y H:i') . ' WIB' : '-' }}</p>
-                    </div>    
-                    
-                    @else
-                        <span class="text-red-700">Ditolak</span>
-                    @endif
-                </div>
-                @if($pengajuan->status == 'ditolak' && $pengajuan->alasan_penolakan)
-                    <div class="text-sm text-red-600 mt-2 md:mt-0">
-                        <strong>Alasan:</strong> {{ $pengajuan->alasan_penolakan }}
-                    </div>
-                @endif
-            </div>
-        </div>
-        
         <!-- Informasi Pengajuan -->
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6 pb-6 border-b">
             <div>
@@ -177,41 +144,6 @@
         </div>
         @endif
         
-        <!-- Tombol Ingatkan HRD -->
-        @if($pengajuan->status == 'disetujui')
-        <div class="mt-4 pt-4 border-t">
-            <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                <div class="flex items-center justify-between flex-wrap gap-3">
-                    <div>
-                        <i class="fas fa-bell text-blue-600 text-xl mr-2"></i>
-                        <span class="font-medium text-blue-800">Pengajuan sudah disetujui!</span>
-                        <p class="text-sm text-blue-600 mt-1">Ingatkan HRD untuk segera memposting lowongan ini.</p>
-                    </div>
-                    @php
-                    $hrd = \App\Models\User::where('role', 'hrd')->first();
-                    $tanggalDibutuhkan = $pengajuan->tanggal_dibutuhkan ? date('d/m/Y', strtotime($pengajuan->tanggal_dibutuhkan)) : 'secepatnya';
-                    $pesan = "Permisi kami dari Departemen " . $pengajuan->divisi->nama_divisi . 
-                    " ingin memberi tahu bahwa kami membutuhkan tenaga kerja untuk bagian " . $pengajuan->posisi . 
-                    " dengan total " . $pengajuan->jumlah . " unit kerja, " .
-                    "dibutuhkan pada tanggal " . $tanggalDibutuhkan . ". " .
-                    "Mohon segera untuk memposting Lowongan Kerjanya ya, Terimakasih";
-                    $encodedPesan = urlencode($pesan);
-                    $noHrd = $hrd->no_telepon ?? '6281294491075';
-                    if (substr($noHrd, 0, 1) == '0') {
-                        $noHrd = '62' . substr($noHrd, 1);
-                        }
-                        @endphp
-                        <a href="https://api.whatsapp.com/send?phone={{ $noHrd }}&text={{ $encodedPesan }}" 
-                        target="_blank"
-                        class="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition">
-                        <i class="fab fa-whatsapp mr-2"></i>
-                        Ingatkan HRD via WhatsApp
-                    </a>
-                </div>
-            </div>
-        </div>
-        @endif
-        
         <div style="display:flex; justify-content:space-between; align-items:center; margin-top:20px;">
 
             <div>
@@ -233,45 +165,6 @@
     </div>
 </div>
 
-<!-- Modal Approve -->
-<div id="approveModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-    <div class="bg-white rounded-lg p-6 w-full max-w-md">
-        <h3 class="text-lg font-semibold mb-4">Setujui Pengajuan</h3>
-        <form action="{{ route('management.pengajuan.approve', $pengajuan) }}" method="POST" id="approveForm">
-            @csrf
-            <div class="mb-4">
-                <label class="block text-sm font-medium text-gray-700 mb-2">Disetujui Oleh (Nama Lengkap) <span class="text-red-500">*</span></label>
-                <input type="text" name="disetujui_oleh" class="w-full border rounded-lg px-3 py-2" 
-                       placeholder="Contoh: Budi Santoso, M.M." required>
-            </div>
-            <div class="mb-4">
-                <label class="block text-sm font-medium text-gray-700 mb-2">Jabatan Penyetuju <span class="text-red-500">*</span></label>
-                <input type="text" name="jabatan_penyetuju" class="w-full border rounded-lg px-3 py-2" 
-                       placeholder="Contoh: Manager Operasional" required>
-                <p class="text-xs text-gray-500 mt-1">Isi dengan jabatan Anda saat ini</p>
-            </div>
-            <div class="flex justify-end space-x-3">
-                <button type="button" onclick="closeApproveModal()" class="px-4 py-2 border rounded-lg hover:bg-gray-50">Batal</button>
-                <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">Setujui</button>
-            </div>
-        </form>
-    </div>
-</div>
-
-<!-- Modal Reject -->
-<div id="rejectModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-    <div class="bg-white rounded-lg p-6 w-full max-w-md">
-        <h3 class="text-lg font-semibold mb-4">Tolak Pengajuan</h3>
-        <form action="{{ route('management.pengajuan.reject', $pengajuan) }}" method="POST" id="rejectForm">
-            @csrf
-            <textarea name="alasan_penolakan" rows="4" class="w-full border rounded-lg px-3 py-2 mb-4" placeholder="Masukkan alasan penolakan..." required></textarea>
-            <div class="flex justify-end space-x-3">
-                <button type="button" onclick="closeRejectModal()" class="px-4 py-2 border rounded-lg hover:bg-gray-50">Batal</button>
-                <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">Kirim</button>
-            </div>
-        </form>
-    </div>
-</div>
 
 @push('scripts')
 <script>    

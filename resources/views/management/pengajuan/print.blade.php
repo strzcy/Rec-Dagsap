@@ -395,10 +395,15 @@
                     <div class="flex-container">
                         <div class="sub-sign">
                             <div class="qr-area">
-                                @if(isset($qrCodeManager))
-                                    {!! $qrCodeManager !!}
-                                @else
-                                    &nbsp;
+                                @if($pengajuan->status == 'pending')
+                                @endif
+
+                                @if($pengajuan->status == 'disetujui')
+                                    @if(isset($qrCodeManager))
+                                        {!! $qrCodeManager !!}
+                                    @else
+                                        &nbsp;
+                                    @endif
                                 @endif
                             </div>
                             <div class="sign-name">{{ $pengajuan->disetujui_oleh ?? 'Pending / Tidak disetujui' }}</div>
@@ -416,6 +421,7 @@
                 @if($pengajuan->jenis == 'penggantian')
                     <div class="sign-box">
                         <span class="signature-title">Disetujui Oleh</span>
+                        <div class="qr-area"></div>
                         <div class="sign-name">Rusli Adna Solihin</div>
                         <b>PLANT MANAGER / NSM</b>
                     </div>
@@ -437,8 +443,8 @@
                     </div>
                 @else
                     <div class="sign-box">
-                        <div class="qr-area"></div>
                         <span class="signature-title">Disetujui Oleh</span>
+                        <div class="qr-area"></div>
                         <div class="sign-name">Rusli Adna Solihin</div>
                         <b>PLANT MANAGER</b>
                     </div>
