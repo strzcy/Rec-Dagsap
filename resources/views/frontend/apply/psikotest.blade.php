@@ -32,7 +32,7 @@
             </div>
             
             <div class="mt-6 pt-4 border-t text-center">
-                <form action="{{ route('frontend.apply.submit_psikotest', $pelamar) }}" method="POST" id="psikotestForm">
+                <form action="{{ URL::signedRoute('frontend.apply.submit_psikotest', $pelamar) }}" method="POST" id="psikotestForm">
                     @csrf
                     <div class="mb-4">
                         <label class="inline-flex items-center">

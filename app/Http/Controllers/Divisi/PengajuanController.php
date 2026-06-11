@@ -7,7 +7,9 @@ use App\Models\PengajuanTenagaKerja;
 use App\Models\Divisi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use SimpleSoftwareIO\QrCode\Facades\QrCode; 
+use Illuminate\Support\Facades\Gate;
+use App\Http\Requests\Divisi\StorePengajuanRequest;
+use App\Http\Requests\Divisi\VerifyNikRequest;
 
 class PengajuanController extends Controller
 {
@@ -33,41 +35,9 @@ class PengajuanController extends Controller
         return view('divisi.pengajuan.create', compact('divisis'));
     }
 
-    public function store(Request $request)
+    public function store(StorePengajuanRequest $request)
     {
-        $validated = $request->validate([
-            // Identitas Pemohon
-            'nama_pemohon' => 'required|string|max:255',
-            'nip_pemohon' => 'required|string|max:50',
-            'jabatan_pemohon' => 'required|string|max:255',
-            'no_hp_pemohon' => 'required|string|max:20',
-            'departemen_dipilih' => 'required|exists:divisis,id',
-        
-            // Data PTK
-            'jenis' => 'required|in:penambahan,penggantian',
-            'posisi' => 'required|string|max:255',
-            'jumlah' => 'required|integer|min:1',
-            'tanggal_dibutuhkan' => [
-                'required',
-                'date',
-                'after:today',
-                function ($attribute, $value, $fail) {
-                    $minDate = now()->addDays(31);
-                    if (strtotime($value) < strtotime($minDate)) {
-                        $fail("Tanggal dibutuhkan harus minimal 31 hari dari sekarang (minimal " . $minDate->format('d/m/Y') . ")");
-                    }
-                },
-            ],
-            'deskripsi_pekerjaan' => 'required|string',
-            'kriteria_pendidikan' => 'required|string',
-            'kriteria_jurusan' => 'nullable|string',
-            'kriteria_pengalaman' => 'nullable|string',
-            'kriteria_ipk' => 'nullable|string',
-            'kriteria_keahlian' => 'nullable|string',
-            'tugas' => 'nullable|array',
-            'persyaratan' => 'nullable|array',
-            'menggantikan' => 'nullable|string',
-        ]);
+        $validated = $request->validated();
 
         // Build kriteria JSON
         $kriteria = [
@@ -101,10 +71,10 @@ class PengajuanController extends Controller
             'posisi' => $validated['posisi'],
             'jumlah' => $validated['jumlah'],
             'tanggal_dibutuhkan' => $validated['tanggal_dibutuhkan'],
-            'kriteria' => json_encode($kriteria),
-            'persyaratan' => json_encode(array_values($persyaratan)),
+            'kriteria' => $kriteria,
+            'persyaratan' => array_values($persyaratan),
             'deskripsi_pekerjaan' => $validated['deskripsi_pekerjaan'],
-            'tugas' => json_encode(array_values($tugas)),
+            'tugas' => array_values($tugas),
             'status' => 'pending',
         ];
 
@@ -129,11 +99,7 @@ class PengajuanController extends Controller
 
     public function show(PengajuanTenagaKerja $pengajuan)
     {
-        // Cek sesuai NIK
-        $nik = session('verified_nik');
-        if ($pengajuan->nip_pemohon != $nik) {
-            abort(403, 'Anda tidak memiliki akses ke pengajuan ini.');
-        }
+        Gate::authorize('view', $pengajuan);
         
         return view('divisi.pengajuan.show', compact('pengajuan'));
     }
@@ -145,13 +111,11 @@ class PengajuanController extends Controller
         return view('divisi.pengajuan.verify_nik');
     }
 
-    public function verify(Request $request)
+    public function verify(VerifyNikRequest $request)
     {
-        $request->validate([
-            'nik' => 'required|string'
-        ]);
+        $validated = $request->validated();
         
-        $nik = $request->nik;
+        $nik = $validated['nik'];
         
         // Cek apakah ada pengajuan dengan NIK tersebut
         $exists = PengajuanTenagaKerja::where('nip_pemohon', $nik)->exists();
@@ -164,27 +128,5 @@ class PengajuanController extends Controller
         session(['verified_nik' => $nik]);
         
         return redirect()->route('divisi.pengajuan.index');
-    }
-    public function printData(Lowongan $lowongan)
-    {
-        if ($lowongan->hrd_id !== Auth::id()) {
-            abort(403);
-        }
-        
-        $pengajuan = $lowongan->pengajuan;
-        
-        // Data untuk QR Code (jadikan string biasa, bukan JSON biar lebih simple)
-        $qrData = "PTK-" . str_pad($pengajuan->id, 6, '0', STR_PAD_LEFT) . "\n";
-        $qrData .= "Posisi: " . $pengajuan->posisi . "\n";
-        $qrData .= "Divisi: " . ($pengajuan->departemen->nama_divisi ?? '') . "\n";
-        $qrData .= "Tanggal: " . $pengajuan->created_at->format('d/m/Y H:i') . "\n";
-        $qrData .= "Pemohon: " . $pengajuan->nama_pemohon;
-        
-        // Generate QR Code (langsung return string HTML)
-        $qrCode = QrCode::size(60)
-            ->color(0, 0, 0)
-            ->generate($qrData);
-        
-        return view('management.pengajuan.print', compact('pengajuan', 'qrCode'));
     }
 }

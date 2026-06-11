@@ -24,12 +24,12 @@ Route::get('/lowongan', [LandingController::class, 'lowongan'])->name('frontend.
 Route::get('/lowongan/{lowongan}/detail', [ApplyController::class, 'detail'])->name('frontend.detail');
 Route::get('/lowongan/{lowongan}/apply', [ApplyController::class, 'index'])->name('frontend.apply');
 Route::post('/lowongan/{lowongan}/apply', [ApplyController::class, 'store'])->name('frontend.apply.store');
-Route::get('/apply/success/{pelamar}', [ApplyController::class, 'success'])->name('frontend.apply.success');
-Route::get('/apply/detail/{pelamar}', [ApplyController::class, 'detailForm'])->name('frontend.apply.detail_form');
-Route::post('/apply/detail/{pelamar}', [ApplyController::class, 'storeDetail'])->name('frontend.apply.store_detail');
+Route::get('/apply/success/{pelamar}', [ApplyController::class, 'success'])->name('frontend.apply.success')->middleware('signed');
+Route::get('/apply/detail/{pelamar}', [ApplyController::class, 'detailForm'])->name('frontend.apply.detail_form')->middleware('signed');
+Route::post('/apply/detail/{pelamar}', [ApplyController::class, 'storeDetail'])->name('frontend.apply.store_detail')->middleware('signed');
 Route::get('/apply/failed', [ApplyController::class, 'failed'])->name('frontend.apply.failed');
-Route::get('/psikotest/{pelamar}', [ApplyController::class, 'psikotest'])->name('frontend.apply.psikotest');
-Route::post('/psikotest/{pelamar}', [ApplyController::class, 'submitPsikotest'])->name('frontend.apply.submit_psikotest');
+Route::get('/psikotest/{pelamar}', [ApplyController::class, 'psikotest'])->name('frontend.apply.psikotest')->middleware('signed');
+Route::post('/psikotest/{pelamar}', [ApplyController::class, 'submitPsikotest'])->name('frontend.apply.submit_psikotest')->middleware('signed');
 /*
 |--------------------------------------------------------------------------
 | Admin Routes (Login Required)
@@ -37,7 +37,7 @@ Route::post('/psikotest/{pelamar}', [ApplyController::class, 'submitPsikotest'])
 */
 Route::prefix('admin')->group(function () {
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('admin.login');
-    Route::post('/login', [AuthController::class, 'login'])->name('admin.login.post');
+    Route::post('/login', [AuthController::class, 'login'])->name('admin.login.post')->middleware('throttle:5,1');
     Route::post('/logout', [AuthController::class, 'logout'])->name('admin.logout');
 });
 
