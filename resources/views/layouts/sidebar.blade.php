@@ -26,7 +26,7 @@
             <!-- Menu untuk MANAGEMENT -->
             <div class="px-4 mb-4">
                 <div class="bg-primary-light rounded-lg p-3 text-center">
-                    <p class="text-primary text-sm font-semibold">{{ auth()->user()->username }}</p>
+                    <p class="text-primary text-sm font-semibold">Departemen {{ auth()->user()->username }}</p>
                     <p class="text-gray-600 text-xs">Mengelola: {{ auth()->user()->managedDivisi->nama_divisi ?? '-' }}</p>
                 </div>
             </div>

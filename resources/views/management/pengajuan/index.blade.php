@@ -75,7 +75,7 @@
                                 @php
                                     $hrd = \App\Models\User::where('role', 'hrd')->first();
                                     $tanggalDibutuhkan = $item->tanggal_dibutuhkan ? date('d/m/Y', strtotime($item->tanggal_dibutuhkan)) : 'secepatnya';
-                                    $pesan = "Permisi kami dari Management " . $item->divisi->nama_divisi . 
+                                    $pesan = "Permisi kami dari Departemen " . $item->divisi->nama_divisi . 
                                              " ingin memberi tahu bahwa kami membutuhkan tenaga kerja untuk bagian " . $item->posisi . 
                                              " dengan total " . $item->jumlah . " unit kerja, " .
                                              "dibutuhkan pada tanggal " . $tanggalDibutuhkan . ". " .

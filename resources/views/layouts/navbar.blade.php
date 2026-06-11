@@ -14,9 +14,9 @@
                 @auth
                     <div class="relative group">
                         <button class="text-white hover:text-gray-200 focus:outline-none flex items-center">
-                            
+                            <i class="fas fa-user-circle mr-2 text-xl"></i>
 
-                            <span>User PT. Dagsap Endura Eatore</span>
+                            <span>{{ Auth::user()->username }}</span>
 
                             <i class="fas fa-chevron-down ml-2 text-sm"></i>
                         </button>
@@ -27,6 +27,15 @@
                                 <div class="px-4 py-3 text-sm text-gray-700 border-b">
                                     <strong>{{ Auth::user()->username }}</strong><br>
 
+                                    <span class="text-xs text-gray-500">
+                                        @if(Auth::user()->isDivisi())
+                                            Divisi:
+                                            {{ Auth::user()->divisi->nama_divisi ?? '-' }}
+                                        @else
+                                            Role:
+                                            {{ ucfirst(Auth::user()->role) }}
+                                        @endif
+                                    </span>
                                 </div>
 
                                 <form method="POST" action="{{ route('admin.logout') }}">

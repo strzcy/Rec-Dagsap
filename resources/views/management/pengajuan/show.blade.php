@@ -190,7 +190,7 @@
                     @php
                     $hrd = \App\Models\User::where('role', 'hrd')->first();
                     $tanggalDibutuhkan = $pengajuan->tanggal_dibutuhkan ? date('d/m/Y', strtotime($pengajuan->tanggal_dibutuhkan)) : 'secepatnya';
-                    $pesan = "Permisi kami dari Management " . $pengajuan->divisi->nama_divisi . 
+                    $pesan = "Permisi kami dari Departemen " . $pengajuan->divisi->nama_divisi . 
                     " ingin memberi tahu bahwa kami membutuhkan tenaga kerja untuk bagian " . $pengajuan->posisi . 
                     " dengan total " . $pengajuan->jumlah . " unit kerja, " .
                     "dibutuhkan pada tanggal " . $tanggalDibutuhkan . ". " .

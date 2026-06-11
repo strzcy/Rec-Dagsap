@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
-@section('title', 'Dashboard Management')
+@section('title', 'Dashboard Departemen')
 
-@section('header', 'Dashboard Management')
+@section('header', 'Dashboard Departemen')
 @section('subheader', 'Selamat datang, ' . Auth::user()->name)
 
 @section('content')
