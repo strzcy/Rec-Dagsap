@@ -2,7 +2,11 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Form Permintaan Tenaga Kerja</title>
+    @if($pengajuan->jenis == 'penggantian')
+        <title>Penggantian</title>
+    @elseif($pengajuan->jenis == 'penambahan')
+        <title>Penambahan - Form Permintaan Tenaga Kerja</title>
+    @endif
     <style>
         * {
             margin: 0;
@@ -222,13 +226,14 @@
         <table class="header-table" style="vertical-align: middle;">
             <tr>
                 <td class="logo-cell">
+                    img src="{{ asset('assets/images/logo.png') }}" alt="Logo Perusahaan" style="max-width: 80px;">
                     <div class="logo-box">LOGO</div>
                 </td>
                 <td class="title-cell" >
                     FORM<br>PERMINTAAN TENAGA <br>KERJA
                 </td>
                 <td class="info-cell">
-                    Nomor Dokumen<br>Revisi<br>Tanggal Print<br>Halaman
+                    Nomor Dokumen<br>Revisi<br>Tanggal Efektif<br>Halaman
                 </td>
                 <td class="value-cell">
                     FRM.HRD.05.07<br>00<br> 06 Mei 2013<br>1 dari 1
@@ -316,6 +321,14 @@
         <div class="signature-area">
             <div class="sign-box">
                 <span class="signature-title">Diajukan Oleh</span>
+                <div style="margin-bottom: 10px;">
+                    @if(isset($qrCode))
+                        {!! $qrCode !!}
+                        <div style="font-size: 8px; color: #ff0000; margin-top: 5px;"></div>
+                    @else
+                        <div style="width: 100px; height: 100px; background: #f0f0f0; margin: 0 auto;"></div>
+                    @endif
+                </div>
                 <div class="sign-name">{{ $pengajuan->nama_pemohon ?? '' }}</div>
                 <b>PEMOHON</b>
             </div>
@@ -334,13 +347,13 @@
                 </div>
             </div>
 
-            @if($pengajuan->jenis == 'penambahan')
+            @if($pengajuan->jenis == 'penggantian')
                 <div class="sign-box">
                     <span class="signature-title">Disetujui Oleh</span>
                     <div class="sign-name">Rusli Adna Solihin</div>
                     <b>PLANT MANAGER / NSM</b>
                 </div>
-            @elseif($pengajuan->jenis == 'penggantian')
+            @elseif($pengajuan->jenis == 'penambahan')
                 <div class="sign-box dik">
                     <span class="signature-title">Disetujui Oleh</span>
                     <div class="flex-container">

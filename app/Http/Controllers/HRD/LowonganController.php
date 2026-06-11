@@ -8,6 +8,7 @@ use App\Models\Lowongan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use SimpleSoftwareIO\QrCode\Facades\QrCode; 
 
 class LowonganController extends Controller
 {
@@ -128,8 +129,21 @@ class LowonganController extends Controller
         }
         
         $pengajuan = $lowongan->pengajuan;
-    
-        // Gunakan view yang sama dengan management
-        return view('management.pengajuan.print', compact('pengajuan'));
+        
+        // Data untuk QR Code (jadikan string biasa, bukan JSON biar lebih simple)
+        $qrData = "PTK-" . str_pad($pengajuan->id, 6, '0', STR_PAD_LEFT) . "\n";
+        $qrData .= "Posisi: " . $pengajuan->posisi . "\n";
+        $qrData .= "Divisi: " . ($pengajuan->departemen->nama_divisi ?? '') . "\n";
+        $qrData .= "Tanggal: " . $pengajuan->created_at->format('d/m/Y H:i') . "\n";
+        $qrData .= "Pemohon: " . $pengajuan->nama_pemohon;
+        
+        // Generate QR Code (langsung return string HTML)
+        $qrCode = QrCode::size(120)
+            ->color(0, 0, 0)
+            ->generate($qrData);
+        
+        return view('management.pengajuan.print', compact('pengajuan', 'qrCode'));
     }
+
+    
 }

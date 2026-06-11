@@ -11,6 +11,7 @@ use App\Http\Controllers\HRD\LowonganController;
 use App\Http\Controllers\HRD\PelamarController;
 use App\Http\Controllers\Frontend\LandingController;
 use App\Http\Controllers\Frontend\ApplyController;
+use Akira\QrCode\Facades\QrCode;
 
 /*
 |--------------------------------------------------------------------------
@@ -80,5 +81,12 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         Route::get('/pelamar/{pelamar}/download-ijazah', [PelamarController::class, 'downloadIjazah'])->name('pelamar.download-ijazah');
         Route::get('/pelamar/{pelamar}/print', [PelamarController::class, 'printData'])->name('pelamar.print');
         Route::get('/lowongan/{lowongan}/print', [LowonganController::class, 'printData'])->name('lowongan.print');
+        
     });
+
+    
+});
+
+Route::get('/test-qr', function () {
+    return QrCode::size(200)->generate('Hello World');
 });

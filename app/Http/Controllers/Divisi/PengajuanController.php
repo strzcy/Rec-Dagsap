@@ -7,6 +7,7 @@ use App\Models\PengajuanTenagaKerja;
 use App\Models\Divisi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use SimpleSoftwareIO\QrCode\Facades\QrCode; 
 
 class PengajuanController extends Controller
 {
@@ -163,5 +164,27 @@ class PengajuanController extends Controller
         session(['verified_nik' => $nik]);
         
         return redirect()->route('divisi.pengajuan.index');
+    }
+    public function printData(Lowongan $lowongan)
+    {
+        if ($lowongan->hrd_id !== Auth::id()) {
+            abort(403);
+        }
+        
+        $pengajuan = $lowongan->pengajuan;
+        
+        // Data untuk QR Code (jadikan string biasa, bukan JSON biar lebih simple)
+        $qrData = "PTK-" . str_pad($pengajuan->id, 6, '0', STR_PAD_LEFT) . "\n";
+        $qrData .= "Posisi: " . $pengajuan->posisi . "\n";
+        $qrData .= "Divisi: " . ($pengajuan->departemen->nama_divisi ?? '') . "\n";
+        $qrData .= "Tanggal: " . $pengajuan->created_at->format('d/m/Y H:i') . "\n";
+        $qrData .= "Pemohon: " . $pengajuan->nama_pemohon;
+        
+        // Generate QR Code (langsung return string HTML)
+        $qrCode = QrCode::size(120)
+            ->color(0, 0, 0)
+            ->generate($qrData);
+        
+        return view('management.pengajuan.print', compact('pengajuan', 'qrCode'));
     }
 }

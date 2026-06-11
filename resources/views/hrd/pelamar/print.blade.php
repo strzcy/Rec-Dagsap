@@ -230,10 +230,10 @@
                     FORM<br>ISIAN DATA PELAMAR
                 </td>
                 <td class="info-cell">
-                    Nomor Dokumen<br>Revisi<br>Tanggal Print<br>Halaman
+                    Nomor Dokumen<br>Revisi<br>Tanggal Efektif<br>Halaman
                 </td>
                 <td class="value-cell">
-                    FRM.HRD.05.05<br>00<br>{{ date('d/m/Y') }}<br>1 dari 4
+                    FRM.HRD.05.05<br>00<br>06 Mei 2013<br>1 dari 4
                 </td>
             </tr>
         </table>
@@ -379,7 +379,7 @@
                     </tr>
                     @empty
                         @for($i=0; $i<4; $i++)
-                        <td><td align="center">{{ $i+1 }}</td><td colspan="5">-</td></tr>
+                        <tr><td align="center">{{ $i+1 }}</td><td colspan="5">-</td></tr>
                         @endfor
                     @endforelse
                 </tbody>

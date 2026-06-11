@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\PengajuanTenagaKerja;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class PengajuanApprovalController extends Controller
 {
@@ -96,11 +97,23 @@ class PengajuanApprovalController extends Controller
     public function printData(PengajuanTenagaKerja $pengajuan)
     {
         $managedDivisiId = Auth::user()->managed_divisi_id;
-    
+        
         if ($pengajuan->departemen_dipilih !== $managedDivisiId) {
             abort(403);
         }
-    
-        return view('management.pengajuan.print', compact('pengajuan'));
+        
+        // Data untuk QR Code
+        $qrData = "PTK-" . str_pad($pengajuan->id, 6, '0', STR_PAD_LEFT) . "\n";
+        $qrData .= "Posisi: " . $pengajuan->posisi . "\n";
+        $qrData .= "Divisi: " . ($pengajuan->departemen->nama_divisi ?? '') . "\n";
+        $qrData .= "Tanggal: " . $pengajuan->created_at->format('d/m/Y H:i') . "\n";
+        $qrData .= "Pemohon: " . $pengajuan->nama_pemohon;
+        
+        // Generate QR Code
+        $qrCode = QrCode::size(120)
+            ->color(0,0,0)
+            ->generate($qrData);
+        
+        return view('management.pengajuan.print', compact('pengajuan', 'qrCode'));
     }
 }
