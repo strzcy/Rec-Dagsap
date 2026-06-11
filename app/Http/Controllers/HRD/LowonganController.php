@@ -126,7 +126,7 @@ class LowonganController extends Controller
         if ($lowongan->hrd_id !== Auth::id()) {
             abort(403);
         }
-    
+        
         $pengajuan = $lowongan->pengajuan;
     
         // Gunakan view yang sama dengan management

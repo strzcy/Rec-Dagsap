@@ -495,12 +495,13 @@ class ApplyController extends Controller
         ];
     
         // Update data pelamar utama
-        $pelamar->update([
+         $pelamar->update([
             'nama_lengkap' => $validated['nama_lengkap'],
             'no_telepon' => $validated['no_hp'],
             'tempat_lahir' => $validated['tempat_lahir'],
             'tanggal_lahir' => $validated['tanggal_lahir'],
             'alamat' => $validated['alamat_tinggal'],
+            'status' => 'psikotest' // <---- INI YANG PENTING: Ubah status jadi psikotest
         ]);
     
         // Simpan atau update detail
@@ -510,7 +511,6 @@ class ApplyController extends Controller
         );
     
         // Update status ke psikotest
-        $pelamar->update(['status' => 'lolos_tahap1']);
     
         return redirect()->route('frontend.apply.success', $pelamar)
             ->with('success', 'Data diri berhasil disimpan! Silakan lanjutkan ke tahap psikotest.');
@@ -603,14 +603,14 @@ class ApplyController extends Controller
         // SEMUA CEK LULUS
         return true;
     }
-    public function psikotest(Pelamar $pelamar)
-    {
-        if ($pelamar->status !== 'lolos_tahap1') {
-            return redirect('/')->with('error', 'Anda tidak memiliki akses ke halaman ini.');
-        }
+    // public function psikotest(Pelamar $pelamar)
+    // {
+    //     if ($pelamar->status !== 'lolos_tahap1') {
+    //         return redirect('/')->with('error', 'Anda tidak memiliki akses ke halaman ini.');
+    //     }
     
-        return view('frontend.apply.psikotest', compact('pelamar'));
-    }
+    //     return view('frontend.apply.psikotest', compact('pelamar'));
+    // }
 
     public function submitPsikotest(Request $request, Pelamar $pelamar)
     {
