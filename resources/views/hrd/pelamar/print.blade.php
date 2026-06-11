@@ -50,15 +50,22 @@
             text-align: center;
         }
 
-        .logo-box {
-            width: 70px;
-            height: 70px;
-            background: #e2e8f0;
-            display: inline-flex;
+        .logo-cell {
+            width: 150px;
+            text-align: center;
+        }
+
+        .logo-container {
+            display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 12px;
+        }
+
+        .company-name {
+            font-size: 16px;
+            margin-top: 4px;
+            white-space: nowrap;
+            line-height: 1;
         }
 
         .title-cell {
@@ -224,9 +231,17 @@
         <table class="header-table">
             <tr>
                 <td class="logo-cell">
-                    <div class="logo-box">LOGO</div>
+                    <div class="logo-container">
+                        <img src="{{ asset('storage/logo.png') }}"
+                             alt="logo dagsap"
+                             width="70">
+
+                        <div class="company-name">
+                            PT. Dagsap Endura Eatore
+                        </div>
+                    </div>
                 </td>
-                <td class="title-cell">
+                <td class="title-cell" style="font-weight: bold;">
                     FORM<br>ISIAN DATA PELAMAR
                 </td>
                 <td class="info-cell">

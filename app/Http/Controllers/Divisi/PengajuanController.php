@@ -181,7 +181,7 @@ class PengajuanController extends Controller
         $qrData .= "Pemohon: " . $pengajuan->nama_pemohon;
         
         // Generate QR Code (langsung return string HTML)
-        $qrCode = QrCode::size(120)
+        $qrCode = QrCode::size(60)
             ->color(0, 0, 0)
             ->generate($qrData);
         

@@ -97,23 +97,36 @@ class PengajuanApprovalController extends Controller
     public function printData(PengajuanTenagaKerja $pengajuan)
     {
         $managedDivisiId = Auth::user()->managed_divisi_id;
-        
+    
         if ($pengajuan->departemen_dipilih !== $managedDivisiId) {
             abort(403);
         }
-        
-        // Data untuk QR Code
-        $qrData = "PTK-" . str_pad($pengajuan->id, 6, '0', STR_PAD_LEFT) . "\n";
-        $qrData .= "Posisi: " . $pengajuan->posisi . "\n";
-        $qrData .= "Divisi: " . ($pengajuan->departemen->nama_divisi ?? '') . "\n";
-        $qrData .= "Tanggal: " . $pengajuan->created_at->format('d/m/Y H:i') . "\n";
-        $qrData .= "Pemohon: " . $pengajuan->nama_pemohon;
-        
-        // Generate QR Code
-        $qrCode = QrCode::size(120)
-            ->color(0,0,0)
-            ->generate($qrData);
-        
-        return view('management.pengajuan.print', compact('pengajuan', 'qrCode'));
+        // Data untuk QR Code Manager
+        $qrDataManager = "Tanda Tangan Digital Atasan\n";
+        $qrDataManager .= "No. PTK: PTK-" . str_pad($pengajuan->id, 6, '0', STR_PAD_LEFT) . "\n";
+        $qrDataManager .= "Disetujui Oleh: " . ($pengajuan->disetujui_oleh ?? 'Belum disetujui') . "\n";
+        $qrDataManager .= "Jabatan: " . ($pengajuan->jabatan_penyetuju ?? '-') . "\n";
+        $qrDataManager .= "Waktu Approve: " . ($pengajuan->approved_at ? \Carbon\Carbon::parse($pengajuan->approved_at)->format('d/m/Y H:i:s') : '-') . "\n";
+        $qrDataManager .= "Posisi: " . $pengajuan->posisi . "\n";
+        $qrDataManager .= "Divisi: " . ($pengajuan->departemen->nama_divisi ?? '');
+    
+        // QR Code untuk Manager (ukuran 60px, warna hitam)
+        $qrCodeManager = QrCode::size(60)
+            ->color(0, 0, 0)
+            ->generate($qrDataManager);
+    
+        // Data untuk QR Code Pemohon (tetap)
+        $qrDataManager = "Tanda Tangan Digital Pemohon\n";
+        $qrDataPemohon = "PTK-" . str_pad($pengajuan->id, 6, '0', STR_PAD_LEFT) . "\n";
+        $qrDataPemohon .= "Posisi: " . $pengajuan->posisi . "\n";
+        $qrDataPemohon .= "Divisi: " . ($pengajuan->departemen->nama_divisi ?? '') . "\n";
+        $qrDataPemohon .= "Tanggal: " . $pengajuan->created_at->format('d/m/Y H:i') . "\n";
+        $qrDataPemohon .= "Pemohon: " . $pengajuan->nama_pemohon;
+    
+        $qrCodePemohon = QrCode::size(60)
+            ->color(0, 0, 0)
+            ->generate($qrDataPemohon);
+    
+        return view('management.pengajuan.print', compact('pengajuan', 'qrCodePemohon', 'qrCodeManager'));
     }
 }

@@ -603,14 +603,6 @@ class ApplyController extends Controller
         // SEMUA CEK LULUS
         return true;
     }
-    // public function psikotest(Pelamar $pelamar)
-    // {
-    //     if ($pelamar->status !== 'lolos_tahap1') {
-    //         return redirect('/')->with('error', 'Anda tidak memiliki akses ke halaman ini.');
-    //     }
-    
-    //     return view('frontend.apply.psikotest', compact('pelamar'));
-    // }
 
     public function submitPsikotest(Request $request, Pelamar $pelamar)
     {
