@@ -151,16 +151,20 @@
         }
 
         .sign-box {
-            flex: 1;
             text-align: center;
         }
 
         .sign-name {
             margin-top: 55px;
-            border-bottom: 1px solid black;
             padding-top: 6px;
             font-weight: 500;
             width: 100%;
+            margin-bottom:4px;
+        }
+
+        .signan {
+            border-bottom: 1px solid black;
+
         }
 
         .sign-box b {
@@ -191,10 +195,6 @@
         /* Page break */
         .page-break {
             page-break-before: always;
-        }
-
-        td {
-            line
         }
 
         /* MEDIA PRINT */
@@ -279,8 +279,8 @@
         <!-- A. DATA PRIBADI -->
         <div class="section">
             <div class="section-title">A. DATA PRIBADI</div>
-            <table class="detail-table">
-                <tr><td width="180">1. Nama Lengkap</td><td width="10">:</td><td><b>{{ $detail->nama_lengkap ?? $pelamar->nama_lengkap }} </b></td>
+            <table class="detail-table" style="text-transform: lowercase; text-transform: capitalize;">
+                <tr><td width="180" >1. Nama Lengkap</td><td width="10">:</td><td>{{ $detail->nama_lengkap ?? $pelamar->nama_lengkap }}</td>
                     <td width="120">Jenis Kelamin</td><td width="10">:</td><td>{{ ($detail->jenis_kelamin ?? '') == 'L' ? 'Laki-laki' : 'Perempuan' }}</td></tr>
                 <tr><td>2. Tempat/Tgl Lahir</td><td>:</td><td>{{ $detail->tempat_lahir ?? '-' }}, {{ $pelamar->tanggal_lahir ? \Carbon\Carbon::parse($pelamar->tanggal_lahir)->format('d/m/Y') : '-' }}</td>
                     <td>Tinggi Badan</td><td>:</td><td>{{ $detail->tinggi_badan ?? '-' }} cm</td></tr>
@@ -288,7 +288,7 @@
                     <td>Berat Badan</td><td>:</td><td>{{ $detail->berat_badan ?? '-' }} kg</td></tr>
                 <tr><td>4. Agama</td><td>:</td><td>{{ $detail->agama ?? '-' }}</td>
                 <td>Gol. Darah</td><td>:</td><td>{{ $detail->golongan_darah ?? '-' }}</td></tr>
-                <tr><td>5. Alamat Tinggal</td><td>:</td><td>{{ $detail->alamat_tinggal ?? $pelamar->alamat }}</td></tr>
+                <tr><td style="line-height: 1.5;">5. Alamat Tinggal</td><td>:</td><td>{{ $detail->alamat_tinggal ?? $pelamar->alamat }}</td></tr>
             </table>
 
             <table class="detail-table" style="margin-left: 100px; width: 95%;">
@@ -521,7 +521,7 @@
             @php
                 $bidangMinat = is_array($detail->bidang_minat ?? null) ? $detail->bidang_minat : [];
             @endphp
-            <div style="padding-left: 20px; font-size: 11px;">
+            <div style="padding-left: 20px; font-size: 16px; line-height: 1.5;">
                 ( {{ in_array('Logistic & Distribution', $bidangMinat) ? '✓' : ' ' }} ) Logistic & Distribution &nbsp;&nbsp;
                 ( {{ in_array('Sales/Marketing', $bidangMinat) ? '✓' : ' ' }} ) Sales/Marketing &nbsp;&nbsp;
                 ( {{ in_array('Finance, Accounting, & Tax', $bidangMinat) ? '✓' : ' ' }} ) Finance, Accounting, & Tax &nbsp;&nbsp;
@@ -569,13 +569,13 @@
             </table>
 
             <div style="margin-top: 10px;">
-                <strong>Apakah Anda mempunyai saudara/kenalan yang bekerja di perusahaan kami?</strong> 
+                Apakah Anda mempunyai saudara/kenalan yang bekerja di perusahaan kami? 
                 ( {{ $detail->punya_saudara_di_perusahaan ? '✓' : ' ' }} ) ya ( {{ !$detail->punya_saudara_di_perusahaan ? '✓' : ' ' }} ) tidak
             </div>
         </div>
 
         <!-- H. RIWAYAT KESEHATAN -->
-        <div class="section">
+        <div class="section" style="line-height: 1.4;">
             <div class="section-title">H. RIWAYAT KESEHATAN</div>
             
             <div style="margin-bottom: 12px;">
@@ -607,34 +607,33 @@
         <div class="section page-break">
             <div class="section-title">J. REMUNERASI</div>
             <div style="margin-bottom: 15px;">
-                Gaji per bulan yang diharapkan : <strong>Rp. {{ $detail->gaji_diharapkan ?? '........................' }}</strong>
+                Gaji per bulan yang diharapkan : <strong style="text-decoration:underline;">Rp. {{ $detail->gaji_diharapkan ?? '........................' }}</strong>
             </div>
 
             <div class="section-title">K. WAKTU</div>
             <div style="margin-bottom: 20px;">
                 Jika lamaran Anda diterima, berapa lama waktu yang Anda perlukan untuk dapat bergabung? : 
-                <strong>{{ $detail->waktu_bergabung ?? '........................' }}</strong>
+                <strong style="text-decoration:underline;">{{ $detail->waktu_bergabung ?? '........................' }}</strong>
             </div>
 
             <div class="section-title">L. PERNYATAAN</div>
-            <div style="font-size: 11px; text-align: justify; margin-bottom: 30px;">
+            <div style="line-height: 1.2; text-align: justify; margin-bottom: 30px;">
                 Dengan ini saya menyatakan bahwa semua keterangan yang saya cantumkan dalam formulir ini adalah benar dan sah. 
                 Seandainya saya diterima dan kemudian terbukti bahwa salah satu saja keterangan saya tersebut tidak benar, 
                 maka saya bersedia mengundurkan diri tanpa persyaratan apapun dengan segera dari perusahaan ini.
             </div>
 
             <!-- TANDA TANGAN -->
-            <div class="signature-area">
+            <div class="signature-area" style="text-transform:capitalize;">
                 <div class="sign-box">
-                    <div>Tempat & Tanggal : Jakarta, {{ date('d/m/Y') }}</div>
-                    <div class="sign-name">{{ $detail->nama_lengkap ?? $pelamar->nama_lengkap }}</div>
-                    <b>Yang Menyatakan</b>
+                    <div>Tempat & Tanggal : {{ $detail->tempat_pernyataan ?? '-' }},
+                    {{ $detail->tanggal_pernyataan ? \Carbon\Carbon::parse($detail->tanggal_pernyataan)->format('d/m/Y') : '-' }}    
+                    <div>
+                    <div class="signan">
+                        <div class="sign-name">{{ $detail->nama_lengkap ?? $pelamar->nama_lengkap }}</div>
+                    </div>
                 </div>
-                <div class="sign-box">
-                    <div>&nbsp;</div>
-                    <div class="sign-name">&nbsp;</div>
-                    <b>HRD</b>
-                </div>
+                <div></div>
             </div>
         </div>
 

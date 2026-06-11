@@ -2,14 +2,7 @@
     <div class="py-4">
         <!-- Menu berdasarkan role -->
         @if(auth()->user()->isDivisi())
-            <!-- Menu untuk DIVISI -->
-            <div class="px-4 mb-4">
-                <div class="bg-primary-light rounded-lg p-3 text-center">
-                    <p class="text-primary text-sm font-semibold">{{ auth()->user()->username }}</p>
-                    <p class="text-gray-600 text-xs">{{ auth()->user()->divisi->nama_divisi ?? '-' }}</p>
-                </div>
-            </div>
-            
+            <!-- Menu untuk DIVISI -->            
             <nav class="mt-4">
                 <a href="{{ route('divisi.dashboard') }}" class="flex items-center px-6 py-3 text-gray-700 hover:bg-primary-light hover:text-primary transition {{ request()->routeIs('divisi.dashboard') ? 'bg-primary-light text-primary' : '' }}">
                     <i class="fas fa-tachometer-alt w-5"></i>
@@ -17,12 +10,16 @@
                 </a>
                 <a href="{{ route('divisi.pengajuan.create') }}" class="flex items-center px-6 py-3 text-gray-700 hover:bg-primary-light hover:text-primary transition {{ request()->routeIs('divisi.pengajuan.create') ? 'bg-primary-light text-primary' : '' }}">
                     <i class="fas fa-plus-circle w-5"></i>
-                    <span class="mx-3">Ajukan Tenaga Kerja</span>
+                    <span class="mx-3">Ajukan Permintaan Tenaga Kerja</span>
                 </a>
-                <a href="{{ route('divisi.pengajuan.verify') }}" class="flex items-center px-6 py-3 text-gray-700 hover:bg-primary-light hover:text-primary transition">
-                    <i class="fas fa-list w-5"></i>
-                    <span class="mx-3">Riwayat Pengajuan</span>
-                </a>
+                <form method="POST" action="{{ route('admin.logout') }}" class="flex items-center px-6 py-3 text-gray-700 hover:bg-primary-light hover:text-primary transition">
+                    @csrf
+                    <i class="fas fa-sign-out-alt mr-2 text-red-600"></i>
+                    <button type="submit " style="font-size:16px;"
+                        class="block w-full text-left px-4 py-2 text-sm text-red-600 ">
+                        Logout
+                    </button>
+                </form>
             </nav>
             
         @elseif(auth()->user()->isManagement())

@@ -188,7 +188,7 @@
         </div>
 
         <!-- Main Content Area -->
-        <main class="flex-1 min-h-screen main-content">
+        <main class="flex-1 main-content" style="min-height: 90vh;">
             <!-- Breadcrumb -->
             @hasSection('breadcrumb')
                 <div class="mb-4">
