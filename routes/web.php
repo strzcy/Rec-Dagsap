@@ -11,7 +11,7 @@ use App\Http\Controllers\HRD\LowonganController;
 use App\Http\Controllers\HRD\PelamarController;
 use App\Http\Controllers\Frontend\LandingController;
 use App\Http\Controllers\Frontend\ApplyController;
-use Akira\QrCode\Facades\QrCode;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -85,8 +85,4 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     });
 
     
-});
-
-Route::get('/test-qr', function () {
-    return QrCode::size(200)->generate('Hello World');
 });
