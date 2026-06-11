@@ -72,6 +72,10 @@
                     <i class="fas fa-users w-5"></i>
                     <span class="mx-3">Data Pelamar</span>
                 </a>
+                <a href="{{ route('hrd.ptk.index') }}" class="flex items-center px-6 py-3 text-gray-700 hover:bg-primary-light hover:text-primary transition">
+                    <i class="fas fa-file-alt w-5"></i>
+                    <span class="mx-3">Data PTK</span>
+                </a>
             </nav>
         @endif
     </div>

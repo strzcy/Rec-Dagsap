@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use SimpleSoftwareIO\QrCode\Facades\QrCode; 
 
+
 class LowonganController extends Controller
 {
     public function index()
@@ -127,33 +128,34 @@ class LowonganController extends Controller
         if ($lowongan->hrd_id !== Auth::id()) {
             abort(403);
         }
-    
+
         $pengajuan = $lowongan->pengajuan;
-    
-        // Data untuk QR Code Manager
+
+        // QR CODE UNTUK MANAGER (Diketahui Oleh / Atasan)
+        $qrDataManager = "=== DATA PERSETUJUAN ===\n";
         $qrDataManager .= "No. PTK: PTK-" . str_pad($pengajuan->id, 6, '0', STR_PAD_LEFT) . "\n";
         $qrDataManager .= "Disetujui Oleh: " . ($pengajuan->disetujui_oleh ?? 'Belum disetujui') . "\n";
         $qrDataManager .= "Jabatan: " . ($pengajuan->jabatan_penyetuju ?? '-') . "\n";
         $qrDataManager .= "Waktu Approve: " . ($pengajuan->approved_at ? \Carbon\Carbon::parse($pengajuan->approved_at)->format('d/m/Y H:i:s') : '-') . "\n";
         $qrDataManager .= "Posisi: " . $pengajuan->posisi . "\n";
         $qrDataManager .= "Divisi: " . ($pengajuan->departemen->nama_divisi ?? '');
-    
+
         $qrCodeManager = QrCode::size(60)
             ->color(0, 0, 0)
             ->generate($qrDataManager);
-    
-        // QR Code Pemohon
-        $qrDataManager = "Tanda Tangan Digital Pemohon\n";
-        $qrDataPemohon = "PTK-" . str_pad($pengajuan->id, 6, '0', STR_PAD_LEFT) . "\n";
+
+        // QR CODE UNTUK PEMOHON (Diajukan Oleh)
+        $qrDataPemohon = "=== DATA PEMOHON ===\n";
+        $qrDataPemohon .= "No. PTK: PTK-" . str_pad($pengajuan->id, 6, '0', STR_PAD_LEFT) . "\n";
         $qrDataPemohon .= "Posisi: " . $pengajuan->posisi . "\n";
         $qrDataPemohon .= "Divisi: " . ($pengajuan->departemen->nama_divisi ?? '') . "\n";
-        $qrDataPemohon .= "Tanggal: " . $pengajuan->created_at->format('d/m/Y H:i') . "\n";
+        $qrDataPemohon .= "Tanggal Pengajuan: " . $pengajuan->created_at->format('d/m/Y H:i') . "\n";
         $qrDataPemohon .= "Pemohon: " . $pengajuan->nama_pemohon;
-    
+
         $qrCodePemohon = QrCode::size(60)
             ->color(0, 0, 0)
             ->generate($qrDataPemohon);
-    
+
         return view('management.pengajuan.print', compact('pengajuan', 'qrCodePemohon', 'qrCodeManager'));
     }
 

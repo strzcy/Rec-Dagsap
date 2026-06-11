@@ -11,6 +11,7 @@ use App\Http\Controllers\HRD\LowonganController;
 use App\Http\Controllers\HRD\PelamarController;
 use App\Http\Controllers\Frontend\LandingController;
 use App\Http\Controllers\Frontend\ApplyController;
+use App\Http\Controllers\HRD\DataPtkController;
 
 
 /*
@@ -81,6 +82,10 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         Route::get('/pelamar/{pelamar}/download-ijazah', [PelamarController::class, 'downloadIjazah'])->name('pelamar.download-ijazah');
         Route::get('/pelamar/{pelamar}/print', [PelamarController::class, 'printData'])->name('pelamar.print');
         Route::get('/lowongan/{lowongan}/print', [LowonganController::class, 'printData'])->name('lowongan.print');
+        // Data PTK
+        Route::get('/ptk', [DataPtkController::class, 'index'])->name('ptk.index');
+        Route::get('/ptk/{ptk}', [DataPtkController::class, 'show'])->name('ptk.show');
+        Route::get('/ptk/{ptk}/print', [DataPtkController::class, 'printData'])->name('ptk.print'); 
         
     });
 

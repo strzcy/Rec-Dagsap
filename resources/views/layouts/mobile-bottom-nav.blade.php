@@ -55,6 +55,10 @@
                 <i class="fas fa-users text-xl"></i>
                 <span class="text-xs mt-1">Pelamar</span>
             </a>
+            <a href="{{ route('hrd.ptk.index') }}" class="flex flex-col items-center px-3 py-2 rounded-lg transition {{ request()->routeIs('hrd.ptk.*') ? 'text-primary' : 'text-gray-500' }}">
+                <i class="fas fa-file-alt text-xl"></i>
+                <span class="text-xs mt-1">PTK</span>
+            </a>
             <form id="logout-form-bottom" action="{{ route('admin.logout') }}" method="POST" class="hidden">
                 @csrf
             </form>
