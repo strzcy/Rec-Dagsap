@@ -261,4 +261,43 @@
     });
 </script>
 @endpush
+<!-- Modal Approve -->
+<div id="approveModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-lg p-6 w-full max-w-md">
+        <h3 class="text-lg font-semibold mb-4">Setujui Pengajuan</h3>
+        <form action="{{ route('management.pengajuan.approve', $pengajuan) }}" method="POST" id="approveForm">
+            @csrf
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Disetujui Oleh (Nama Lengkap) <span class="text-red-500">*</span></label>
+                <input type="text" name="disetujui_oleh" class="w-full border rounded-lg px-3 py-2" 
+                       placeholder="Contoh: Budi Santoso, M.M." required>
+            </div>
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Jabatan Penyetuju <span class="text-red-500">*</span></label>
+                <input type="text" name="jabatan_penyetuju" class="w-full border rounded-lg px-3 py-2" 
+                       placeholder="Contoh: Manager Operasional" required>
+                <p class="text-xs text-gray-500 mt-1">Isi dengan jabatan Anda saat ini</p>
+            </div>
+            <div class="flex justify-end space-x-3">
+                <button type="button" onclick="closeApproveModal()" class="px-4 py-2 border rounded-lg hover:bg-gray-50">Batal</button>
+                <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">Setujui</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal Reject -->
+<div id="rejectModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-lg p-6 w-full max-w-md">
+        <h3 class="text-lg font-semibold mb-4">Tolak Pengajuan</h3>
+        <form action="{{ route('management.pengajuan.reject', $pengajuan) }}" method="POST" id="rejectForm">
+            @csrf
+            <textarea name="alasan_penolakan" rows="4" class="w-full border rounded-lg px-3 py-2 mb-4" placeholder="Masukkan alasan penolakan..." required></textarea>
+            <div class="flex justify-end space-x-3">
+                <button type="button" onclick="closeRejectModal()" class="px-4 py-2 border rounded-lg hover:bg-gray-50">Batal</button>
+                <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">Kirim</button>
+            </div>
+        </form>
+    </div>
+</div>
 @endsection

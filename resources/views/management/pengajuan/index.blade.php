@@ -33,7 +33,7 @@
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Jumlah</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Pengaju</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Aksi</th>
+                    <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Aksi</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-200">
@@ -62,13 +62,13 @@
                             <span class="px-2 py-1 text-xs rounded-full bg-red-100 text-red-800">Ditolak</span>
                         @endif
                     </td>
-                    <td class="px-6 py-4">
-                        <div class="flex space-x-2">
+                    <td class="px-6 py-4 text-center">
+                        <div class="space-beetwen space-x-5">
                             <a href="{{ route('management.pengajuan.show', $item) }}" class="text-primary hover:underline">
                                 @if($item->status == 'pending')
                                     <i class="fas fa-check-circle mr-1"></i> Review
                                 @else
-                                    <i class="fas fa-eye mr-1"></i> Detail
+                                    Detail
                                 @endif
                             </a>
                             @if($item->status == 'disetujui')
@@ -81,7 +81,7 @@
                                              "dibutuhkan pada tanggal " . $tanggalDibutuhkan . ". " .
                                              "Mohon segera untuk memposting Lowongan Kerjanya ya, Terimakasih";
                                     $encodedPesan = urlencode($pesan);
-                                    $noHrd = $hrd->no_telepon ?? '6281294491075';
+                                    $noHrd = $hrd->no_telepon ?? '6281367826052';
                                     // Pastikan format 62, bukan 08
                                     if (substr($noHrd, 0, 1) == '0') {
                                         $noHrd = '62' . substr($noHrd, 1);
@@ -91,7 +91,7 @@
                                    target="_blank"
                                    class="text-green-600 hover:text-green-800 ml-2"
                                    title="Ingatkan HRD">
-                                    <i class="fab fa-whatsapp text-lg"></i>
+                                    WA
                                 </a>
                             @endif
                         </div>

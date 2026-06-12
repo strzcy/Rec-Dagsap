@@ -36,6 +36,7 @@
             background-color: #f3f4f6;
             padding-bottom: 0;
         }
+
         
         /* DESKTOP STYLES (≥768px) */
         @media (min-width: 768px) {

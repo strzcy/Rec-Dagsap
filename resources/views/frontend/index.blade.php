@@ -4,6 +4,7 @@
 @section('content')
 <section class="hero-gradient text-white py-20">
     <div class="container mx-auto px-4 text-center">
+        <br>
         <h1 class="text-4xl md:text-5xl font-bold mb-4">Mulai Karir Bersama Dagsap</h1>
         <p class="text-lg md:text-xl mb-8 opacity-90">Bergabunglah dengan perusahaan terbaik dan kembangkan potensi Anda</p>
         <div class="max-w-xl mx-auto">
