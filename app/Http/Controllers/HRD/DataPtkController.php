@@ -41,29 +41,28 @@ class DataPtkController extends Controller
         $pengajuan = $ptk;
         
         // QR CODE UNTUK PEMOHON
-        $qrDataPemohon = "=== DATA PEMOHON ===\n";
-        $qrDataPemohon .= "No. PTK: PTK-" . str_pad($pengajuan->id, 6, '0', STR_PAD_LEFT) . "\n";
-        $qrDataPemohon .= "Posisi: " . $pengajuan->posisi . "\n";
-        $qrDataPemohon .= "Divisi: " . ($pengajuan->departemen->nama_divisi ?? '') . "\n";
-        $qrDataPemohon .= "Tanggal Pengajuan: " . $pengajuan->created_at->format('d/m/Y H:i') . "\n";
-        $qrDataPemohon .= "Pemohon: " . $pengajuan->nama_pemohon;
+        $qrDataPemohon = "PTK-" . str_pad($pengajuan->id, 6, '0', STR_PAD_LEFT) . " | " .
+            $pengajuan->posisi . " | " .
+            ($pengajuan->departemen->nama_divisi ?? '') . " | " .
+            $pengajuan->created_at->format('d/m/Y') . " | " .
+            $pengajuan->nama_pemohon;
         
-        $qrCodePemohon = QrCode::size(120)
+        $qrCodePemohon = QrCode::errorCorrection('L')
+            ->size(120)
             ->color(0, 0, 0)
             ->generate($qrDataPemohon);
         
         // QR CODE UNTUK MANAGER (hanya jika sudah disetujui)
         $qrCodeManager = null;
         if ($pengajuan->status == 'disetujui') {
-            $qrDataManager = "=== DATA PERSETUJUAN ===\n";
-            $qrDataManager .= "No. PTK: PTK-" . str_pad($pengajuan->id, 6, '0', STR_PAD_LEFT) . "\n";
-            $qrDataManager .= "Disetujui Oleh: " . ($pengajuan->disetujui_oleh ?? 'Belum disetujui') . "\n";
-            $qrDataManager .= "Jabatan: " . ($pengajuan->jabatan_penyetuju ?? '-') . "\n";
-            $qrDataManager .= "Waktu Approve: " . ($pengajuan->approved_at ? \Carbon\Carbon::parse($pengajuan->approved_at)->format('d/m/Y H:i:s') : '-') . "\n";
-            $qrDataManager .= "Posisi: " . $pengajuan->posisi . "\n";
-            $qrDataManager .= "Divisi: " . ($pengajuan->departemen->nama_divisi ?? '');
+            $qrDataManager = "PTK-" . str_pad($pengajuan->id, 6, '0', STR_PAD_LEFT) . " | " .
+                ($pengajuan->disetujui_oleh ?? 'Belum disetujui') . " | " .
+                ($pengajuan->jabatan_penyetuju ?? '-') . " | " .
+                ($pengajuan->approved_at ? \Carbon\Carbon::parse($pengajuan->approved_at)->format('d/m/Y') : '-') . " | " .
+                $pengajuan->posisi;
             
-            $qrCodeManager = QrCode::size(120)
+            $qrCodeManager = QrCode::errorCorrection('L')
+                ->size(120)
                 ->color(0, 0, 0)
                 ->generate($qrDataManager);
         }
