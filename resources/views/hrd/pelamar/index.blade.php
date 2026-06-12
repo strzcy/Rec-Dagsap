@@ -43,7 +43,7 @@
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Kontak</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tgl Lamar</th>
-                    <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Aksi</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Aksi</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-200">
@@ -70,7 +70,7 @@
                         </span>
                     </td>
                     <td class="px-6 py-4">{{ $pelamar->created_at->format('d/m/Y') }}</td>
-                    <td class="px-6 py-4 text-center">
+                    <td class="px-6 py-4">
                         <a href="{{ route('hrd.pelamar.show', $pelamar) }}" class="text-primary hover:underline">Detail</a>
                     </td>
                 </tr>

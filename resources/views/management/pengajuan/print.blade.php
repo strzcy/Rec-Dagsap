@@ -406,7 +406,7 @@
                                     @endif
                                 @endif
                             </div>
-                            <div class="sign-name">{{ $pengajuan->disetujui_oleh ?? 'Pending / Tidak disetujui' }}</div>
+                            <div style="color:red;" class="sign-name">{{ $pengajuan->disetujui_oleh ?? 'Pending / Tidak disetujui' }}</div>
                             <b style="text-transform: uppercase;">{{ $pengajuan->jabatan_penyetuju ?? '-' }}</b>
                         </div>
                         <div class="sub-sign">

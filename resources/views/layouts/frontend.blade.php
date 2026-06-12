@@ -60,7 +60,7 @@
                 <div class="hidden md:flex items-center space-x-6">
                     <a href="{{ url('/#tentang') }}"
                        class="text-white hover:text-gray-300 font-medium transition">
-                        Beranda
+                        Tentang
                     </a>
 
                     <a href="{{ url('/#lowongan') }}"
@@ -124,15 +124,17 @@
                         </div>
                     </div>
                     <p class="text-sm text-gray-400 leading-relaxed">
-                        Dagsap Recruitment adalah web app portal lowongan kerja untuk PT. Dagsap Endura Eatore di cabang Factory Kawasan Industri Sentul. Bogor
+                        Dagsap Recruitment menjadi wadah Portal Unggulan yang menghasilkan sumber daya manusia Terampil, Entrepreneur, dan Profesional di bidangnya.
                     </p>
                     
                     <div class="w-full h-44 rounded-lg overflow-hidden shadow-sm border border-gray-700 relative group">
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3964.053727906191!2d106.85497627475316!3d-6.51488409347752!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69c11b30537999%3A0x4f33f4d30d4c4e47!2sPT.%20Dagsap%20Endura%20Eatore!5e0!3m2!1sid!2sid!4v1781237875085!5m2!1sid!2sid"
+                        <iframe 
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3965.178888062831!2d106.8778!3d-6.3708!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNsKwMjInMTQuOSJTIDEwNsKwNTInNDAuMSJF!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid" 
                             class="w-full h-full border-0" 
                             allowfullscreen="" 
                             loading="lazy" 
-                            referrerpolicy="no-referrer-when-downgrade"></iframe>
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
                         <a href="https://maps.google.com" target="_blank" class="absolute top-2 left-2 bg-white text-xs font-semibold px-2.5 py-1 rounded shadow flex items-center gap-1 hover:bg-gray-100 transition text-blue-600">
                             Maps <i class="fas fa-external-link-alt text-[10px]"></i>
                         </a>
@@ -143,17 +145,19 @@
                     <h3 class="font-bold text-lg text-white mb-4 relative after:content-[''] after:block after:w-10 after:h-0.5 after:bg-primary after:mt-1">Navigasi</h3>
                     <ul class="space-y-2.5 text-sm">
                         <li><a href="{{ url('/#tentang') }}" class="text-gray-400 hover:text-primary transition flex items-center gap-1"><i class="fas fa-chevron-right text-[10px] opacity-50"></i> Beranda</a></li>
-                        <li><a href="https://www.dagsap.co.id" class="text-gray-400 hover:text-primary transition flex items-center gap-1"><i class="fas fa-chevron-right text-[10px] opacity-50"></i> Website Resmi </a></li>
-                        <li><a href="https://www.dagsap.co.id/about-us.html" class="text-gray-400 hover:text-primary transition flex items-center gap-1"><i class="fas fa-chevron-right text-[10px] opacity-50"></i> Tentang Perusahaan</a></li>
+                        <li><a href="{{ url('/#tentang') }}" class="text-gray-400 hover:text-primary transition flex items-center gap-1"><i class="fas fa-chevron-right text-[10px] opacity-50"></i> Profil Perusahaan</a></li>
+                        <li><a href="{{ url('/#lowongan') }}" class="text-gray-400 hover:text-primary transition flex items-center gap-1"><i class="fas fa-chevron-right text-[10px] opacity-50"></i> Lowongan Aktif</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-primary transition flex items-center gap-1"><i class="fas fa-chevron-right text-[10px] opacity-50"></i> Pengumuman</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-primary transition flex items-center gap-1"><i class="fas fa-chevron-right text-[10px] opacity-50"></i> Buku Tamu</a></li>
                     </ul>
                 </div>
 
                 <div>
-                    <h3 class="font-bold text-lg text-white mb-4 relative after:content-[''] after:block after:w-10 after:h-0.5 after:bg-primary after:mt-1">Contact</h3>
+                    <h3 class="font-bold text-lg text-white mb-4 relative after:content-[''] after:block after:w-10 after:h-0.5 after:bg-primary after:mt-1">Layanan dan Kolaborasi</h3>
                     <ul class="space-y-2.5 text-sm">
-                        <li><a href="https://www.instagram.com/dagsap_recruitment" class="text-gray-400 hover:text-primary transition flex items-center gap-1"><i class="fas fa-chevron-right text-[10px] opacity-50"></i> Instagram </a></li>
-                        <li><a href="https://www.facebook.com/profile.php?id=61584738693005" class="text-gray-400 hover:text-primary transition flex items-center gap-1"><i class="fas fa-chevron-right text-[10px] opacity-50"></i> Facebook </a></li>
-                        <li><a href="https://www.linkedin.com/company/dagsap" class="text-gray-400 hover:text-primary transition flex items-center gap-1"><i class="fas fa-chevron-right text-[10px] opacity-50"></i> LinkedIn </a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-primary transition flex items-center gap-1"><i class="fas fa-chevron-right text-[10px] opacity-50"></i> Forum Diskusi</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-primary transition flex items-center gap-1"><i class="fas fa-chevron-right text-[10px] opacity-50"></i> Portal Terpadu</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-primary transition flex items-center gap-1"><i class="fas fa-chevron-right text-[10px] opacity-50"></i> Franchise</a></li>
                     </ul>
                 </div>
 

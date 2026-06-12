@@ -192,6 +192,11 @@
             background: #1f445f;
         }
 
+        /* Page break */
+        .page-break {
+            page-break-before: always;
+        }
+
         /* MEDIA PRINT */
         @media print {
             body {
@@ -215,7 +220,6 @@
                 margin: 1.5cm;
             }
         }
-        
     </style>
 </head>
 <body>
@@ -244,7 +248,7 @@
                     Nomor Dokumen<br>Revisi<br>Tanggal Efektif<br>Halaman
                 </td>
                 <td class="value-cell">
-                    FRM.HRD.05.05<br>00<br>06 Mei 2013<br>1 dari 3
+                    FRM.HRD.05.05<br>00<br>06 Mei 2013<br>1 dari 4
                 </td>
             </tr>
         </table>
@@ -600,7 +604,7 @@
         </div>
 
         <!-- J. REMUNERASI & K. WAKTU & L. PERNYATAAN (Page Break) -->
-        <div class="section">
+        <div class="section page-break">
             <div class="section-title">J. REMUNERASI</div>
             <div style="margin-bottom: 15px;">
                 Gaji per bulan yang diharapkan : <strong style="text-decoration:underline;">Rp. {{ $detail->gaji_diharapkan ?? '........................' }}</strong>

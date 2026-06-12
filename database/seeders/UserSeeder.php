@@ -18,7 +18,7 @@ class UserSeeder extends Seeder
             'email' => 'hrd@dagsap.com',
             'password' => Hash::make('hrd_dagsap123'),
             'role' => 'hrd',
-            'no_telepon' => '6281367826052' // Format 62
+            'no_telepon' => '6281294491075' // Format 62
         ]);
 
         // Management per divisi
