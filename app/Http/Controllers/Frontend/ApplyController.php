@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\URL;
 
 class ApplyController extends Controller
 {
@@ -42,8 +43,8 @@ class ApplyController extends Controller
         ]);
     
         try {
-            $cvPath = $request->file('cv')->store('cvs', 'public');
-            $ijazahPath = $request->file('ijazah')->store('ijazahs', 'public');
+            $cvPath = $request->file('cv')->store('cvs', 'local');
+            $ijazahPath = $request->file('ijazah')->store('ijazahs', 'local');
         
             $pelamar = Pelamar::create([
                 'lowongan_id' => $lowongan->id,
@@ -75,12 +76,12 @@ class ApplyController extends Controller
             if ($lolos) {
                 $pelamar->update(['status' => 'lolos_tahap1']);
             
-                return redirect()->route('frontend.apply.success', ['pelamar' => $pelamar->id])
+                return redirect()->to(URL::signedRoute('frontend.apply.success', ['pelamar' => $pelamar->id]))
                     ->with('success', 'Selamat! Anda lolos seleksi administrasi. Silakan lengkapi data diri Anda.');
             } else {
                 // Hapus data pelamar yang tidak lolos
-                \Storage::disk('public')->delete($cvPath);
-                \Storage::disk('public')->delete($ijazahPath);
+                \Storage::disk('local')->delete($cvPath);
+                \Storage::disk('local')->delete($ijazahPath);
             
                 if ($pelamar->formulirJawaban) {
                     $pelamar->formulirJawaban()->delete();
@@ -115,7 +116,7 @@ class ApplyController extends Controller
         }
         
         if (DetailPelamar::where('pelamar_id', $pelamar->id)->exists()) {
-            return redirect()->route('frontend.apply.success', $pelamar)
+            return redirect()->to(URL::signedRoute('frontend.apply.success', ['pelamar' => $pelamar->id]))
                 ->with('info', 'Anda sudah mengisi data diri sebelumnya.');
         }
         
@@ -505,14 +506,14 @@ class ApplyController extends Controller
         ]);
     
         // Simpan atau update detail
-        \App\Models\DetailPelamar::updateOrCreate(
+        DetailPelamar::updateOrCreate(
             ['pelamar_id' => $pelamar->id],
             $detailData
         );
     
         // Update status ke psikotest
     
-        return redirect()->route('frontend.apply.success', $pelamar)
+        return redirect()->to(URL::signedRoute('frontend.apply.success', ['pelamar' => $pelamar->id]))
             ->with('success', 'Data diri berhasil disimpan! Silakan lanjutkan ke tahap psikotest.');
     }
     
@@ -528,7 +529,13 @@ class ApplyController extends Controller
     private function checkKelulusan(Pelamar $pelamar, Lowongan $lowongan)
     {
         $pengajuan = $lowongan->pengajuan;
-        $kriteria = is_array($pengajuan->kriteria) ? $pengajuan->kriteria : json_decode($pengajuan->kriteria, true);
+        $kriteria = $pengajuan->kriteria;
+        if (is_string($kriteria)) {
+            $kriteria = json_decode($kriteria, true) ?? [];
+        }
+        if (!is_array($kriteria)) {
+            $kriteria = [];
+        }
     
         // Urutan pendidikan dari rendah ke tinggi
         $tingkat_pendidikan = [
@@ -615,7 +622,7 @@ class ApplyController extends Controller
             'psikotest_selesai_at' => now(),
         ]);
     
-        return redirect()->route('frontend.apply.success', $pelamar)
+        return redirect()->to(URL::signedRoute('frontend.apply.success', ['pelamar' => $pelamar->id]))
             ->with('success', 'Terima kasih telah mengikuti psikotest. HRD akan menghubungi Anda untuk jadwal interview.');
     }
     public function failed()

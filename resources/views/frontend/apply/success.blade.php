@@ -46,7 +46,7 @@
         
         <div class="flex flex-col space-y-3">
             @if($pelamar->status == 'lolos_tahap1' && !$hasDetail)
-                <a href="{{ route('frontend.apply.detail_form', $pelamar) }}" 
+                <a href="{{ URL::signedRoute('frontend.apply.detail_form', $pelamar) }}" 
                    class="bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary-dark transition">
                     <i class="fas fa-arrow-right mr-2"></i> Lanjutkan ke Tahap Selanjutnya
                 </a>

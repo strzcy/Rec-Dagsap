@@ -80,7 +80,7 @@
                 </div>
             </div>
             
-            <form action="{{ route('frontend.apply.store_detail', $pelamar) }}" method="POST" id="multiStepForm">
+            <form action="{{ URL::signedRoute('frontend.apply.store_detail', $pelamar) }}" method="POST" id="multiStepForm">
                 @csrf
                 
                 <!-- Section A: Data Pribadi -->

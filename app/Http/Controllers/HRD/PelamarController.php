@@ -9,6 +9,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Gate;
+use App\Http\Requests\HRD\KirimJadwalInterviewRequest;
+use App\Http\Requests\HRD\UpdatePelamarStatusRequest;
 
 class PelamarController extends Controller
 {
@@ -43,23 +46,17 @@ class PelamarController extends Controller
     public function show(Pelamar $pelamar)
     {
         // Cek apakah pelamar ini dari lowongan HRD yang login
-        if ($pelamar->lowongan->hrd_id !== auth()->id()) {
-            abort(403);
-        }
+        Gate::authorize('view', $pelamar);
         
         $lowongans = Lowongan::where('hrd_id', auth()->id())->get();
         
         return view('hrd.pelamar.show', compact('pelamar', 'lowongans'));
     }
 
-    public function kirimJadwalInterview(Request $request, Pelamar $pelamar)
+    public function kirimJadwalInterview(KirimJadwalInterviewRequest $request, Pelamar $pelamar)
     {
-        $request->validate([
-            'tanggal_interview' => 'required|date',
-            'waktu_interview' => 'required',
-            'lokasi_interview' => 'required|string',
-            'catatan' => 'nullable|string'
-        ]);
+        Gate::authorize('updateStatus', $pelamar);
+        // Validated automatically by the FormRequest class
 
         $tanggal = $request->tanggal_interview;
         $waktu = $request->waktu_interview;
@@ -107,12 +104,10 @@ class PelamarController extends Controller
             ->with('whatsapp_url', $whatsappUrl);
     }
     
-    public function updateStatus(Request $request, Pelamar $pelamar)
+    public function updateStatus(UpdatePelamarStatusRequest $request, Pelamar $pelamar)
     {
-        $request->validate([
-            'status' => 'required|in:pending,lolos_tahap1,psikotest,lolos_psikotest,interview,diterima,ditolak',
-            'catatan' => 'nullable|string',
-        ]);
+        Gate::authorize('updateStatus', $pelamar);
+        // Validated automatically by the FormRequest class
         
         $pelamar->update([
             'status' => $request->status,
@@ -131,11 +126,9 @@ class PelamarController extends Controller
     // Tambahkan method ini di dalam class PelamarController
     public function downloadCv(Pelamar $pelamar)
     {
-        if ($pelamar->lowongan->hrd_id !== auth()->id()) {
-            abort(403);
-        }
+        Gate::authorize('downloadCv', $pelamar);
     
-        $path = storage_path('app/public/' . $pelamar->cv_path);
+        $path = storage_path('app/' . $pelamar->cv_path);
         if (file_exists($path)) {
             return response()->download($path, 'CV_' . $pelamar->nama_lengkap . '.pdf');
         }
@@ -145,11 +138,9 @@ class PelamarController extends Controller
 
     public function downloadIjazah(Pelamar $pelamar)
     {
-        if ($pelamar->lowongan->hrd_id !== auth()->id()) {
-            abort(403);
-        }
+        Gate::authorize('downloadIjazah', $pelamar);
     
-        $path = storage_path('app/public/' . $pelamar->ijazah_path);
+        $path = storage_path('app/' . $pelamar->ijazah_path);
         if (file_exists($path)) {
             return response()->download($path, 'Ijazah_' . $pelamar->nama_lengkap . '.pdf');
         }
@@ -190,9 +181,7 @@ class PelamarController extends Controller
 
     public function printData(Pelamar $pelamar)
     {
-        if ($pelamar->lowongan->hrd_id !== auth()->id()) {
-            abort(403);
-        }
+        Gate::authorize('print', $pelamar);
     
         return view('hrd.pelamar.print', compact('pelamar'));
     }

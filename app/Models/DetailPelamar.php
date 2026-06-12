@@ -64,6 +64,61 @@ class DetailPelamar extends Model
         'saudara_kandung' => 'array',
     ];
 
+    private function getEncryptedAttribute($value)
+    {
+        if (empty($value)) {
+            return $value;
+        }
+
+        if (app()->runningInConsole()) {
+            try {
+                return decrypt($value);
+            } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
+                return $value;
+            }
+        }
+
+        if (!auth()->check() || !auth()->user()->isHrd()) {
+            return '********';
+        }
+
+        try {
+            return decrypt($value);
+        } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
+            return $value;
+        }
+    }
+
+    public function getNoKtpAttribute($value)
+    {
+        return $this->getEncryptedAttribute($value);
+    }
+
+    public function setNoKtpAttribute($value)
+    {
+        $this->attributes['no_ktp'] = $value ? encrypt($value) : null;
+    }
+
+    public function getNoNpwpAttribute($value)
+    {
+        return $this->getEncryptedAttribute($value);
+    }
+
+    public function setNoNpwpAttribute($value)
+    {
+        $this->attributes['no_npwp'] = $value ? encrypt($value) : null;
+    }
+
+    public function getNoBpjsKetenagakerjaanAttribute($value)
+    {
+        return $this->getEncryptedAttribute($value);
+    }
+
+    public function setNoBpjsKetenagakerjaanAttribute($value)
+    {
+        $this->attributes['no_bpjs_ketenagakerjaan'] = $value ? encrypt($value) : null;
+    }
+
     public function pelamar()
     {
         return $this->belongsTo(Pelamar::class);

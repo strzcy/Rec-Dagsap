@@ -165,6 +165,53 @@
     </div>
 </div>
 
+<!-- Approve Modal -->
+<div id="approveModal" class="fixed inset-0 bg-gray-600/50 backdrop-blur-sm hidden items-center justify-center z-50">
+    <div class="bg-white rounded-xl shadow-lg max-w-md w-full mx-4 overflow-hidden border border-gray-100">
+        <div class="p-6 text-left">
+            <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                <i class="fas fa-check-circle text-green-600"></i> Setujui Pengajuan
+            </h3>
+            <form action="{{ route('management.pengajuan.approve', $pengajuan) }}" method="POST">
+                @csrf
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Nama Penyetuju</label>
+                    <input type="text" name="disetujui_oleh" required class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none" value="{{ Auth::user()->name }}">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Jabatan</label>
+                    <input type="text" name="jabatan_penyetuju" required class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none" placeholder="Contoh: Manager FAT">
+                </div>
+                <div class="flex justify-end gap-3 pt-4 border-t">
+                    <button type="button" onclick="closeApproveModal()" class="px-4 py-2 border rounded-lg hover:bg-gray-50 text-gray-700 font-medium">Batal</button>
+                    <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 font-medium">Setujui</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Reject Modal -->
+<div id="rejectModal" class="fixed inset-0 bg-gray-600/50 backdrop-blur-sm hidden items-center justify-center z-50">
+    <div class="bg-white rounded-xl shadow-lg max-w-md w-full mx-4 overflow-hidden border border-gray-100">
+        <div class="p-6 text-left">
+            <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                <i class="fas fa-times-circle text-red-600"></i> Tolak Pengajuan
+            </h3>
+            <form action="{{ route('management.pengajuan.reject', $pengajuan) }}" method="POST">
+                @csrf
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Alasan Penolakan</label>
+                    <textarea name="alasan_penolakan" required rows="4" class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-red-500 focus:outline-none" placeholder="Masukkan alasan penolakan..."></textarea>
+                </div>
+                <div class="flex justify-end gap-3 pt-4 border-t">
+                    <button type="button" onclick="closeRejectModal()" class="px-4 py-2 border rounded-lg hover:bg-gray-50 text-gray-700 font-medium">Batal</button>
+                    <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 font-medium">Tolak</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 @push('scripts')
 <script>    
