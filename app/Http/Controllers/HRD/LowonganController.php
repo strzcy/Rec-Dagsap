@@ -118,7 +118,7 @@ class LowonganController extends Controller
             $pengajuan->posisi;
 
         $qrCodeManager = QrCode::errorCorrection('L')
-            ->size(120)
+            ->size(70)
             ->color(0, 0, 0)
             ->generate($qrDataManager);
 
@@ -130,7 +130,7 @@ class LowonganController extends Controller
             $pengajuan->nama_pemohon;
 
         $qrCodePemohon = QrCode::errorCorrection('L')
-            ->size(120)
+            ->size(70)
             ->color(0, 0, 0)
             ->generate($qrDataPemohon);
 
