@@ -154,6 +154,8 @@
                         <li><a href="https://www.instagram.com/dagsap_recruitment" class="text-gray-400 hover:text-primary transition flex items-center gap-1"><i class="fas fa-chevron-right text-[10px] opacity-50"></i> Instagram </a></li>
                         <li><a href="https://www.facebook.com/profile.php?id=61584738693005" class="text-gray-400 hover:text-primary transition flex items-center gap-1"><i class="fas fa-chevron-right text-[10px] opacity-50"></i> Facebook </a></li>
                         <li><a href="https://www.linkedin.com/company/dagsap" class="text-gray-400 hover:text-primary transition flex items-center gap-1"><i class="fas fa-chevron-right text-[10px] opacity-50"></i> LinkedIn </a></li>
+                        <li><a href="https://compose.mail.yahoo.com/?to=hrddagsap@yahoo.com" class="text-gray-400 hover:text-primary transition flex items-center gap-1"><i class="fas fa-chevron-right text-[10px] opacity-50"></i> Email </a></li>
+
                     </ul>
                 </div>
 

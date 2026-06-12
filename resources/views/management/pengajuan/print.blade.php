@@ -210,11 +210,32 @@
                 display: block;
                 white-space: nowrap;
             }
+
+            .ssign-name {
+                border-bottom: 1px solid black;
+                font-weight: 500;
+                width: 100%;
+                display: block;
+                white-space: inherit;
+            }
             
             .sign-box b {
                 font-size: 11px;
                 margin-top: 2px;
             }
+
+            #iden b{
+                white-space: inherit;
+            }
+
+            #iden div {
+                white-space: inherit;
+            }
+
+            #iden span {
+                white-space: inherit;
+            }
+            
 
             /* TOMBOL PRINT */
             .print-btn {
@@ -385,15 +406,15 @@
                             &nbsp;
                         @endif
                     </div>
-                    <div class="sign-name">{{ $pengajuan->nama_pemohon ?? '' }}</div>
+                    <div class="ssign-name"> {{ $pengajuan->nama_pemohon ?? '' }}    </div>
                     <b>PEMOHON</b>
                 </div>
 
                 <!-- DIKETAHUI OLEH (MANAGER) -->
                 <div class="sign-box dik">
                     <span class="signature-title">Diketahui Oleh</span>
-                    <div class="flex-container">
-                        <div class="sub-sign">
+                    <div id="iden" class="flex-container">
+                        <div id="iden" class="sub-sign">
                             <div class="qr-area">
                                 @if($pengajuan->status == 'pending')
                                 @endif
@@ -409,7 +430,7 @@
                             <div class="sign-name">{{ $pengajuan->disetujui_oleh ?? 'Pending / Tidak disetujui' }}</div>
                             <b style="text-transform: uppercase;">{{ $pengajuan->jabatan_penyetuju ?? '-' }}</b>
                         </div>
-                        <div class="sub-sign">
+                        <div id="iden" class="sub-sign">
                             <div class="qr-area"></div>
                             <div class="sign-name" style="color: transparent;">hrd</div>
                             <b>HRD</b>
