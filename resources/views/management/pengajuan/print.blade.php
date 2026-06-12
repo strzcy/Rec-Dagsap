@@ -184,7 +184,7 @@
 
             /* Area QR agar semua kolom punya tinggi yang sama */
             .qr-area {
-                height: 90px;
+                height: 160px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -192,8 +192,8 @@
 
             .qr-area svg,
             .qr-area img {
-                max-width: 70px;
-                max-height: 70px;
+                max-width: 140px;
+                max-height: 140px;
             }
 
             /* Semua kolom tanda tangan tingginya sama */

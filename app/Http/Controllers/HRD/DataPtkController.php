@@ -48,7 +48,7 @@ class DataPtkController extends Controller
         $qrDataPemohon .= "Tanggal Pengajuan: " . $pengajuan->created_at->format('d/m/Y H:i') . "\n";
         $qrDataPemohon .= "Pemohon: " . $pengajuan->nama_pemohon;
         
-        $qrCodePemohon = QrCode::size(60)
+        $qrCodePemohon = QrCode::size(120)
             ->color(0, 0, 0)
             ->generate($qrDataPemohon);
         
@@ -63,7 +63,7 @@ class DataPtkController extends Controller
             $qrDataManager .= "Posisi: " . $pengajuan->posisi . "\n";
             $qrDataManager .= "Divisi: " . ($pengajuan->departemen->nama_divisi ?? '');
             
-            $qrCodeManager = QrCode::size(60)
+            $qrCodeManager = QrCode::size(120)
                 ->color(0, 0, 0)
                 ->generate($qrDataManager);
         }
