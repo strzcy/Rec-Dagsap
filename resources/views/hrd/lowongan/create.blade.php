@@ -19,7 +19,8 @@
                         data-posisi="{{ $pengajuan->posisi }}"
                         data-divisi="{{ $pengajuan->divisi->nama_divisi }}"
                         data-jumlah="{{ $pengajuan->jumlah }}"
-                        data-tanggal_dibutuhkan="{{ $pengajuan->tanggal_dibutuhkan ? \Carbon\Carbon::parse($pengajuan->tanggal_dibutuhkan)->format('d/m/Y') : '-' }}">
+                        data-tanggal_dibutuhkan="{{ $pengajuan->tanggal_dibutuhkan ? \Carbon\Carbon::parse($pengajuan->tanggal_dibutuhkan)->format('d/m/Y') : '-' }}"
+                        {{ request('pengajuan_id') == $pengajuan->id ? 'selected' : '' }}>
                     [{{ $pengajuan->divisi->nama_divisi }}] - {{ $pengajuan->posisi }} ({{ $pengajuan->jumlah }} orang)
                 </option>
                 @endforeach
@@ -72,7 +73,7 @@
                 <div><span class="text-gray-500">Posisi:</span> <span id="preview_posisi" class="font-medium"></span></div>
                 <div><span class="text-gray-500">Jumlah:</span> <span id="preview_jumlah" class="font-medium"></span> orang</div>
                 <div>
-                    <!-- <span class="text-gray-500">Dibutuhkan pada: {{ $pengajuan->tanggal_dibutuhkan ? \Carbon\Carbon::parse($pengajuan->tanggal_dibutuhkan)->format('d/m/Y') : '-' }}</span>  -->
+                    <span class="text-gray-500">Dibutuhkan pada: </span>
                     <span id="preview_tanggal_dibutuhkan" class="font-medium text-red-600"></span>
                 </div>
             </div>
@@ -94,8 +95,9 @@
     const deskripsiInput = document.getElementById('deskripsi');
     const previewDiv = document.getElementById('preview_pengajuan');
     
-    pengajuanSelect.addEventListener('change', function() {
-        const selectedOption = this.options[this.selectedIndex];
+    function updatePengajuanPreview() {
+        const selectedOption = pengajuanSelect.options[pengajuanSelect.selectedIndex];
+        if (!selectedOption) return;
         const posisi = selectedOption.getAttribute('data-posisi');
         const divisi = selectedOption.getAttribute('data-divisi');
         const jumlah = selectedOption.getAttribute('data-jumlah');
@@ -108,11 +110,19 @@
             document.getElementById('preview_divisi').textContent = divisi;
             document.getElementById('preview_posisi').textContent = posisi;
             document.getElementById('preview_jumlah').textContent = jumlah;
+            document.getElementById('preview_tanggal_dibutuhkan').textContent = tanggalDibutuhkan;
             previewDiv.classList.remove('hidden');
         } else {
             previewDiv.classList.add('hidden');
         }
-    });
+    }
+    
+    pengajuanSelect.addEventListener('change', updatePengajuanPreview);
+    
+    // Trigger preview if there is a preselected option
+    if (pengajuanSelect.value) {
+        updatePengajuanPreview();
+    }
     
     // Image upload handling
     const dropzone = document.getElementById('dropzone');
