@@ -2,6 +2,23 @@
 
 @section('title', 'Form Isian Data Diri - Dagsap Recruitment')
 
+@php
+    $stepWithErrors = 1;
+    if ($errors->any()) {
+        $step4Fields = [
+            'nama_ayah', 'agama_ayah', 'usia_ayah', 'pekerjaan_ayah', 'alamat_ayah',
+            'nama_ibu', 'agama_ibu', 'usia_ibu', 'pekerjaan_ibu', 'alamat_ibu',
+            'gaji_diharapkan', 'waktu_bergabung', 'kekuatan', 'kelemahan', 'pernyataan_setuju'
+        ];
+        foreach ($step4Fields as $field) {
+            if ($errors->has($field)) {
+                $stepWithErrors = 4;
+                break;
+            }
+        }
+    }
+@endphp
+
 @push('styles')
 <style>
     .step {
@@ -57,6 +74,17 @@
                     Bacalah petunjuk pengisiannya dengan baik dan isilah dengan data yang benar sesuai identitas diri anda.
                 </p>
             </div>
+            
+            @if ($errors->any())
+            <div class="bg-red-50 border border-red-200 text-red-800 rounded-lg p-4 mb-6">
+                <h4 class="font-semibold mb-2"><i class="fas fa-exclamation-triangle mr-2"></i> Terjadi kesalahan pengisian data:</h4>
+                <ul class="list-disc list-inside text-sm space-y-1">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
             
             <!-- Progress Steps -->
             <div class="mb-8">
@@ -122,7 +150,7 @@
 
 @push('scripts')
 <script>
-    let currentStep = 1;
+    let currentStep = {{ $stepWithErrors }};
     const totalSteps = 4;
     
     function updateSteps() {
@@ -183,13 +211,45 @@
         let errorMessage = 'Harap isi semua field yang wajib diisi (ditandai *)';
     
         requiredFields.forEach(field => {
-            if (!field.value.trim()) {
+            let fieldValid = true;
+            if (field.type === 'checkbox') {
+                if (!field.checked) {
+                    fieldValid = false;
+                }
+            } else if (field.type === 'radio') {
+                const name = field.getAttribute('name');
+                const checkedRadio = currentSection.querySelector(`input[name="${name}"]:checked`);
+                if (!checkedRadio) {
+                    fieldValid = false;
+                }
+            } else {
+                if (!field.value.trim()) {
+                    fieldValid = false;
+                }
+            }
+
+            if (!fieldValid) {
                 field.classList.add('border-red-500');
                 isValid = false;
             } else {
                 field.classList.remove('border-red-500');
             }
         });
+
+        // Validasi khusus minlength
+        if (isValid) {
+            const minLengthFields = currentSection.querySelectorAll('[minlength]');
+            minLengthFields.forEach(field => {
+                const minLen = parseInt(field.getAttribute('minlength'));
+                if (field.value.trim().length < minLen) {
+                    field.classList.add('border-red-500');
+                    isValid = false;
+                    errorMessage = `Kekuatan dan Kelemahan masing-masing minimal harus diisi ${minLen} karakter!`;
+                } else {
+                    field.classList.remove('border-red-500');
+                }
+            });
+        }
     
         // Validasi khusus per section
         if (currentStep === 3 && isValid) {
