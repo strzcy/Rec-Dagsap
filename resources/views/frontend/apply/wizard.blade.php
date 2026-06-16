@@ -175,11 +175,13 @@
         }
     }
     
+    // VALIDASI LENGKAP (HANYA SATU)
     function validateCurrentStep() {
         const currentSection = document.getElementById(`section-${String.fromCharCode(64 + currentStep)}`);
         const requiredFields = currentSection.querySelectorAll('[required]');
         let isValid = true;
-        
+        let errorMessage = 'Harap isi semua field yang wajib diisi (ditandai *)';
+    
         requiredFields.forEach(field => {
             if (!field.value.trim()) {
                 field.classList.add('border-red-500');
@@ -188,11 +190,39 @@
                 field.classList.remove('border-red-500');
             }
         });
-        
-        if (!isValid) {
-            alert('Harap isi semua field yang wajib diisi (ditandai *)');
+    
+        // Validasi khusus per section
+        if (currentStep === 3 && isValid) {
+            const skillNames = document.querySelectorAll('input[name="keterampilan_nama[]"]');
+            let filledSkills = 0;
+            skillNames.forEach(skill => {
+                if (skill.value.trim()) filledSkills++;
+            });
+            if (filledSkills < 3) {
+                isValid = false;
+                errorMessage = 'Minimal 3 keterampilan harus diisi!';
+            }
         }
-        
+    
+        if (currentStep === 4 && isValid) {
+            const bahasaNames = document.querySelectorAll('input[name="bahasa_nama[]"]');
+            for (let i = 0; i < bahasaNames.length; i++) {
+                if (bahasaNames[i] && bahasaNames[i].value.trim()) {
+                    const membaca = document.querySelector(`select[name="bahasa_membaca[${i}]"]`)?.value;
+                    const berbicara = document.querySelector(`select[name="bahasa_berbicara[${i}]"]`)?.value;
+                    const menulis = document.querySelector(`select[name="bahasa_menulis[${i}]"]`)?.value;
+                    if (!membaca || !berbicara || !menulis) {
+                        isValid = false;
+                        errorMessage = 'Untuk setiap bahasa asing, wajib memilih level Membaca, Berbicara, dan Menulis!';
+                    }
+                }
+            }
+        }
+    
+        if (!isValid) {
+            alert(errorMessage);
+        }
+    
         return isValid;
     }
     
@@ -226,34 +256,35 @@
 
     // Toggle functions for family forms
     function togglePasanganForm(show) {
-        document.getElementById('pasangan-form').classList.toggle('hidden', !show);
+        const form = document.getElementById('pasangan-form');
+        if (form) form.classList.toggle('hidden', !show);
     }
-
     function toggleAnakForm(show) {
-        document.getElementById('anak-form').classList.toggle('hidden', !show);
+        const form = document.getElementById('anak-form');
+        if (form) form.classList.toggle('hidden', !show);
     }
-
     function toggleSaudaraForm(show) {
-        document.getElementById('saudara-form').classList.toggle('hidden', !show);
+        const form = document.getElementById('saudara-form');
+        if (form) form.classList.toggle('hidden', !show);
     }
-
     function toggleSakitBerat(show) {
-        document.getElementById('sakit-berat-detail').classList.toggle('hidden', !show);
+        const form = document.getElementById('sakit-berat-detail');
+        if (form) form.classList.toggle('hidden', !show);
     }
-
     function togglePenyakitKeturunan(show) {
-        document.getElementById('penyakit-keturunan-detail').classList.toggle('hidden', !show);
+        const form = document.getElementById('penyakit-keturunan-detail');
+        if (form) form.classList.toggle('hidden', !show);
     }
-
     function toggleKacamata(show) {
-        document.getElementById('kacamata-detail').classList.toggle('hidden', !show);
+        const form = document.getElementById('kacamata-detail');
+        if (form) form.classList.toggle('hidden', !show);
     }
-
     function toggleAlergi(show) {
-        document.getElementById('alergi-detail').classList.toggle('hidden', !show);
+        const form = document.getElementById('alergi-detail');
+        if (form) form.classList.toggle('hidden', !show);
     }
 
-    // Setup dynamic add for all dynamic containers
+    // Setup dynamic add
     function setupDynamicAdd(btnId, containerId, itemClass, removeBtnClass) {
         document.getElementById(btnId)?.addEventListener('click', function() {
             const container = document.getElementById(containerId);
@@ -278,7 +309,6 @@
     setupDynamicAdd('tambah-penyakit', 'penyakit-keluarga-container', '.penyakit-item', '.remove-penyakit');
     setupDynamicAdd('tambah-saudara-kandung', 'saudara-kandung-container', '.saudara-kandung-item', '.remove-saudara-kandung');
 
-    // Remove handlers for existing items
     document.querySelectorAll('.remove-pekerjaan, .remove-referensi, .remove-saudara, .remove-anak, .remove-penyakit, .remove-saudara-kandung').forEach(btn => {
         btn.addEventListener('click', function() {
             const container = this.closest('[id$="-container"]');

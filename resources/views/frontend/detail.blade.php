@@ -98,10 +98,10 @@
             @endphp
             @if(!empty($persyaratan))
             <div class="mb-8">
-                <h2 class="text-xl font-semibold text-gray-800 mb-3 border-l-4 border-primary pl-3">Persyaratan Lainnya</h2>
+                <!-- <h2 class="text-xl font-semibold text-gray-800 mb-3 border-l-4 border-primary pl-3">Persyaratan Lainnya</h2> -->
                 <ul class="list-disc list-inside space-y-1 text-gray-700">
                     @foreach($persyaratan as $item)
-                        <li>{{ $item }}</li>
+                        <!-- <li>{{ $item }}</li> -->
                     @endforeach
                 </ul>
             </div>

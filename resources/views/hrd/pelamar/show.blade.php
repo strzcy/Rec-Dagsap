@@ -217,12 +217,156 @@
         <!-- I. DATA KELUARGA -->
         <div class="detail-section">
             <h4>I. DATA KELUARGA</h4>
-            @if($detail->data_pasangan)
-            <div class="mb-2"><strong>Pasangan:</strong> {{ json_encode($detail->data_pasangan) }}</div>
-            @endif
-            @if($detail->data_orang_tua)
-            <div class="mb-2"><strong>Orang Tua:</strong> {{ json_encode($detail->data_orang_tua) }}</div>
-            @endif
+    
+            @php
+                $dataPasangan = is_array($detail->data_pasangan ?? null) ? $detail->data_pasangan : json_decode($detail->data_pasangan ?? '{}', true);
+                $dataAnak = is_array($detail->data_anak ?? null) ? $detail->data_anak : json_decode($detail->data_anak ?? '[]', true);
+                $riwayatPenyakitKeluarga = is_array($detail->riwayat_penyakit_keluarga ?? null) ? $detail->riwayat_penyakit_keluarga : json_decode($detail->riwayat_penyakit_keluarga ?? '[]', true);
+                $dataOrangTua = is_array($detail->data_orang_tua ?? null) ? $detail->data_orang_tua : json_decode($detail->data_orang_tua ?? '{}', true);
+                $kontakDarurat = is_array($detail->kontak_darurat ?? null) ? $detail->kontak_darurat : json_decode($detail->kontak_darurat ?? '{}', true);
+                $saudaraKandung = is_array($detail->saudara_kandung ?? null) ? $detail->saudara_kandung : json_decode($detail->saudara_kandung ?? '[]', true);
+            @endphp
+    
+            <!-- 1. Data Istri/Suami -->
+            <div class="mt-3">
+                <div class="font-semibold text-sm text-gray-700">1. Data Istri/Suami</div>
+                @if($detail->punya_pasangan && !empty($dataPasangan) && isset($dataPasangan['nama_lengkap']))
+                    <div class="grid grid-cols-2 gap-2 text-sm mt-1">
+                        <div><span class="text-gray-500">Nama Lengkap:</span> {{ $dataPasangan['nama_lengkap'] ?? '-' }}</div>
+                        <div><span class="text-gray-500">Tempat/Tgl Lahir:</span> {{ $dataPasangan['tempat_lahir'] ?? '-' }}, {{ isset($dataPasangan['tanggal_lahir']) ? \Carbon\Carbon::parse($dataPasangan['tanggal_lahir'])->format('d/m/Y') : '-' }}</div>
+                        <div><span class="text-gray-500">Tanggal Menikah:</span> {{ isset($dataPasangan['tanggal_menikah']) ? \Carbon\Carbon::parse($dataPasangan['tanggal_menikah'])->format('d/m/Y') : '-' }}</div>
+                        <div><span class="text-gray-500">Agama:</span> {{ $dataPasangan['agama'] ?? '-' }}</div>
+                        <div><span class="text-gray-500">Alamat:</span> {{ $dataPasangan['alamat'] ?? '-' }}</div>
+                        <div><span class="text-gray-500">Pendidikan:</span> {{ $dataPasangan['pendidikan'] ?? '-' }}</div>
+                        <div><span class="text-gray-500">Pekerjaan:</span> {{ $dataPasangan['pekerjaan'] ?? '-' }}</div>
+                        <div><span class="text-gray-500">Jabatan:</span> {{ $dataPasangan['jabatan'] ?? '-' }}</div>
+                    </div>
+                @else
+                    <div class="text-sm text-gray-500 italic">Tidak ada data pasangan (Status: {{ $detail->status_perkawinan ?? 'Lajang' }})</div>
+                @endif
+            </div>
+    
+            <!-- 2. Data Anak -->
+            <div class="mt-3">
+                <div class="font-semibold text-sm text-gray-700">2. Data Anak</div>
+                @if($detail->punya_anak && !empty($dataAnak))
+                    <div class="overflow-x-auto mt-1">
+                        <table class="min-w-full text-xs border">
+                            <thead class="bg-gray-50">
+                                <tr><th class="px-2 py-1 border">No</th><th class="px-2 py-1 border">Nama</th><th class="px-2 py-1 border">L/P</th><th class="px-2 py-1 border">Tempat/Tgl Lahir</th><th class="px-2 py-1 border">Pendidikan</th></tr>
+                            </thead>
+                            <tbody>
+                                @foreach($dataAnak as $idx => $anak)
+                                <td><td class="px-2 py-1 border" align="center">{{ $idx+1 }}</td>
+                                    <td class="px-2 py-1 border">{{ $anak['nama'] ?? '-' }}</td>
+                                    <td class="px-2 py-1 border">{{ $anak['jenis_kelamin'] ?? '-' }}</td>
+                                    <td class="px-2 py-1 border">{{ $anak['tempat_lahir'] ?? '-' }}, {{ isset($anak['tanggal_lahir']) ? \Carbon\Carbon::parse($anak['tanggal_lahir'])->format('d/m/Y') : '-' }}</td>
+                                    <td class="px-2 py-1 border">{{ $anak['pendidikan'] ?? '-' }}</td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                @else
+                    <div class="text-sm text-gray-500 italic">Tidak ada data anak</div>
+                @endif
+            </div>
+    
+            <!-- 3. Riwayat Penyakit Keluarga -->
+            <div class="mt-3">
+                <div class="font-semibold text-sm text-gray-700">3. Riwayat Penyakit Istri/Suami/Anak</div>
+                @if(!empty($riwayatPenyakitKeluarga))
+                    <div class="overflow-x-auto mt-1">
+                        <table class="min-w-full text-xs border">
+                            <thead class="bg-gray-50">
+                                <tr><th class="px-2 py-1 border">No</th><th class="px-2 py-1 border">Nama</th><th class="px-2 py-1 border">Jenis Penyakit</th><th class="px-2 py-1 border">Hubungan</th><th class="px-2 py-1 border">Tahun Dirawat</th><th class="px-2 py-1 border">Tempat</th></tr>
+                            </thead>
+                            <tbody>
+                                @foreach($riwayatPenyakitKeluarga as $idx => $penyakit)
+                                <tr><td class="px-2 py-1 border" align="center">{{ $idx+1 }}</td>
+                                    <td class="px-2 py-1 border">{{ $penyakit['nama'] ?? '-' }}</td>
+                                    <td class="px-2 py-1 border">{{ $penyakit['jenis_penyakit'] ?? '-' }}</td>
+                                    <td class="px-2 py-1 border">{{ $penyakit['hubungan'] ?? '-' }}</td>
+                                    <td class="px-2 py-1 border">{{ $penyakit['tahun_dirawat'] ?? '-' }}</td>
+                                    <td class="px-2 py-1 border">{{ $penyakit['tempat'] ?? '-' }}</td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                @else
+                    <div class="text-sm text-gray-500 italic">Tidak ada riwayat penyakit</div>
+                @endif
+            </div>
+    
+            <!-- 4. Orang Tua (WAJIB DIISI) -->
+            <div class="mt-3">
+                <div class="font-semibold text-sm text-gray-700">4. Orang Tua</div>
+                <div class="grid grid-cols-2 gap-3 text-sm mt-1">
+                    <div class="border p-2">
+                        <div class="font-medium text-primary">Ayah</div>
+                        <div><span class="text-gray-500">Nama Lengkap:</span> {{ $dataOrangTua['ayah_nama'] ?? '-' }}</div>
+                        <div><span class="text-gray-500">Agama:</span> {{ $dataOrangTua['ayah_agama'] ?? '-' }}</div>
+                        <div><span class="text-gray-500">Usia:</span> {{ $dataOrangTua['ayah_usia'] ?? '-' }}</div>
+                        <div><span class="text-gray-500">Pekerjaan:</span> {{ $dataOrangTua['ayah_pekerjaan'] ?? '-' }}</div>
+                        <div><span class="text-gray-500">Alamat & No. Telp:</span> {{ $dataOrangTua['ayah_alamat'] ?? '-' }}</div>
+                    </div>
+                    <div class="border p-2">
+                        <div class="font-medium text-primary">Ibu</div>
+                        <div><span class="text-gray-500">Nama Lengkap:</span> {{ $dataOrangTua['ibu_nama'] ?? '-' }}</div>
+                        <div><span class="text-gray-500">Agama:</span> {{ $dataOrangTua['ibu_agama'] ?? '-' }}</div>
+                        <div><span class="text-gray-500">Usia:</span> {{ $dataOrangTua['ibu_usia'] ?? '-' }}</div>
+                        <div><span class="text-gray-500">Pekerjaan:</span> {{ $dataOrangTua['ibu_pekerjaan'] ?? '-' }}</div>
+                        <div><span class="text-gray-500">Alamat & No. Telp:</span> {{ $dataOrangTua['ibu_alamat'] ?? '-' }}</div>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- 5. Kontak Darurat -->
+            <div class="mt-3">
+                <div class="font-semibold text-sm text-gray-700">5. Kontak Darurat</div>
+                @if(!empty($kontakDarurat) && isset($kontakDarurat['nama']))
+                    <div class="grid grid-cols-2 gap-2 text-sm mt-1">
+                        <div><span class="text-gray-500">Nama:</span> {{ $kontakDarurat['nama'] ?? '-' }}</div>
+                        <div><span class="text-gray-500">Hubungan:</span> {{ $kontakDarurat['hubungan'] ?? '-' }}</div>
+                        <div class="col-span-2"><span class="text-gray-500">Alamat:</span> {{ $kontakDarurat['alamat'] ?? '-' }}</div>
+                        <div><span class="text-gray-500">No. Telp:</span> {{ $kontakDarurat['no_telp'] ?? '-' }}</div>
+                        <div><span class="text-gray-500">No. HP:</span> {{ $kontakDarurat['no_hp'] ?? '-' }}</div>
+                        <div><span class="text-gray-500">Pekerjaan:</span> {{ $kontakDarurat['pekerjaan'] ?? '-' }}</div>
+                        <div><span class="text-gray-500">Jabatan:</span> {{ $kontakDarurat['jabatan'] ?? '-' }}</div>
+                    </div>
+                @else
+                    <div class="text-sm text-gray-500 italic">Tidak ada data kontak darurat</div>
+                @endif
+            </div>
+    
+            <!-- 6. Saudara Kandung -->
+            <div class="mt-3">
+                <div class="font-semibold text-sm text-gray-700">6. Saudara Kandung</div>
+                @if(!empty($saudaraKandung))
+                    <div class="overflow-x-auto mt-1">
+                        <table class="min-w-full text-xs border">
+                            <thead class="bg-gray-50">
+                                <tr><th class="px-2 py-1 border">No</th><th class="px-2 py-1 border">Nama</th><th class="px-2 py-1 border">L/P</th><th class="px-2 py-1 border">Usia</th><th class="px-2 py-1 border">Pendidikan</th><th class="px-2 py-1 border">Pekerjaan</th><th class="px-2 py-1 border">Hubungan</th></tr>
+                            </thead>
+                            <tbody>
+                                @foreach($saudaraKandung as $idx => $saudara)
+                                <tr><td class="px-2 py-1 border" align="center">{{ $idx+1 }}</td>
+                                    <td class="px-2 py-1 border">{{ $saudara['nama'] ?? '-' }}</td>
+                                    <td class="px-2 py-1 border">{{ $saudara['jenis_kelamin'] ?? '-' }}</td>
+                                    <td class="px-2 py-1 border">{{ $saudara['usia'] ?? '-' }}</td>
+                                    <td class="px-2 py-1 border">{{ $saudara['pendidikan'] ?? '-' }}</td>
+                                    <td class="px-2 py-1 border">{{ $saudara['pekerjaan'] ?? '-' }}</td>
+                                    <td class="px-2 py-1 border">{{ $saudara['hubungan'] ?? '-' }}</td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                @else
+                    <div class="text-sm text-gray-500 italic">Tidak ada data saudara kandung</div>
+                @endif
+            </div>
         </div>
         
         <!-- J. REMUNERASI & K. WAKTU & L. PERNYATAAN -->
@@ -344,20 +488,7 @@
     </div>
 </div>      
 
-<!-- Modal Preview File -->
-<div id="previewModal" class="fixed inset-0 bg-black bg-opacity-75 hidden items-center justify-center z-50 p-4">
-    <div class="bg-white rounded-lg w-full max-w-4xl max-h-[90vh] overflow-hidden">
-        <div class="flex justify-between items-center p-4 border-b">
-            <h3 class="font-semibold text-lg" id="previewTitle">Preview File</h3>
-            <button onclick="closePreview()" class="text-gray-500 hover:text-gray-700">
-                <i class="fas fa-times text-xl"></i>
-            </button>
-        </div>
-        <div class="p-4 overflow-auto max-h-[calc(90vh-80px)]">
-            <iframe id="previewFrame" src="" class="w-full min-h-[500px] border-0"></iframe>
-        </div>
-    </div>
-</div>
+
 
 <!-- Modal Reject (jika belum ada) -->
 <div id="rejectModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">

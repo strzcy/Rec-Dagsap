@@ -72,7 +72,7 @@
                 <div><span class="text-gray-500">Posisi:</span> <span id="preview_posisi" class="font-medium"></span></div>
                 <div><span class="text-gray-500">Jumlah:</span> <span id="preview_jumlah" class="font-medium"></span> orang</div>
                 <div>
-                    <span class="text-gray-500">Dibutuhkan pada:</span> 
+                    <!-- <span class="text-gray-500">Dibutuhkan pada: {{ $pengajuan->tanggal_dibutuhkan ? \Carbon\Carbon::parse($pengajuan->tanggal_dibutuhkan)->format('d/m/Y') : '-' }}</span>  -->
                     <span id="preview_tanggal_dibutuhkan" class="font-medium text-red-600"></span>
                 </div>
             </div>

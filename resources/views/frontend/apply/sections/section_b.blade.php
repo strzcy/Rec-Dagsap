@@ -7,10 +7,10 @@
         <div id="pendidikan-formal-container">
             <div class="pendidikan-formal-item bg-gray-50 p-4 rounded-lg mb-3">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                    <div><input type="text" name="pendidikan_tingkat[]" placeholder="Tingkat Pendidikan (SD/SMP/SMA/D3/S1/S2)" class="w-full border rounded-lg px-3 py-2"></div>
-                    <div><input type="text" name="pendidikan_nama[]" placeholder="Nama Sekolah/Universitas" class="w-full border rounded-lg px-3 py-2"></div>
-                    <div><input type="text" name="pendidikan_kota[]" placeholder="Kota" class="w-full border rounded-lg px-3 py-2"></div>
-                    <div><input type="text" name="pendidikan_jurusan[]" placeholder="Jurusan" class="w-full border rounded-lg px-3 py-2"></div>
+                    <div><input type="text" name="pendidikan_tingkat[]" placeholder="Tingkat Pendidikan (SD/SMP/SMA/D3/S1/S2)" class="w-full border rounded-lg px-3 py-2" required></div>
+                    <div><input type="text" name="pendidikan_nama[]" placeholder="Nama Sekolah/Universitas" class="w-full border rounded-lg px-3 py-2" required></div>
+                    <div><input type="text" name="pendidikan_kota[]" placeholder="Kota" class="w-full border rounded-lg px-3 py-2" required></div>
+                    <div><input type="text" name="pendidikan_jurusan[]" placeholder="Jurusan" class="w-full border rounded-lg px-3 py-2" required></div>
                     <div><input type="number" name="pendidikan_tahun_masuk[]" placeholder="Tahun Masuk" class="w-full border rounded-lg px-3 py-2"></div>
                     <div><input type="number" name="pendidikan_tahun_lulus[]" placeholder="Tahun Lulus" class="w-full border rounded-lg px-3 py-2"></div>
                     <div><input type="text" name="pendidikan_ipk[]" placeholder="IPK/Nilai" class="w-full border rounded-lg px-3 py-2"></div>

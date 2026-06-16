@@ -202,20 +202,29 @@
     
     <!-- 3. Riwayat penyakit istri/suami/anak -->
     <div class="mb-6">
-        <h3 class="font-semibold text-gray-700 mb-3">3. Riwayat Penyakit Istri/Suami/Anak</h3>
-        <div id="penyakit-keluarga-container">
-            <div class="penyakit-item bg-gray-50 p-4 rounded-lg mb-3">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    <div><input type="text" name="penyakit_nama[]" placeholder="Nama" class="w-full border rounded-lg px-3 py-2"></div>
-                    <div><input type="text" name="penyakit_jenis[]" placeholder="Jenis Penyakit" class="w-full border rounded-lg px-3 py-2"></div>
-                    <div><input type="text" name="penyakit_hubungan[]" placeholder="Hubungan" class="w-full border rounded-lg px-3 py-2"></div>
-                    <div><input type="text" name="penyakit_tahun[]" placeholder="Tahun Dirawat" class="w-full border rounded-lg px-3 py-2"></div>
-                    <div><input type="text" name="penyakit_tempat[]" placeholder="Tempat" class="w-full border rounded-lg px-3 py-2"></div>
-                </div>
-                <button type="button" class="remove-penyakit text-red-500 text-sm mt-2 hover:text-red-700">Hapus</button>
-            </div>
+        <div class="flex items-center justify-between mb-3">
+            <h3 class="font-semibold text-gray-700">3. Riwayat Penyakit Istri/Suami/Anak</h3>
+            <label class="inline-flex items-center">
+                <input type="checkbox" name="punya_penyakit_keluarga" value="1" class="mr-2" onclick="togglePenyakitKeluargaForm(this.checked)">
+                <span class="text-sm">Punya Riwayat Penyakit Keluarga</span>
+            </label>
         </div>
-        <button type="button" id="tambah-penyakit" class="text-primary text-sm hover:text-primary-dark mt-2">+ Tambah Riwayat Penyakit</button>
+    
+        <div id="penyakit-keluarga-form" class="hidden">
+            <div id="penyakit-container">
+                <div class="penyakit-item bg-gray-50 p-4 rounded-lg mb-3">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div><input type="text" name="penyakit_nama[]" placeholder="Nama" class="w-full border rounded-lg px-3 py-2"></div>
+                        <div><input type="text" name="penyakit_jenis[]" placeholder="Jenis Penyakit" class="w-full border rounded-lg px-3 py-2"></div>
+                        <div><input type="text" name="penyakit_hubungan[]" placeholder="Hubungan" class="w-full border rounded-lg px-3 py-2"></div>
+                        <div><input type="text" name="penyakit_tahun[]" placeholder="Tahun Dirawat" class="w-full border rounded-lg px-3 py-2"></div>
+                        <div><input type="text" name="penyakit_tempat[]" placeholder="Tempat" class="w-full border rounded-lg px-3 py-2"></div>
+                    </div>
+                    <button type="button" class="remove-penyakit text-red-500 text-sm mt-2 hover:text-red-700">Hapus</button>
+                </div>
+            </div>
+            <button type="button" id="tambah-penyakit" class="text-primary text-sm hover:text-primary-dark mt-2">+ Tambah Riwayat Penyakit</button>
+        </div>
     </div>
     
     <!-- 4. Orang Tua -->
@@ -298,15 +307,22 @@
     
     <!-- L. PERNYATAAN -->
     <h2 class="text-xl font-bold text-primary mb-4 border-b pb-2">L. PERNYATAAN</h2>
-    
+
     <div class="mb-6 p-4 bg-gray-50 rounded-lg">
         <p class="text-sm mb-4">Dengan ini saya menyatakan bahwa semua keterangan yang saya cantumkan dalam formulir ini adalah benar dan sah. Seandainya saya diterima dan kemudian terbukti bahwa salah satu saja keterangan saya tersebut tidak benar, maka saya bersedia mengundurkan diri tanpa persyaratan apapun dengan segera dari perusahaan ini.</p>
-        
+    
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-            <div><input type="text" name="tempat_pernyataan" placeholder="Tempat" class="w-full border rounded-lg px-3 py-2"></div>
-            <div><input type="date" name="tanggal_pernyataan" class="w-full border rounded-lg px-3 py-2"></div>
+            <div>
+                <label class="block text-sm font-medium mb-1">Tempat</label>
+                <input type="text" name="tempat_pernyataan" placeholder="Tempat" class="w-full border rounded-lg px-3 py-2">
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-1">Tanggal Pernyataan</label>
+                <input type="text" value="{{ date('d/m/Y') }}" class="w-full border rounded-lg px-3 py-2 bg-gray-100" readonly disabled>
+                <input type="hidden" name="tanggal_pernyataan" value="{{ date('Y-m-d') }}">
+            </div>
         </div>
-        
+    
         <div>
             <label class="inline-flex items-center">
                 <input type="checkbox" name="pernyataan_setuju" value="1" required class="mr-2">
@@ -315,3 +331,69 @@
         </div>
     </div>
 </div>
+
+<script>
+    function togglePasanganForm(show) {
+        const form = document.getElementById('pasangan-form');
+        if (!form) return;
+        form.classList.toggle('hidden', !show);
+        
+        const inputs = form.querySelectorAll('input, select, textarea');
+        inputs.forEach(input => {
+            if (show) {
+                input.setAttribute('required', 'required');
+            } else {
+                input.removeAttribute('required');
+                input.value = '';
+            }
+        });
+    }
+
+    function toggleAnakForm(show) {
+        const form = document.getElementById('anak-form');
+        if (!form) return;
+        form.classList.toggle('hidden', !show);
+        
+        const inputs = form.querySelectorAll('input, select, textarea');
+        inputs.forEach(input => {
+            if (show) {
+                input.setAttribute('required', 'required');
+            } else {
+                input.removeAttribute('required');
+                input.value = '';
+            }
+        });
+    }
+
+    function togglePenyakitKeluargaForm(show) {
+        const form = document.getElementById('penyakit-keluarga-form');
+        if (!form) return;
+        form.classList.toggle('hidden', !show);
+    
+        const inputs = form.querySelectorAll('input, select, textarea');
+        inputs.forEach(input => {
+            if (show) {
+                input.setAttribute('required', 'required');
+            } else {
+                input.removeAttribute('required');
+                input.value = '';
+            }
+        });
+    }
+
+    function toggleSaudaraPerusahaanForm(show) {
+        const form = document.getElementById('saudara-perusahaan-form');
+        if (!form) return;
+        form.classList.toggle('hidden', !show);
+        
+        const inputs = form.querySelectorAll('input, select, textarea');
+        inputs.forEach(input => {
+            if (show) {
+                input.setAttribute('required', 'required');
+            } else {
+                input.removeAttribute('required');
+                input.value = '';
+            }
+        });
+    }
+</script>
