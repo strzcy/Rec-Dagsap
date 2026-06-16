@@ -398,6 +398,12 @@
                         <div class="flex items-center">
                             @php
                                 $cvExtension = pathinfo($pelamar->cv_path, PATHINFO_EXTENSION);
+                                $cvSize = 0;
+                                if (Storage::disk('local')->exists($pelamar->cv_path)) {
+                                    $cvSize = Storage::disk('local')->size($pelamar->cv_path);
+                                } elseif (Storage::disk('public')->exists($pelamar->cv_path)) {
+                                    $cvSize = Storage::disk('public')->size($pelamar->cv_path);
+                                }
                             @endphp
                             @if($cvExtension == 'pdf')
                                 <i class="fas fa-file-pdf text-red-500 text-2xl mr-3"></i>
@@ -406,11 +412,11 @@
                             @endif
                             <div>
                                 <p class="text-sm font-medium">CV_{{ $pelamar->nama_lengkap }}.{{ $cvExtension }}</p>
-                                <p class="text-xs text-gray-500">Ukuran: {{ Storage::disk('public')->size($pelamar->cv_path) ? round(Storage::disk('public')->size($pelamar->cv_path) / 1024, 2) : 0 }} KB</p>
+                                <p class="text-xs text-gray-500">Ukuran: {{ $cvSize ? round($cvSize / 1024, 2) : 0 }} KB</p>
                             </div>
                         </div>
                         <div class="flex gap-2">
-                            <button onclick="previewFile('{{ Storage::url($pelamar->cv_path) }}', 'CV', '{{ $cvExtension }}')" class="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600">
+                            <button onclick="previewFile('{{ route('hrd.pelamar.preview-cv', $pelamar) }}', 'CV', '{{ $cvExtension }}')" class="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600">
                                 <i class="fas fa-eye mr-1"></i> Preview
                             </button>
                             <a href="{{ route('hrd.pelamar.download-cv', $pelamar) }}" class="bg-primary text-white px-3 py-1 rounded text-sm hover:bg-primary-dark">
@@ -433,6 +439,12 @@
                         <div class="flex items-center">
                             @php
                                 $ijazahExtension = pathinfo($pelamar->ijazah_path, PATHINFO_EXTENSION);
+                                $ijazahSize = 0;
+                                if (Storage::disk('local')->exists($pelamar->ijazah_path)) {
+                                    $ijazahSize = Storage::disk('local')->size($pelamar->ijazah_path);
+                                } elseif (Storage::disk('public')->exists($pelamar->ijazah_path)) {
+                                    $ijazahSize = Storage::disk('public')->size($pelamar->ijazah_path);
+                                }
                             @endphp
                             @if($ijazahExtension == 'pdf')
                                 <i class="fas fa-file-pdf text-red-500 text-2xl mr-3"></i>
@@ -443,11 +455,11 @@
                             @endif
                             <div>
                                 <p class="text-sm font-medium">Ijazah_{{ $pelamar->nama_lengkap }}.{{ $ijazahExtension }}</p>
-                                <p class="text-xs text-gray-500">Ukuran: {{ Storage::disk('public')->size($pelamar->ijazah_path) ? round(Storage::disk('public')->size($pelamar->ijazah_path) / 1024, 2) : 0 }} KB</p>
+                                <p class="text-xs text-gray-500">Ukuran: {{ $ijazahSize ? round($ijazahSize / 1024, 2) : 0 }} KB</p>
                             </div>
                         </div>
                         <div class="flex gap-2">
-                            <button onclick="previewFile('{{ Storage::url($pelamar->ijazah_path) }}', 'Ijazah', '{{ $ijazahExtension }}')" class="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600">
+                            <button onclick="previewFile('{{ route('hrd.pelamar.preview-ijazah', $pelamar) }}', 'Ijazah', '{{ $ijazahExtension }}')" class="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600">
                                 <i class="fas fa-eye mr-1"></i> Preview
                             </button>
                             <a href="{{ route('hrd.pelamar.download-ijazah', $pelamar) }}" class="bg-primary text-white px-3 py-1 rounded text-sm hover:bg-primary-dark">

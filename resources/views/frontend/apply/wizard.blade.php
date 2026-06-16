@@ -80,7 +80,7 @@
                 </div>
             </div>
             
-            <form action="{{ URL::signedRoute('frontend.apply.store_detail', $pelamar) }}" method="POST" id="multiStepForm">
+            <form action="{{ URL::signedRoute('frontend.apply.store_detail', $pelamar) }}" method="POST" id="multiStepForm" novalidate>
                 @csrf
                 
                 <!-- Section A: Data Pribadi -->
@@ -206,14 +206,18 @@
     
         if (currentStep === 4 && isValid) {
             const bahasaNames = document.querySelectorAll('input[name="bahasa_nama[]"]');
+            const bahasaMembaca = document.querySelectorAll('select[name="bahasa_membaca[]"]');
+            const bahasaBerbicara = document.querySelectorAll('select[name="bahasa_berbicara[]"]');
+            const bahasaMenulis = document.querySelectorAll('select[name="bahasa_menulis[]"]');
             for (let i = 0; i < bahasaNames.length; i++) {
                 if (bahasaNames[i] && bahasaNames[i].value.trim()) {
-                    const membaca = document.querySelector(`select[name="bahasa_membaca[${i}]"]`)?.value;
-                    const berbicara = document.querySelector(`select[name="bahasa_berbicara[${i}]"]`)?.value;
-                    const menulis = document.querySelector(`select[name="bahasa_menulis[${i}]"]`)?.value;
+                    const membaca = bahasaMembaca[i]?.value;
+                    const berbicara = bahasaBerbicara[i]?.value;
+                    const menulis = bahasaMenulis[i]?.value;
                     if (!membaca || !berbicara || !menulis) {
                         isValid = false;
                         errorMessage = 'Untuk setiap bahasa asing, wajib memilih level Membaca, Berbicara, dan Menulis!';
+                        break;
                     }
                 }
             }
@@ -254,34 +258,117 @@
     
     updateSteps();
 
+    // Form submit validation handler
+    document.getElementById('multiStepForm').addEventListener('submit', function(e) {
+        if (!validateCurrentStep()) {
+            e.preventDefault();
+        }
+    });
+
     // Toggle functions for family forms
     function togglePasanganForm(show) {
         const form = document.getElementById('pasangan-form');
-        if (form) form.classList.toggle('hidden', !show);
+        if (!form) return;
+        form.classList.toggle('hidden', !show);
+        form.querySelectorAll('input, select, textarea').forEach(input => {
+            if (show) {
+                input.setAttribute('required', 'required');
+            } else {
+                input.removeAttribute('required');
+                input.value = '';
+            }
+        });
     }
     function toggleAnakForm(show) {
         const form = document.getElementById('anak-form');
-        if (form) form.classList.toggle('hidden', !show);
+        if (!form) return;
+        form.classList.toggle('hidden', !show);
+        form.querySelectorAll('input, select, textarea').forEach(input => {
+            if (show) {
+                input.setAttribute('required', 'required');
+            } else {
+                input.removeAttribute('required');
+                input.value = '';
+            }
+        });
+    }
+    function togglePenyakitKeluargaForm(show) {
+        const form = document.getElementById('penyakit-keluarga-form');
+        if (!form) return;
+        form.classList.toggle('hidden', !show);
+        form.querySelectorAll('input, select, textarea').forEach(input => {
+            if (show) {
+                input.setAttribute('required', 'required');
+            } else {
+                input.removeAttribute('required');
+                input.value = '';
+            }
+        });
     }
     function toggleSaudaraForm(show) {
         const form = document.getElementById('saudara-form');
-        if (form) form.classList.toggle('hidden', !show);
+        if (!form) return;
+        form.classList.toggle('hidden', !show);
+        form.querySelectorAll('input, select, textarea').forEach(input => {
+            if (show) {
+                input.setAttribute('required', 'required');
+            } else {
+                input.removeAttribute('required');
+                input.value = '';
+            }
+        });
     }
     function toggleSakitBerat(show) {
         const form = document.getElementById('sakit-berat-detail');
-        if (form) form.classList.toggle('hidden', !show);
+        if (!form) return;
+        form.classList.toggle('hidden', !show);
+        form.querySelectorAll('input, select, textarea').forEach(input => {
+            if (show) {
+                input.setAttribute('required', 'required');
+            } else {
+                input.removeAttribute('required');
+                input.value = '';
+            }
+        });
     }
     function togglePenyakitKeturunan(show) {
         const form = document.getElementById('penyakit-keturunan-detail');
-        if (form) form.classList.toggle('hidden', !show);
+        if (!form) return;
+        form.classList.toggle('hidden', !show);
+        form.querySelectorAll('input, select, textarea').forEach(input => {
+            if (show) {
+                input.setAttribute('required', 'required');
+            } else {
+                input.removeAttribute('required');
+                input.value = '';
+            }
+        });
     }
     function toggleKacamata(show) {
         const form = document.getElementById('kacamata-detail');
-        if (form) form.classList.toggle('hidden', !show);
+        if (!form) return;
+        form.classList.toggle('hidden', !show);
+        form.querySelectorAll('input, select, textarea').forEach(input => {
+            if (show) {
+                input.setAttribute('required', 'required');
+            } else {
+                input.removeAttribute('required');
+                input.value = '';
+            }
+        });
     }
     function toggleAlergi(show) {
         const form = document.getElementById('alergi-detail');
-        if (form) form.classList.toggle('hidden', !show);
+        if (!form) return;
+        form.classList.toggle('hidden', !show);
+        form.querySelectorAll('input, select, textarea').forEach(input => {
+            if (show) {
+                input.setAttribute('required', 'required');
+            } else {
+                input.removeAttribute('required');
+                input.value = '';
+            }
+        });
     }
 
     // Setup dynamic add

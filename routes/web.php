@@ -80,6 +80,8 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         Route::post('/pelamar/{pelamar}/update-status', [PelamarController::class, 'updateStatus'])->name('pelamar.update-status');
         Route::get('/pelamar/{pelamar}/download-cv', [PelamarController::class, 'downloadCv'])->name('pelamar.download-cv');
         Route::get('/pelamar/{pelamar}/download-ijazah', [PelamarController::class, 'downloadIjazah'])->name('pelamar.download-ijazah');
+        Route::get('/pelamar/{pelamar}/preview-cv', [PelamarController::class, 'previewCv'])->name('pelamar.preview-cv');
+        Route::get('/pelamar/{pelamar}/preview-ijazah', [PelamarController::class, 'previewIjazah'])->name('pelamar.preview-ijazah');
         Route::get('/pelamar/{pelamar}/print', [PelamarController::class, 'printData'])->name('pelamar.print');
         Route::get('/lowongan/{lowongan}/print', [LowonganController::class, 'printData'])->name('lowongan.print');
         // Data PTK
