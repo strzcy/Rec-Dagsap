@@ -43,8 +43,8 @@ class ApplyController extends Controller
         ]);
     
         try {
-            $cvPath = $request->file('cv')->store('cvs', 'public');
-            $ijazahPath = $request->file('ijazah')->store('ijazahs', 'public');
+            $cvPath = $request->file('cv')->store('cvs', 'local');
+            $ijazahPath = $request->file('ijazah')->store('ijazahs', 'local');
         
             $pelamar = Pelamar::create([
                 'lowongan_id' => $lowongan->id,
@@ -79,8 +79,8 @@ class ApplyController extends Controller
                 return redirect()->to(URL::signedRoute('frontend.apply.success', ['pelamar' => $pelamar->id]))
                     ->with('success', 'Selamat! Anda lolos seleksi administrasi. Silakan lengkapi data diri Anda.');
             } else {
-                \Storage::disk('public')->delete($cvPath);
-                \Storage::disk('public')->delete($ijazahPath);
+                \Storage::disk('local')->delete($cvPath);
+                \Storage::disk('local')->delete($ijazahPath);
             
                 if ($pelamar->formulirJawaban) {
                     $pelamar->formulirJawaban()->delete();
@@ -232,13 +232,8 @@ class ApplyController extends Controller
         if ($request->has('keterampilan_nama')) {
             for ($i = 0; $i < count($request->keterampilan_nama); $i++) {
                 if (!empty($request->keterampilan_nama[$i])) {
-                    $tingkat = 'Cukup Mahir';
-                    foreach ($request->all() as $key => $value) {
-                        if (strpos($key, 'keterampilan_tingkat_') === 0 && $value) {
-                            $tingkat = $value;
-                            break;
-                        }
-                    }
+                    $key = $request->keterampilan_key[$i] ?? '0';
+                    $tingkat = $request->input("keterampilan_tingkat_{$key}", 'Cukup Mahir');
                     $keterampilan[] = [
                         'nama' => $request->keterampilan_nama[$i],
                         'tingkat' => $tingkat,

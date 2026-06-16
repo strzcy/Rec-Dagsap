@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\HRD\KirimJadwalInterviewRequest;
 use App\Http\Requests\HRD\UpdatePelamarStatusRequest;
 
@@ -128,9 +129,10 @@ class PelamarController extends Controller
     {
         Gate::authorize('downloadCv', $pelamar);
     
-        $path = storage_path('app/' . $pelamar->cv_path);
-        if (file_exists($path)) {
-            return response()->download($path, 'CV_' . $pelamar->nama_lengkap . '.pdf');
+        if (Storage::disk('local')->exists($pelamar->cv_path)) {
+            return Storage::disk('local')->download($pelamar->cv_path, 'CV_' . $pelamar->nama_lengkap . '.pdf');
+        } elseif (Storage::disk('public')->exists($pelamar->cv_path)) {
+            return Storage::disk('public')->download($pelamar->cv_path, 'CV_' . $pelamar->nama_lengkap . '.pdf');
         }
     
         return back()->with('error', 'File tidak ditemukan.');
@@ -140,12 +142,43 @@ class PelamarController extends Controller
     {
         Gate::authorize('downloadIjazah', $pelamar);
     
-        $path = storage_path('app/' . $pelamar->ijazah_path);
-        if (file_exists($path)) {
-            return response()->download($path, 'Ijazah_' . $pelamar->nama_lengkap . '.pdf');
+        if (Storage::disk('local')->exists($pelamar->ijazah_path)) {
+            return Storage::disk('local')->download($pelamar->ijazah_path, 'Ijazah_' . $pelamar->nama_lengkap . '.pdf');
+        } elseif (Storage::disk('public')->exists($pelamar->ijazah_path)) {
+            return Storage::disk('public')->download($pelamar->ijazah_path, 'Ijazah_' . $pelamar->nama_lengkap . '.pdf');
         }
     
         return back()->with('error', 'File tidak ditemukan.');
+    }
+
+    public function previewCv(Pelamar $pelamar)
+    {
+        Gate::authorize('downloadCv', $pelamar);
+    
+        if (Storage::disk('local')->exists($pelamar->cv_path)) {
+            $path = Storage::disk('local')->path($pelamar->cv_path);
+            return response()->file($path);
+        } elseif (Storage::disk('public')->exists($pelamar->cv_path)) {
+            $path = Storage::disk('public')->path($pelamar->cv_path);
+            return response()->file($path);
+        }
+    
+        return abort(404, 'File tidak ditemukan.');
+    }
+
+    public function previewIjazah(Pelamar $pelamar)
+    {
+        Gate::authorize('downloadIjazah', $pelamar);
+    
+        if (Storage::disk('local')->exists($pelamar->ijazah_path)) {
+            $path = Storage::disk('local')->path($pelamar->ijazah_path);
+            return response()->file($path);
+        } elseif (Storage::disk('public')->exists($pelamar->ijazah_path)) {
+            $path = Storage::disk('public')->path($pelamar->ijazah_path);
+            return response()->file($path);
+        }
+    
+        return abort(404, 'File tidak ditemukan.');
     }
     
     private function sendEmailInterview($pelamar, $tanggal, $waktu, $lokasi)
