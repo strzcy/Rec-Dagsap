@@ -31,7 +31,7 @@
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Posisi</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Jenis</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Jumlah</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Pengaju</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Pemohon</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
                     <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Aksi</th>
                 </tr>
@@ -52,7 +52,7 @@
                         </span>
                     </td>
                     <td class="px-6 py-4">{{ $item->jumlah }}</td>
-                    <td class="px-6 py-4">{{ $item->user->name ?? '-' }} ({{ $item->user->username ?? '-' }})</td>
+                    <td class="px-6 py-4">{{ $item->nama_pemohon ?? '-' }}</td>
                     <td class="px-6 py-4">
                         @if($item->status == 'pending')
                             <span class="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-800">Menunggu</span>

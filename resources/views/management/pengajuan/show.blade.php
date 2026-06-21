@@ -176,7 +176,7 @@
                 @csrf
                 <div class="mb-4">
                     <label class="block text-sm font-medium text-gray-700 mb-1">Nama Penyetuju</label>
-                    <input type="text" name="disetujui_oleh" required class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none" value="{{ Auth::user()->name }}">
+                    <input type="text" name="disetujui_oleh" required class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none" >
                 </div>
                 <div class="mb-4">
                     <label class="block text-sm font-medium text-gray-700 mb-1">Jabatan</label>

@@ -49,7 +49,7 @@
                     <th class="px-4 py-2 text-left text-xs">Posisi</th>
                     <th class="px-4 py-2 text-left text-xs">Jenis</th>
                     <th class="px-4 py-2 text-left text-xs">Status</th>
-                    <th class="px-4 py-2 text-left text-xs">Pengaju</th>
+                    <th class="px-4 py-2 text-left text-xs">Pemohon</th>
                     <th class="px-4 py-2 text-left text-xs">Tanggal</th>
                     <th class="px-4 py-2 text-left text-xs">Aksi</th>
                 </tr>
@@ -64,7 +64,7 @@
                             {{ $pengajuan->status }}
                         </span>
                     </td>
-                    <td class="px-4 py-2">{{ $pengajuan->user->name ?? '-' }}</td>
+                    <td class="px-4 py-2">{{ $pengajuan->nama_pemohon ?? '-' }}</td>
                     <td class="px-4 py-2">{{ $pengajuan->created_at->format('d/m/Y') }}</td>
                     <td class="px-4 py-2">
                         <a href="{{ route('management.pengajuan.show', $pengajuan) }}" class="text-primary hover:underline">
