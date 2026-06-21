@@ -8,26 +8,19 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::table('detail_pelamars', function (Blueprint $table) {
-            // Ubah kolom data_orang_tua menjadi required (tidak boleh null)
-            $table->json('data_orang_tua')->nullable(false)->default(json_encode([
-                'ayah_nama' => '',
-                'ayah_agama' => '',
-                'ayah_usia' => '',
-                'ayah_pekerjaan' => '',
-                'ayah_alamat' => '',
-                'ibu_nama' => '',
-                'ibu_agama' => '',
-                'ibu_usia' => '',
-                'ibu_pekerjaan' => '',
-                'ibu_alamat' => ''
-            ]))->change();
-        });
+        // Cek dulu apakah kolom data_orang_tua ada
+        if (Schema::hasColumn('detail_pelamars', 'data_orang_tua')) {
+            // Ubah kolom menjadi nullable (boleh null) karena MySQL tidak support default value untuk JSON
+            Schema::table('detail_pelamars', function (Blueprint $table) {
+                $table->json('data_orang_tua')->nullable()->change();
+            });
+        }
     }
 
     public function down(): void
     {
         Schema::table('detail_pelamars', function (Blueprint $table) {
+            // Kembalikan ke nullable
             $table->json('data_orang_tua')->nullable()->change();
         });
     }

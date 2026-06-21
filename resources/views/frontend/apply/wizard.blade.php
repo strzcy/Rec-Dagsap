@@ -77,7 +77,7 @@
             
             @if ($errors->any())
             <div class="bg-red-50 border border-red-200 text-red-800 rounded-lg p-4 mb-6">
-                <h4 class="font-semibold mb-2"><i class="fas fa-exclamation-triangle mr-2"></i> Terjadi kesalahan pengisian data:</h4>
+                <h4 class="font-semibold mb-2"><i class="fas fa-exclamation-triangle mr-2"></i> Harap Perhatikan Sesuai Dengan dibawah ini :</h4>
                 <ul class="list-disc list-inside text-sm space-y-1">
                     @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
