@@ -550,22 +550,22 @@
     <!-- Jadwal Interview -->
     <div class="bg-white rounded-lg shadow">
         <div class="p-4 border-b">
-            <h3 class="font-semibold text-lg">Jadwal Interview</h3>
+            <h3 class="font-semibold text-lg">Jadwal Psikotest & Interview</h3>
         </div>
         <div class="p-6">
             <form action="{{ route('hrd.pelamar.kirim-interview', $pelamar) }}" method="POST">
                 @csrf
                 <div class="mb-3">
-                    <label class="block text-sm font-medium mb-1">Tanggal Interview</label>
+                    <label class="block text-sm font-medium mb-1">Tanggal Tahap Selanjutnya</label>
                     <input type="date" name="tanggal_interview" class="w-full border rounded-lg px-3 py-2" required>
                 </div>
                 <div class="mb-3">
-                    <label class="block text-sm font-medium mb-1">Waktu Interview</label>
+                    <label class="block text-sm font-medium mb-1">Waktu Tahap Selanjutnya</label>
                     <input type="time" name="waktu_interview" class="w-full border rounded-lg px-3 py-2" required>
                 </div>
                 <div class="mb-3">
-                    <label class="block text-sm font-medium mb-1">Lokasi Interview</label>
-                    <input type="text" name="lokasi_interview" class="w-full border rounded-lg px-3 py-2" placeholder="Alamat lengkap..." required>
+                    <label class="block text-sm font-medium mb-1">Lokasi Tahap Selanjutnya</label>
+                    <input value="Online" type="text" name="lokasi_interview" class="w-full border rounded-lg px-3 py-2" placeholder="Alamat lengkap..." required>
                 </div>
                 <div class="mb-3">
                     <label class="block text-sm font-medium mb-1">Catatan Tambahan</label>

@@ -72,8 +72,8 @@ class PelamarController extends Controller
             $noTelepon = '62' . $noTelepon;
         }
         
-        $message = "Selamat! Anda dinyatakan lolos seleksi administrasi dan psikotest di Dagsap Recruitment.%0A%0A";
-        $message .= "Apakah Anda bersedia mengikuti interview lebih lanjut pada:%0A";
+        $message = "Selamat! Anda dinyatakan lolos seleksi administrasi di PT. Dagsap Endura Eatore.%0A%0A";
+        $message .= "Apakah Anda bersedia mengikuti tahap selanjutnya pada:%0A";
         $message .= "📅 Tanggal: {$tanggal}%0A";
         $message .= "⏰ Waktu: {$waktu}%0A";
         $message .= "📍 Lokasi: {$lokasi}%0A%0A";
@@ -82,13 +82,13 @@ class PelamarController extends Controller
             $message .= "📝 Catatan: " . $request->catatan . "%0A%0A";
         }
         
-        $message .= "Silakan balas YES jika bersedia atau NO jika tidak bersedia.%0A%0A";
+        $message .= "Kami tunggu balasan dari Anda.%0A%0A";
         $message .= "Terima kasih.";
 
         // Update status pelamar
         $pelamar->update([
             'status' => 'interview',
-            'catatan' => "Interview dijadwalkan pada {$tanggal} {$waktu} di {$lokasi}" . ($request->catatan ? "\nCatatan: " . $request->catatan : '')
+            'catatan' => "Tahap Lanjutan dijadwalkan pada {$tanggal} {$waktu} di {$lokasi}" . ($request->catatan ? "\nCatatan: " . $request->catatan : '')
         ]);
         
         // Simpan log pengiriman
