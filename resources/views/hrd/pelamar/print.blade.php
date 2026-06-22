@@ -17,7 +17,6 @@
             display: flex;
             justify-content: center;
             font-size: 16px;
-            
         }
 
         .print-wrapper {
@@ -43,11 +42,6 @@
             border: 1px solid #000;
             padding: 8px 6px;
             vertical-align: middle;
-        }
-
-        .logo-cell {
-            width: 110px;
-            text-align: center;
         }
 
         .logo-cell {
@@ -89,9 +83,12 @@
             vertical-align: top;
         }
 
+        /* LOGIKA BOX ANTI-POTONG (Dinamis Otomatis) */
         .section {
             margin-top: 18px;
-            line-height: 0.7;
+            line-height: 1.2;
+            page-break-inside: avoid; /* Untuk browser lama */
+            break-inside: avoid;      /* Standar modern: mencegah box terpotong di tengah halaman */
         }
 
         .section-title {
@@ -106,7 +103,7 @@
             font-weight: 600;
             margin: 10px 0 5px 0;
             font-size: 17px;
-            color : #000000c4;
+            color: #000000c4;
         }
 
         ol {
@@ -130,14 +127,13 @@
         }
 
         .grid-table th, .grid-table td {
-            border: 0.5px  solid #000;
+            border: 0.5px solid #000;
             padding: 4px;
             vertical-align: top;
         }
 
         .grid-table th {
             font-weight: normal;
-            /* background: #fff; */
             text-align: center;
             vertical-align: middle;
         }
@@ -152,7 +148,8 @@
         }
 
         .sign-box {
-            text-align: center;
+            text-align: left;
+            width: 300px;
         }
 
         .sign-name {
@@ -160,12 +157,11 @@
             padding-top: 6px;
             font-weight: 500;
             width: 100%;
-            margin-bottom:4px;
+            margin-bottom: 4px;
         }
 
         .signan {
             border-bottom: 1px solid black;
-
         }
 
         .sign-box b {
@@ -224,15 +220,11 @@
 <div class="print-wrapper">
     <div class="form-cetak">
         
-        <!-- HEADER TABLE (sama seperti management) -->
         <table class="header-table">
             <tr>
                 <td class="logo-cell">
                     <div class="logo-container">
-                        <img src="{{ asset('storage/logo.png') }}"
-                             alt="logo dagsap"
-                             width="70">
-
+                        <img src="{{ asset('storage/logo.png') }}" alt="logo dagsap" width="70">
                         <div class="company-name">
                             PT. Dagsap Endura Eatore
                         </div>
@@ -253,7 +245,6 @@
         @php 
             $detail = $pelamar->detail;
 
-            
             // Helper untuk decode JSON
             $pendidikanFormal = is_array($detail->pendidikan_formal ?? null) ? $detail->pendidikan_formal : json_decode($detail->pendidikan_formal ?? '[]', true);
             $pelatihan = is_array($detail->pelatihan ?? null) ? $detail->pelatihan : json_decode($detail->pelatihan ?? '[]', true);
@@ -261,10 +252,8 @@
             $bahasaAsing = is_array($detail->bahasa_asing ?? null) ? $detail->bahasa_asing : json_decode($detail->bahasa_asing ?? '[]', true);
             $pengalamanKerja = is_array($detail->pengalaman_kerja ?? null) ? $detail->pengalaman_kerja : json_decode($detail->pengalaman_kerja ?? '[]', true);
             $referensi = is_array($detail->referensi ?? null) ? $detail->referensi : json_decode($detail->referensi ?? '[]', true);
-
         @endphp
 
-        <!-- Posisi yang dilamar -->
         <div class="detail-table" style="margin-bottom: 15px;">
             <table style="width: 100%;">
                 <tr>
@@ -275,53 +264,84 @@
             </table>
         </div>
 
-        <!-- A. DATA PRIBADI -->
         <div class="section">
             <div class="section-title">A. DATA PRIBADI</div>
-            <table class="detail-table" style="text-transform: lowercase; text-transform: capitalize; margin-bottom:0;">
-                <tr><td width="150" >1. Nama Lengkap</td><td width="10">:</td><td width="350">{{ $detail->nama_lengkap ?? $pelamar->nama_lengkap }}</td>
-                    <td width="120" style="white-space:nowrap;">Jenis Kelamin</td><td width="10">:</td><td>{{ ($detail->jenis_kelamin ?? '') == 'L' ? 'Laki-laki' : 'Perempuan' }}</td></tr>
-                <tr><td>2. Tempat/Tgl Lahir</td><td>:</td><td>{{ $detail->tempat_lahir ?? '-' }}, {{ $pelamar->tanggal_lahir ? \Carbon\Carbon::parse($pelamar->tanggal_lahir)->format('d/m/Y') : '-' }}</td>
-                    <td>Tinggi Badan</td><td>:</td><td>{{ $detail->tinggi_badan ?? '-' }} cm</td></tr>
-                <tr><td>3. Kewarganegaraan</td><td>:</td><td>{{ $detail->kewarganegaraan ?? 'Indonesia' }}</td>
-                    <td>Berat Badan</td><td>:</td><td>{{ $detail->berat_badan ?? '-' }} kg</td></tr>
-                <tr><td>4. Agama</td><td>:</td><td>{{ $detail->agama ?? '-' }}</td>
-                <td>Gol. Darah</td><td>:</td><td>{{ $detail->golongan_darah ?? '-' }}</td></tr>
+            <table class="detail-table" style="text-transform: capitalize; margin-bottom:0;">
+                <tr>
+                    <td width="150">1. Nama Lengkap</td><td width="10">:</td><td width="350">{{ $detail->nama_lengkap ?? $pelamar->nama_lengkap }}</td>
+                    <td width="120" style="white-space:nowrap;">Jenis Kelamin</td><td width="10">:</td><td>{{ ($detail->jenis_kelamin ?? '') == 'L' ? 'Laki-laki' : 'Perempuan' }}</td>
+                </tr>
+                <tr>
+                    <td>2. Tempat/Tgl Lahir</td><td>:</td><td>{{ $detail->tempat_lahir ?? '-' }}, {{ $pelamar->tanggal_lahir ? \Carbon\Carbon::parse($pelamar->tanggal_lahir)->format('d/m/Y') : '-' }}</td>
+                    <td>Tinggi Badan</td><td>:</td><td>{{ $detail->tinggi_badan ?? '-' }} cm</td>
+                </tr>
+                <tr>
+                    <td>3. Kewarganegaraan</td><td>:</td><td>{{ $detail->kewarganegaraan ?? 'Indonesia' }}</td>
+                    <td>Berat Badan</td><td>:</td><td>{{ $detail->berat_badan ?? '-' }} kg</td>
+                </tr>
+                <tr>
+                    <td>4. Agama</td><td>:</td><td>{{ $detail->agama ?? '-' }}</td>
+                    <td>Gol. Darah</td><td>:</td><td>{{ $detail->golongan_darah ?? '-' }}</td>
+                </tr>
             </table>
             
             <table class="detail-table">
-                <td width="150" style="line-height: 1.5; margin-top:0;">5. Alamat Tinggal</td><td width="10">:</td><td>{{ $detail->alamat_tinggal ?? $pelamar->alamat }}</td>
+                <tr>
+                    <td width="150" style="line-height: 1.5; margin-top:0;">5. Alamat Tinggal</td><td width="10">:</td><td>{{ $detail->alamat_tinggal ?? $pelamar->alamat }}</td>
+                </tr>
             </table>
             <table class="detail-table" style="margin-left: 100px; width: 95%;">
-                <tr><td width="100">RT/RW</td><td width="10">:</td><td width="150">{{ $detail->rt_rw_tinggal ?? '-' }}</td>
-                <td width="100">Kelurahan</td><td width="10">:</td><td>{{ $detail->kelurahan_tinggal ?? '-' }}</td></tr>
-                <tr><td>Kecamatan</td><td>:</td><td>{{ $detail->kecamatan_tinggal ?? '-' }}</td>
-                <td>Kabupaten</td><td>:</td><td>{{ $detail->kabupaten_tinggal ?? '-' }}</td></tr>
-                <tr><td>Kota</td><td>:</td><td>{{ $detail->kota_tinggal ?? '-' }}</td>
-                <td>Propinsi</td><td>:</td><td>{{ $detail->provinsi_tinggal ?? '-' }}</td></tr>
-                <tr><td>Kode Pos</td><td>:</td><td>{{ $detail->kode_pos_tinggal ?? '-' }}</td>
-                <td>No. Telp</td><td>:</td><td>-</td></tr>
-                <tr><td>No. HP</td><td>:</td><td>{{ $detail->no_hp ?? $pelamar->no_telepon }}</td>
-                <td>No. WA</td><td>:</td><td>{{ $detail->no_wa ?? '-' }}</td></tr>
+                <tr>
+                    <td width="100">RT/RW</td><td width="10">:</td><td width="150">{{ $detail->rt_rw_tinggal ?? '-' }}</td>
+                    <td width="100">Kelurahan</td><td width="10">:</td><td>{{ $detail->kelurahan_tinggal ?? '-' }}</td>
+                </tr>
+                <tr>
+                    <td>Kecamatan</td><td>:</td><td>{{ $detail->kecamatan_tinggal ?? '-' }}</td>
+                    <td>Kabupaten</td><td>:</td><td>{{ $detail->kabupaten_tinggal ?? '-' }}</td>
+                </tr>
+                <tr>
+                    <td>Kota</td><td>:</td><td>{{ $detail->kota_tinggal ?? '-' }}</td>
+                    <td>Propinsi</td><td>:</td><td>{{ $detail->provinsi_tinggal ?? '-' }}</td>
+                </tr>
+                <tr>
+                    <td>Kode Pos</td><td>:</td><td>{{ $detail->kode_pos_tinggal ?? '-' }}</td>
+                    <td>No. Telp</td><td>:</td><td>-</td>
+                </tr>
+                <tr>
+                    <td>No. HP</td><td>:</td><td>{{ $detail->no_hp ?? $pelamar->no_telepon }}</td>
+                    <td>No. WA</td><td>:</td><td>{{ $detail->no_wa ?? '-' }}</td>
+                </tr>
             </table>
             <table class="detail-table">
-                <td width="150" style="line-height: 1.5; margin-top:0;">6. Alamat KTP</td><td width="10">:</td><td>{{ $detail->alamat_ktp ?? '-' }}</td>
+                <tr>
+                    <td width="150" style="line-height: 1.5; margin-top:0;">6. Alamat KTP</td><td width="10">:</td><td>{{ $detail->alamat_ktp ?? '-' }}</td>
+                </tr>
             </table>
 
             <table class="detail-table" style="margin-left: 100px; width: 95%;">
-                <tr><td width="100">RT/RW</td><td width="10">:</td><td width="150">{{ $detail->rt_rw_ktp ?? '-' }}</td>
-                    <td width="100">Kelurahan</td><td width="10">:</td><td>{{ $detail->kelurahan_ktp ?? '-' }}</td></tr>
-                <tr><td>Kecamatan</td><td>:</td><td>{{ $detail->kecamatan_ktp ?? '-' }}</td>
-                    <td>Kabupaten</td><td>:</td><td>{{ $detail->kabupaten_ktp ?? '-' }}</td></tr>
-                <tr><td>Kota</td><td>:</td><td>{{ $detail->kota_ktp ?? '-' }}</td>
-                    <td>Propinsi</td><td>:</td><td>{{ $detail->provinsi_ktp ?? '-' }}</td></tr>
-                <tr><td>Kode Pos</td><td>:</td><td>{{ $detail->kode_pos_ktp ?? '-' }}</td>
-                    <td>No. Telp</td><td>:</td><td>-</td></tr>
+                <tr>
+                    <td width="100">RT/RW</td><td width="10">:</td><td width="150">{{ $detail->rt_rw_ktp ?? '-' }}</td>
+                    <td width="100">Kelurahan</td><td width="10">:</td><td>{{ $detail->kelurahan_ktp ?? '-' }}</td>
+                </tr>
+                <tr>
+                    <td>Kecamatan</td><td>:</td><td>{{ $detail->kecamatan_ktp ?? '-' }}</td>
+                    <td>Kabupaten</td><td>:</td><td>{{ $detail->kabupaten_ktp ?? '-' }}</td>
+                </tr>
+                <tr>
+                    <td>Kota</td><td>:</td><td>{{ $detail->kota_ktp ?? '-' }}</td>
+                    <td>Propinsi</td><td>:</td><td>{{ $detail->provinsi_ktp ?? '-' }}</td>
+                </tr>
+                <tr>
+                    <td>Kode Pos</td><td>:</td><td>{{ $detail->kode_pos_ktp ?? '-' }}</td>
+                    <td>No. Telp</td><td>:</td><td>-</td>
+                </tr>
             </table>
 
             <table class="detail-table">
-                <tr><td width="180">7. No. KTP/Passport</td><td width="10">:</td><td width="250">{{ $detail->no_ktp ?? '-' }}</td>
-                    <td width="120">Dikeluarkan di</td><td width="10">:</td><td>{{ $detail->dikeluarkan_di ?? '-' }}</td></tr>
+                <tr>
+                    <td width="180">7. No. KTP/Passport</td><td width="10">:</td><td width="250">{{ $detail->no_ktp ?? '-' }}</td>
+                    <td width="120">Dikeluarkan di</td><td width="10">:</td><td>{{ $detail->dikeluarkan_di ?? '-' }}</td>
+                </tr>
                 <tr><td>8. No. NPWP</td><td>:</td><td colspan="4">{{ $detail->no_npwp ?? '-' }}</td></tr>
                 <tr><td>9. No. BPJS Kes/TK</td><td>:</td><td colspan="4">{{ $detail->no_bpjs_ketenagakerjaan ?? '-' }}</td></tr>
                 <tr><td>10. Status Perkawinan</td><td>:</td><td colspan="4">{{ $detail->status_perkawinan ?? '-' }}</td></tr>
@@ -331,8 +351,7 @@
             </table>
         </div>
 
-        <!-- B. RIWAYAT PENDIDIKAN (Page Break) -->
-        <div class="section page-break">
+        <div class="section">
             <div class="section-title">B. RIWAYAT PENDIDIKAN</div>
             <div class="sub-section-title">1. Pendidikan Formal :</div>
             <table class="grid-table">
@@ -401,7 +420,6 @@
             </table>
         </div>
 
-        <!-- C. KETERAMPILAN -->
         <div class="section">
             <div class="section-title">C. KETERAMPILAN</div>
             <table class="grid-table">
@@ -425,14 +443,13 @@
                     </tr>
                     @empty
                         @for($i=0; $i<4; $i++)
-                        <tr><td align="center">{{ $i+1 }}<td><td colspan="4">-</td></tr>
+                        <tr><td align="center">{{ $i+1 }}</td><td colspan="4">-</td></tr>
                         @endfor
                     @endforelse
                 </tbody>
             </table>
         </div>
 
-        <!-- D. BAHASA ASING -->
         <div class="section">
             <div class="section-title">D. BAHASA ASING <span style="font-size: 10px;">(diisi dengan baik sekali, baik, atau cukup)</span></div>
             <table class="grid-table">
@@ -452,19 +469,18 @@
                         <td>{{ $bhs['nama'] ?? '' }}</td>
                         <td>{{ $bhs['membaca'] ?? '' }}</td>
                         <td>{{ $bhs['berbicara'] ?? '' }}</td>
-                        <td>{{ $bhs['menulis'] ?? '' }}</td>
+                        <td>{{ $bhs['writes'] ?? $bhs['menulis'] ?? '' }}</td>
                     </tr>
                     @empty
                         @for($i=0; $i<3; $i++)
-                        <tr><td align="center">{{ $i+1 }}<td><td colspan="4">-</td></tr>
+                        <tr><td align="center">{{ $i+1 }}</td><td colspan="4">-</td></tr>
                         @endfor
                     @endforelse
                 </tbody>
             </table>
         </div>
 
-        <!-- E. KEKUATAN & KELEMAHAN (Page Break) -->
-        <div class="section page-break">
+        <div class="section">
             <div class="section-title">E. KEKUATAN &amp; KELEMAHAN</div>
             <table class="grid-table">
                 <thead>
@@ -482,7 +498,6 @@
             </table>
         </div>
 
-        <!-- F. RIWAYAT PEKERJAAN -->
         <div class="section">
             <div class="section-title">F. RIWAYAT PEKERJAAN</div>
             <div class="sub-section-title">1. Pengalaman kerja sebelumnya <i>(urutkan dari yang terbaru)</i></div>
@@ -536,8 +551,7 @@
             </div>
         </div>
 
-        <!-- G. REFERENSI (Page Break) -->
-        <div class="section page-break">
+        <div class="section">
             <div class="section-title">G. REFERENSI</div>
             <table class="grid-table">
                 <thead>
@@ -570,41 +584,39 @@
 
             <div style="margin-top: 10px;">
                 Apakah Anda mempunyai saudara/kenalan yang bekerja di perusahaan kami? 
-                ( {{ $detail->punya_saudara_di_perusahaan ? '✓' : ' ' }} ) ya ( {{ !$detail->punya_saudara_di_perusahaan ? '✓' : ' ' }} ) tidak
+                ( {{ ($detail->punya_saudara_di_perusahaan ?? false) ? '✓' : ' ' }} ) ya ( {{ !($detail->punya_saudara_di_perusahaan ?? false) ? '✓' : ' ' }} ) tidak
             </div>
         </div>
 
-        <!-- H. RIWAYAT KESEHATAN -->
         <div class="section" style="line-height: 1.4;">
             <div class="section-title">H. RIWAYAT KESEHATAN</div>
             
             <div style="margin-bottom: 12px;">
-                <div>1. Apakah Anda pernah menderita sakit berat dan dirawat di rumah sakit selama 2 tahun terakhir?</div>
-                <div>( {{ $detail->pernah_sakit_berat ? '✓' : '' }} ) ya ( {{ !$detail->pernah_sakit_berat ? '✓' : '' }} ) tidak</div>
+                <div>1. Apakah Anda pernah menderita sakit berat dan dirawat di rumah sakit selama 2 years terakhir?</div>
+                <div>( {{ ($detail->pernah_sakit_berat ?? false) ? '✓' : '' }} ) ya ( {{ !($detail->pernah_sakit_berat ?? false) ? '✓' : '' }} ) tidak</div>
                 <div style="border-bottom: 1px dotted #999; margin-top: 5px; padding: 3px;">: {{ $detail->sakit_berat_keterangan ?? '' }}</div>
             </div>
 
             <div style="margin-bottom: 12px;">
                 <div>2. Apakah Anda mempunyai penyakit keturunan, cacat keturunan atau cacat akibat kecelakaan?</div>
-                <div>( {{ $detail->punya_penyakit_keturunan ? '✓' : '' }} ) ya ( {{ !$detail->punya_penyakit_keturunan ? '✓' : '' }} ) tidak</div>
+                <div>( {{ ($detail->punya_penyakit_keturunan ?? false) ? '✓' : '' }} ) ya ( {{ !($detail->punya_penyakit_keturunan ?? false) ? '✓' : '' }} ) tidak</div>
                 <div style="border-bottom: 1px dotted #999; margin-top: 5px; padding: 3px;">: {{ $detail->penyakit_keturunan_keterangan ?? '' }}</div>
             </div>
 
             <div style="margin-bottom: 12px;">
                 <div>3. Apakah Anda mempunyai gangguan penglihatan/memakai kacamata?</div>
-                <div>( {{ $detail->pakai_kacamata ? '✓' : '' }} ) ya ( {{ !$detail->pakai_kacamata ? '✓' : '' }} ) tidak</div>
+                <div>( {{ ($detail->pakai_kacamata ?? false) ? '✓' : '' }} ) ya ( {{ !($detail->pakai_kacamata ?? false) ? '✓' : '' }} ) tidak</div>
                 <div style="border-bottom: 1px dotted #999; margin-top: 5px; padding: 3px;">: {{ $detail->ukuran_kacamata ?? '' }}</div>
             </div>
 
             <div style="margin-bottom: 12px;">
                 <div>4. Apakah Anda mempunyai alergi?</div>
-                <div>( {{ $detail->punya_alergi ? '✓' : '' }} ) ya ( {{ !$detail->punya_alergi ? '✓' : '' }} ) tidak</div>
+                <div>( {{ ($detail->punya_alergi ?? false) ? '✓' : '' }} ) ya ( {{ !($detail->punya_alergi ?? false) ? '✓' : '' }} ) tidak</div>
                 <div style="border-bottom: 1px dotted #999; margin-top: 5px; padding: 3px;">: {{ $detail->alergi_keterangan ?? '' }}</div>
             </div>
         </div>
 
-        <!-- I. DATA KELUARGA -->
-        <div class="section page-break">
+        <div class="section">
             <div class="section-title">I. DATA KELUARGA</div>
     
             @php
@@ -616,32 +628,49 @@
                 $saudaraKandung = is_array($detail->saudara_kandung ?? null) ? $detail->saudara_kandung : json_decode($detail->saudara_kandung ?? '[]', true);
             @endphp
     
-            <!-- 1. Data Istri/Suami -->
             <div class="sub-section-title" style="margin-top: 10px;">1. Data Istri/Suami</div>
-            @if($detail->punya_pasangan && !empty($dataPasangan))
+            @if(($detail->punya_pasangan ?? false) && !empty($dataPasangan))
                 <table class="detail-table">
-                    <tr><td width="180">a. Nama Lengkap</td><td width="10">:</td><td>{{ $dataPasangan['nama_lengkap'] ?? '-' }}</td>
-                        <td width="120">b. Tempat/Tgl Lahir</td><td width="10">:</td><td>{{ $dataPasangan['tempat_lahir'] ?? '-' }}, {{ isset($dataPasangan['tanggal_lahir']) ? \Carbon\Carbon::parse($dataPasangan['tanggal_lahir'])->format('d/m/Y') : '-' }}</td></tr>
-                    <tr><td>c. Tgl. Menikah</td><td>:</td><td>{{ isset($dataPasangan['tanggal_menikah']) ? \Carbon\Carbon::parse($dataPasangan['tanggal_menikah'])->format('d/m/Y') : '-' }}</td>
-                        <td>d. Agama</td><td>:</td><td>{{ $dataPasangan['agama'] ?? '-' }}</td></tr>
+                    <tr>
+                        <td width="180">a. Nama Lengkap</td><td width="10">:</td><td>{{ $dataPasangan['nama_lengkap'] ?? '-' }}</td>
+                        <td width="120">b. Tempat/Tgl Lahir</td><td width="10">:</td><td>{{ $dataPasangan['tempat_lahir'] ?? '-' }}, {{ isset($dataPasangan['tanggal_lahir']) ? \Carbon\Carbon::parse($dataPasangan['tanggal_lahir'])->format('d/m/Y') : '-' }}</td>
+                    </tr>
+                    <tr>
+                        <td>c. Tgl. Menikah</td><td>:</td><td>{{ isset($dataPasangan['tanggal_menikah']) ? \Carbon\Carbon::parse($dataPasangan['tanggal_menikah'])->format('d/m/Y') : '-' }}</td>
+                        <td>d. Agama</td><td>:</td><td>{{ $dataPasangan['agama'] ?? '-' }}</td>
+                    </tr>
                     <tr><td colspan="6">e. Alamat Tinggal : {{ $dataPasangan['alamat'] ?? '-' }}</td></tr>
                 </table>
         
                 <table class="detail-table" style="margin-left: 20px; width: 95%;">
-                    <tr><td width="100">RT/RW</td><td width="10">:</td><td width="150">{{ $dataPasangan['rt_rw'] ?? '-' }}</td>
-                        <td width="100">Kelurahan</td><td width="10">:</td><td>{{ $dataPasangan['kelurahan'] ?? '-' }}</td></tr>
-                    <tr><td>Kecamatan</td><td>:</td><td>{{ $dataPasangan['kecamatan'] ?? '-' }}</td>
-                        <td>Kabupaten</td><td>:</td><td>{{ $dataPasangan['kabupaten'] ?? '-' }}</td></tr>
-                    <tr><td>Kota</td><td>:</td><td>{{ $dataPasangan['kota'] ?? '-' }}</td>
-                        <td>Propinsi</td><td>:</td><td>{{ $dataPasangan['provinsi'] ?? '-' }}</td></tr>
-                    <tr><td>Kode Pos</td><td>:</td><td>{{ $dataPasangan['kode_pos'] ?? '-' }}</td>
-                        <td>No. Telp</td><td>:</td><td>{{ $dataPasangan['no_telp'] ?? '-' }}</td></tr>
-                    <tr><td>No. HP</td><td>:</td><td>{{ $dataPasangan['no_hp'] ?? '-' }}</td>
-                        <td colspan="3"></td></tr>
-                    <tr><td>f. Pendidikan</td><td>:</td><td>{{ $dataPasangan['pendidikan'] ?? '-' }}</td>
-                        <td colspan="3"></td></tr>
-                    <tr><td>g. Pekerjaan</td><td>:</td><td>{{ $dataPasangan['pekerjaan'] ?? '-' }}</td>
-                        <td>Jabatan</td><td>:</td><td>{{ $dataPasangan['jabatan'] ?? '-' }}</td></tr>
+                    <tr>
+                        <td width="100">RT/RW</td><td width="10">:</td><td width="150">{{ $dataPasangan['rt_rw'] ?? '-' }}</td>
+                        <td width="100">Kelurahan</td><td width="10">:</td><td>{{ $dataPasangan['kelurahan'] ?? '-' }}</td>
+                    </tr>
+                    <tr>
+                        <td>Kecamatan</td><td>:</td><td>{{ $dataPasangan['kecamatan'] ?? '-' }}</td>
+                        <td>Kabupaten</td><td>:</td><td>{{ $dataPasangan['border_kecamatan'] ?? $dataPasangan['kabupaten'] ?? '-' }}</td>
+                    </tr>
+                    <tr>
+                        <td>Kota</td><td>:</td><td>{{ $dataPasangan['kota'] ?? '-' }}</td>
+                        <td>Propinsi</td><td>:</td><td>{{ $dataPasangan['provinsi'] ?? '-' }}</td>
+                    </tr>
+                    <tr>
+                        <td>Kode Pos</td><td>:</td><td>{{ $dataPasangan['kode_pos'] ?? '-' }}</td>
+                        <td>No. Telp</td><td>:</td><td>{{ $dataPasangan['no_telp'] ?? '-' }}</td>
+                    </tr>
+                    <tr>
+                        <td>No. HP</td><td>:</td><td>{{ $dataPasangan['no_hp'] ?? '-' }}</td>
+                        <td colspan="3"></td>
+                    </tr>
+                    <tr>
+                        <td>f. Pendidikan</td><td>:</td><td>{{ $dataPasangan['pendidikan'] ?? '-' }}</td>
+                        <td colspan="3"></td>
+                    </tr>
+                    <tr>
+                        <td>g. Pekerjaan</td><td>:</td><td>{{ $dataPasangan['pekerjaan'] ?? '-' }}</td>
+                        <td>Jabatan</td><td>:</td><td>{{ $dataPasangan['jabatan'] ?? '-' }}</td>
+                    </tr>
                 </table>
             @else
                 <div style="padding: 10px; background: #f9f9f9; margin-bottom: 10px;">
@@ -649,9 +678,8 @@
                 </div>
             @endif
     
-            <!-- 2. Data pribadi anak -->
             <div class="sub-section-title" style="margin-top: 10px;">2. Data Pribadi Anak</div>
-            @if($detail->punya_anak && !empty($dataAnak))
+            @if(($detail->punya_anak ?? false) && !empty($dataAnak))
                 <table class="grid-table">
                     <thead>
                         <tr><th width="40">No.</th><th>Nama Lengkap</th><th width="50">L/P</th><th>Tempat/Tanggal Lahir</th><th>Pendidikan</th></tr>
@@ -674,7 +702,6 @@
                 </div>
             @endif
     
-            <!-- 3. Riwayat penyakit istri/suami/anak -->
             <div class="sub-section-title" style="margin-top: 10px;">3. Riwayat Penyakit Istri/Suami/Anak</div>
             @if(!empty($riwayatPenyakitKeluarga))
                 <table class="grid-table">
@@ -700,7 +727,6 @@
                 </div>
             @endif
     
-            <!-- 4. Orang Tua -->
             <div class="sub-section-title" style="margin-top: 10px;">4. Orang Tua</div>
             <table class="grid-table">
                 <thead>
@@ -715,7 +741,6 @@
                 </tbody>
             </table>
     
-            <!-- 5. Orang terdekat yang dapat dihubungi jika dalam keadaan darurat -->
             <div class="sub-section-title" style="margin-top: 10px;">5. Orang Terdekat yang Dapat Dihubungi dalam Keadaan Darurat</div>
             @if(!empty($kontakDarurat))
                 <table class="detail-table">
@@ -726,15 +751,23 @@
                 </table>
         
                 <table class="detail-table" style="margin-left: 20px; width: 95%;">
-                    <tr><td width="100">RT/RW</td><td width="10">:</td><td width="150">{{ $kontakDarurat['rt_rw'] ?? '-' }}</td>
-                        <td width="100">Kelurahan</td><td width="10">:</td><td>{{ $kontakDarurat['kelurahan'] ?? '-' }}</td></tr>
-                    <tr><td>Kecamatan</td><td>:</td><td>{{ $kontakDarurat['kecamatan'] ?? '-' }}</td>
-                        <td>Propinsi</td><td>:</td><td>{{ $kontakDarurat['provinsi'] ?? '-' }}</td></tr>
-                    <tr><td>Kode Pos</td><td>:</td><td>{{ $kontakDarurat['kode_pos'] ?? '-' }}</td>
-                        <td>No. Telp</td><td>:</td><td>{{ $kontakDarurat['no_telp'] ?? '-' }}</td></tr>
+                    <tr>
+                        <td width="100">RT/RW</td><td width="10">:</td><td width="150">{{ $kontakDarurat['rt_rw'] ?? '-' }}</td>
+                        <td width="100">Kelurahan</td><td width="10">:</td><td>{{ $kontakDarurat['kelurahan'] ?? '-' }}</td>
+                    </tr>
+                    <tr>
+                        <td>Kecamatan</td><td>:</td><td>{{ $kontakDarurat['kecamatan'] ?? '-' }}</td>
+                        <td>Propinsi</td><td>:</td><td>{{ $kontakDarurat['provinsi'] ?? '-' }}</td>
+                    </tr>
+                    <tr>
+                        <td>Kode Pos</td><td>:</td><td>{{ $kontakDarurat['kode_pos'] ?? '-' }}</td>
+                        <td>No. Telp</td><td>:</td><td>{{ $kontakDarurat['no_telp'] ?? '-' }}</td>
+                    </tr>
                     <tr><td>No. HP</td><td>:</td><td colspan="3">{{ $kontakDarurat['no_hp'] ?? '-' }}</td></tr>
-                    <tr><td>e. Pekerjaan</td><td>:</td><td>{{ $kontakDarurat['pekerjaan'] ?? '-' }}</td>
-                        <td>Jabatan</td><td>:</td><td>{{ $kontakDarurat['jabatan'] ?? '-' }}</td></tr>
+                    <tr>
+                        <td>e. Pekerjaan</td><td>:</td><td>{{ $kontakDarurat['pekerjaan'] ?? '-' }}</td>
+                        <td>Jabatan</td><td>:</td><td>{{ $kontakDarurat['jabatan'] ?? '-' }}</td>
+                    </tr>
                 </table>
             @else
                 <div style="padding: 10px; background: #f9f9f9; margin-bottom: 10px;">
@@ -742,7 +775,6 @@
                 </div>
             @endif
     
-            <!-- 6. Saudara kandung (termasuk pelamar) -->
             <div class="sub-section-title" style="margin-top: 10px;">6. Saudara Kandung (Termasuk Pelamar)</div>
             @if(!empty($saudaraKandung))
                 <table class="grid-table">
@@ -770,7 +802,6 @@
             @endif
         </div>  
 
-        <!-- J. REMUNERASI & K. WAKTU & L. PERNYATAAN (Page Break) -->
         <div class="section">
             <div class="section-title">J. REMUNERASI</div>
             <div style="margin-bottom: 15px;">
@@ -790,17 +821,16 @@
                 maka saya bersedia mengundurkan diri tanpa persyaratan apapun dengan segera dari perusahaan ini.
             </div>
 
-            <!-- TANDA TANGAN -->
             <div class="signature-area" style="text-transform:capitalize;">
                 <div class="sign-box">
                     <div>Tempat & Tanggal : {{ $detail->tempat_pernyataan ?? '-' }},
-                    {{ $detail->tanggal_pernyataan ? \Carbon\Carbon::parse($detail->tanggal_pernyataan)->format('d/m/Y') : '-' }}    
-                    <div>
+                    {{ $detail->tanggal_pernyataan ? \Carbon\Carbon::parse($detail->tanggal_pernyataan)->format('d/m/Y') : '-' }}</div>
+                    <br>
+                    <div>Yang Menyatakan :</div>
                     <div class="signan">
-                        <div class="sign-name">{{ $detail->nama_lengkap ?? $pelamar->nama_lengkap }}</div>
+                        <div  class="sign-name" style="text-align:center;">{{ $detail->nama_lengkap ?? $pelamar->nama_lengkap }}</div>
                     </div>
                 </div>
-                <div></div>
             </div>
         </div>
 
