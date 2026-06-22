@@ -7,7 +7,7 @@
     <div class="bg-white rounded-lg shadow-lg p-8 w-full max-w-md">
         <div class="text-center mb-8">
             <div style="text-align:center; justify-content:center; display:flex;">
-                <img class="w-40" src="{{ asset('storage/logo.png') }}">
+                <!-- <img class="w-40" src="{{ asset('storage/logo.png') }}"> -->
             </div>
             <h2 class="text-2xl font-bold text-primary">Dagsap Recruitment</h2>
             <p class="text-gray-600 mt-2">Portal Departemen</p>
