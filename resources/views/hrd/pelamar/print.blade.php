@@ -224,7 +224,7 @@
             <tr>
                 <td class="logo-cell">
                     <div class="logo-container">
-                        <img src="{{ asset('storage/logo.png') }}" alt="logo dagsap" width="70">
+                        <img src="{{ asset('logo.png') }}" alt="logo dagsap" width="70">
                         <div class="company-name">
                             PT. Dagsap Endura Eatore
                         </div>

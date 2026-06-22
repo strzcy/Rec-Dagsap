@@ -294,7 +294,7 @@
                     <td class="logo-cell">
                         <div class="logo-container">
                             <div class="logo-box">
-                                <img src="{{ asset('storage/logo.png') }}"
+                                <img src="{{ asset('logo.png') }}"
                                      alt="logo dagsap"
                                      width="70">
                             </div>
