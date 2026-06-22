@@ -264,7 +264,7 @@
             </table>
         </div>
 
-        <div class="section">
+        <div class="section" style="line-height:0.7;">
             <div class="section-title">A. DATA PRIBADI</div>
             <table class="detail-table" style="text-transform: capitalize; margin-bottom:0;">
                 <tr>
