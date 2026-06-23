@@ -117,14 +117,14 @@
                 
                 <div class="space-y-4">
                     <div class="flex items-center space-x-3">
-                        <div class="w-10 h-10 bg-primary rounded flex items-center justify-center text-white font-bold">D</div>
+                        <img class="w-12 flex items-center justify-center text-white font-bold rounded" src="{{ asset('logo.png') }}">
                         <div>
                             <h3 class="font-bold text-lg text-white tracking-wide">PT DAGSAP ENDURA EATORE</h3>
-                            <p class="text-xs text-gray-400 italic">Successed By Character</p>
+                            <p class="text-xs text-gray-400 italic">Good Food Good Taste</p>
                         </div>
                     </div>
                     <p class="text-sm text-gray-400 leading-relaxed">
-                        Dagsap Recruitment adalah web app portal lowongan kerja untuk PT. Dagsap Endura Eatore di cabang Factory Kawasan Industri Sentul. Bogor
+                        Dagsap Recruitment adalah web app portal lowongan kerja untuk PT. Dagsap Endura Eatore
                     </p>
                     
                     <div class="w-full h-44 rounded-lg overflow-hidden shadow-sm border border-gray-700 relative group">
@@ -163,7 +163,7 @@
 
             <div class="border-t border-gray-700 pt-6 text-center text-sm text-gray-500 flex flex-col sm:flex-row justify-between items-center gap-2">
                 <p>&copy; {{ date('Y') }} Dagsap Recruitment. All rights reserved.</p>
-                <p class="text-xs text-gray-600">Powered by Laravel & Tailwind CSS</p>
+                <p class="text-xs text-gray-600">Good Food Good Taste</p>
             </div>
         </div>
     </footer>

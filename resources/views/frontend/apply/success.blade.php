@@ -34,8 +34,8 @@
                     </p>
                 </div>
                 @elseif($pelamar->status == 'psikotest')
-                <p>Silakan melanjutkan ke tahap berikutnya yaitu <strong>Psikotest Online</strong>.</p>
-                <p>Klik link di bawah ini untuk mengikuti psikotest:</p>
+                <p></p>
+                <p><strong>Mohon Tunggu Informasi Whatsaap dari Kami</strong>.</p>
                 <!-- <p>Atau copy link berikut: <br> <small></small></p>
                 <p>Pastikan anda mengerjakan psikotest dengan jujur dan teliti.</p> -->
                 <p>Terima kasih.</p> 
@@ -52,7 +52,6 @@
                 </a>
                 @elseif($pelamar->status == 'psikotest')
                 <p style="text-decoration: underline; text-align: center;">
-                    <a  href="https://docs.google.com/forms/d/19zIXmhy6yHoOe7g7OBYPpyEU-1m8kPOiHnDuJBksk40/" class="bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary-dark transition">Mulai Psikotest</a>
                 </p> <br>
             @endif
             <a href="{{ url('/') }}"  class="text-primary hover:underline">
