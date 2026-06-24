@@ -6,32 +6,25 @@ use App\Http\Controllers\Controller;
 use App\Models\PengajuanTenagaKerja;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class PengajuanApprovalController extends Controller
 {
     public function index(Request $request)
     {
-        // Management hanya melihat pengajuan dari divisi yang mereka tangani
         $managedDivisiId = Auth::user()->managed_divisi_id;
-        
-        if (!$managedDivisiId) {
-            // Jika management tidak punya divisi yang ditangani
-            return redirect()->route('management.dashboard')
-                ->with('error', 'Anda tidak ditugaskan untuk divisi manapun.');
-        }
-        
-        $query = PengajuanTenagaKerja::with(['divisi', 'user'])
-            ->where('divisi_id', $managedDivisiId);
-        
+    
+        // Management melihat pengajuan berdasarkan departemen_dipilih
+        $query = PengajuanTenagaKerja::with(['departemen', 'user'])
+            ->where('departemen_dipilih', $managedDivisiId);
+    
         if ($request->has('status') && $request->status != '') {
             $query->where('status', $request->status);
         }
-        
+    
         $pengajuans = $query->orderBy('created_at', 'desc')->paginate(10);
-        
-        // Ambil informasi divisi yang dikelola
         $divisi = Auth::user()->managedDivisi;
-        
+    
         return view('management.pengajuan.index', compact('pengajuans', 'divisi'));
     }
 
@@ -61,12 +54,14 @@ class PengajuanApprovalController extends Controller
 
         $request->validate([
             'disetujui_oleh' => 'required|string|max:255',
+            'jabatan_penyetuju' => 'required|string|max:255',
         ]);
 
         $pengajuan->update([
             'status' => 'disetujui',
             'approved_by' => Auth::id(),
             'disetujui_oleh' => $request->disetujui_oleh,
+            'jabatan_penyetuju' => $request->jabatan_penyetuju,
             'approved_at' => now(),
         ]);
 
@@ -97,5 +92,40 @@ class PengajuanApprovalController extends Controller
 
         return redirect()->route('management.pengajuan.index')
             ->with('success', 'Pengajuan dari divisi ' . $pengajuan->divisi->nama_divisi . ' ditolak!');
+    }
+
+    public function printData(PengajuanTenagaKerja $pengajuan)
+    {
+        $managedDivisiId = Auth::user()->managed_divisi_id;
+
+        if ($pengajuan->departemen_dipilih !== $managedDivisiId) {
+            abort(403);
+        }
+    
+        // QR CODE UNTUK MANAGER (Diketahui Oleh / Atasan)
+        $qrDataManager = "PTK-" . str_pad($pengajuan->id, 6, '0', STR_PAD_LEFT) . " | " .
+            ($pengajuan->disetujui_oleh ?? 'Belum disetujui') . " | " .
+            ($pengajuan->jabatan_penyetuju ?? '-') . " | " .
+            ($pengajuan->approved_at ? \Carbon\Carbon::parse($pengajuan->approved_at)->format('d/m/Y') : '-') . " | " .
+            $pengajuan->posisi;
+
+        $qrCodeManager = QrCode::errorCorrection('L')
+            ->size(70)
+            ->color(0, 0, 0)
+            ->generate($qrDataManager);
+
+        // QR CODE UNTUK PEMOHON (Diajukan Oleh)
+        $qrDataPemohon = "PTK-" . str_pad($pengajuan->id, 6, '0', STR_PAD_LEFT) . " | " .
+            $pengajuan->posisi . " | " .
+            ($pengajuan->departemen->nama_divisi ?? '') . " | " .
+            $pengajuan->created_at->format('d/m/Y') . " | " .
+            $pengajuan->nama_pemohon;
+
+        $qrCodePemohon = QrCode::errorCorrection('L')
+            ->size(70)
+            ->color(0, 0, 0)
+            ->generate($qrDataPemohon);
+
+        return view('management.pengajuan.print', compact('pengajuan', 'qrCodePemohon', 'qrCodeManager'));
     }
 }

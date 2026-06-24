@@ -23,7 +23,7 @@
             </div>
         @endif
         
-        <div class="bg-gray-50 rounded-lg p-4 mb-6">
+        <div class="bg-gray-50 rounded-lg p-4 ">
             <p class="text-gray-600">Data lamaran Anda telah kami terima.</p>
             <p class="text-gray-600 mt-1">Nomor Registrasi: <strong class="text-primary">#{{ str_pad($pelamar->id, 6, '0', STR_PAD_LEFT) }}</strong></p>
             
@@ -33,17 +33,28 @@
                         <i class="fas fa-star mr-1"></i> Selamat! Anda lolos seleksi administrasi.
                     </p>
                 </div>
+                @elseif($pelamar->status == 'psikotest')
+                <p></p>
+                <p><strong>Mohon Tunggu Informasi Whatsaap dari Kami</strong>.</p>
+                <!-- <p>Atau copy link berikut: <br> <small></small></p>
+                <p>Pastikan anda mengerjakan psikotest dengan jujur dan teliti.</p> -->
+                <p>Terima kasih.</p> 
+                
             @endif
+                        
         </div>
         
         <div class="flex flex-col space-y-3">
             @if($pelamar->status == 'lolos_tahap1' && !$hasDetail)
-                <a href="{{ route('frontend.apply.detail_form', $pelamar) }}" 
+                <a href="{{ URL::signedRoute('frontend.apply.detail_form', $pelamar) }}" 
                    class="bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary-dark transition">
                     <i class="fas fa-arrow-right mr-2"></i> Lanjutkan ke Tahap Selanjutnya
                 </a>
+                @elseif($pelamar->status == 'psikotest')
+                <p style="text-decoration: underline; text-align: center;">
+                </p> <br>
             @endif
-            <a href="{{ url('/') }}" class="text-primary hover:underline">
+            <a href="{{ url('/') }}"  class="text-primary hover:underline">
                 Kembali ke Beranda
             </a>
         </div>

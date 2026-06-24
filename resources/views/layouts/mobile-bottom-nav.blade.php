@@ -11,10 +11,6 @@
                 <i class="fas fa-plus-circle text-xl"></i>
                 <span class="text-xs mt-1">Ajukan</span>
             </a>
-            <a href="{{ route('divisi.pengajuan.index') }}" class="flex flex-col items-center px-3 py-2 rounded-lg transition {{ request()->routeIs('divisi.pengajuan.index') ? 'text-primary' : 'text-gray-500' }}">
-                <i class="fas fa-list text-xl"></i>
-                <span class="text-xs mt-1">Riwayat</span>
-            </a>
             <form id="logout-form-bottom" action="{{ route('admin.logout') }}" method="POST" class="hidden">
                 @csrf
             </form>
@@ -58,6 +54,10 @@
             <a href="{{ route('hrd.pelamar.index') }}" class="flex flex-col items-center px-3 py-2 rounded-lg transition {{ request()->routeIs('hrd.pelamar.index') ? 'text-primary' : 'text-gray-500' }}">
                 <i class="fas fa-users text-xl"></i>
                 <span class="text-xs mt-1">Pelamar</span>
+            </a>
+            <a href="{{ route('hrd.ptk.index') }}" class="flex flex-col items-center px-3 py-2 rounded-lg transition {{ request()->routeIs('hrd.ptk.*') ? 'text-primary' : 'text-gray-500' }}">
+                <i class="fas fa-file-alt text-xl"></i>
+                <span class="text-xs mt-1">PTK</span>
             </a>
             <form id="logout-form-bottom" action="{{ route('admin.logout') }}" method="POST" class="hidden">
                 @csrf

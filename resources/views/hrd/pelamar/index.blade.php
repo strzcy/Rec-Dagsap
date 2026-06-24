@@ -27,7 +27,6 @@
                 <option value="lolos_psikotest" {{ request('status') == 'lolos_psikotest' ? 'selected' : '' }}>Lolos Psikotest</option>
                 <option value="interview" {{ request('status') == 'interview' ? 'selected' : '' }}>Interview</option>
                 <option value="diterima" {{ request('status') == 'diterima' ? 'selected' : '' }}>Diterima</option>
-                <option value="ditolak" {{ request('status') == 'ditolak' ? 'selected' : '' }}>Ditolak</option>
             </select>
             <button type="submit" class="bg-primary text-white px-4 py-2 rounded-lg">Filter</button>
             <a href="{{ route('hrd.pelamar.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded-lg text-center">Reset</a>
@@ -44,7 +43,7 @@
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Kontak</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tgl Lamar</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Aksi</th>
+                    <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Aksi</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-200">
@@ -71,7 +70,7 @@
                         </span>
                     </td>
                     <td class="px-6 py-4">{{ $pelamar->created_at->format('d/m/Y') }}</td>
-                    <td class="px-6 py-4">
+                    <td class="px-6 py-4 text-center">
                         <a href="{{ route('hrd.pelamar.show', $pelamar) }}" class="text-primary hover:underline">Detail</a>
                     </td>
                 </tr>

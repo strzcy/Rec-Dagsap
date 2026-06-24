@@ -36,6 +36,7 @@
             background-color: #f3f4f6;
             padding-bottom: 0;
         }
+
         
         /* DESKTOP STYLES (≥768px) */
         @media (min-width: 768px) {
@@ -79,11 +80,6 @@
                 width: 100%;
                 justify-content: center;
             }
-
-            .w-64.bg-white.shadow-lg.min-h-screen {
-                display: none !important;
-            }
-
 
             .main-content {
                 padding: 1rem !important;
@@ -184,7 +180,7 @@
     <!-- Desktop Layout with Sidebar -->
     <div class="flex">
         <!-- Desktop Sidebar -->
-        <div class="desktop-sidebar pt-12">
+        <div class="desktop-sidebar pt-12 hidden md:block">
             @auth
                 @if(auth()->user()->isDivisi() || auth()->user()->isManagement() || auth()->user()->isHrd())
                     @include('layouts.sidebar')
@@ -193,7 +189,7 @@
         </div>
 
         <!-- Main Content Area -->
-        <main class="flex-1 min-h-screen main-content">
+        <main class="flex-1 main-content" style="min-height: 90vh;">
             <!-- Breadcrumb -->
             @hasSection('breadcrumb')
                 <div class="mb-4">

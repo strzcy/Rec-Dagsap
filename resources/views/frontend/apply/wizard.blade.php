@@ -2,6 +2,23 @@
 
 @section('title', 'Form Isian Data Diri - Dagsap Recruitment')
 
+@php
+    $stepWithErrors = 1;
+    if ($errors->any()) {
+        $step4Fields = [
+            'nama_ayah', 'agama_ayah', 'usia_ayah', 'pekerjaan_ayah', 'alamat_ayah',
+            'nama_ibu', 'agama_ibu', 'usia_ibu', 'pekerjaan_ibu', 'alamat_ibu',
+            'gaji_diharapkan', 'waktu_bergabung', 'kekuatan', 'kelemahan', 'pernyataan_setuju'
+        ];
+        foreach ($step4Fields as $field) {
+            if ($errors->has($field)) {
+                $stepWithErrors = 4;
+                break;
+            }
+        }
+    }
+@endphp
+
 @push('styles')
 <style>
     .step {
@@ -58,6 +75,17 @@
                 </p>
             </div>
             
+            @if ($errors->any())
+            <div class="bg-red-50 border border-red-200 text-red-800 rounded-lg p-4 mb-6">
+                <h4 class="font-semibold mb-2"><i class="fas fa-exclamation-triangle mr-2"></i> Harap Perhatikan Sesuai Dengan dibawah ini :</h4>
+                <ul class="list-disc list-inside text-sm space-y-1">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
+            
             <!-- Progress Steps -->
             <div class="mb-8">
                 <div class="flex justify-between items-center">
@@ -80,7 +108,7 @@
                 </div>
             </div>
             
-            <form action="{{ route('frontend.apply.store_detail', $pelamar) }}" method="POST" id="multiStepForm">
+            <form action="{{ URL::signedRoute('frontend.apply.store_detail', $pelamar) }}" method="POST" id="multiStepForm" novalidate>
                 @csrf
                 
                 <!-- Section A: Data Pribadi -->
@@ -122,7 +150,7 @@
 
 @push('scripts')
 <script>
-    let currentStep = 1;
+    let currentStep = {{ $stepWithErrors }};
     const totalSteps = 4;
     
     function updateSteps() {
@@ -175,24 +203,90 @@
         }
     }
     
+    // VALIDASI LENGKAP (HANYA SATU)
     function validateCurrentStep() {
         const currentSection = document.getElementById(`section-${String.fromCharCode(64 + currentStep)}`);
         const requiredFields = currentSection.querySelectorAll('[required]');
         let isValid = true;
-        
+        let errorMessage = 'Harap isi semua field yang wajib diisi (ditandai *)';
+    
         requiredFields.forEach(field => {
-            if (!field.value.trim()) {
+            let fieldValid = true;
+            if (field.type === 'checkbox') {
+                if (!field.checked) {
+                    fieldValid = false;
+                }
+            } else if (field.type === 'radio') {
+                const name = field.getAttribute('name');
+                const checkedRadio = currentSection.querySelector(`input[name="${name}"]:checked`);
+                if (!checkedRadio) {
+                    fieldValid = false;
+                }
+            } else {
+                if (!field.value.trim()) {
+                    fieldValid = false;
+                }
+            }
+
+            if (!fieldValid) {
                 field.classList.add('border-red-500');
                 isValid = false;
             } else {
                 field.classList.remove('border-red-500');
             }
         });
-        
-        if (!isValid) {
-            alert('Harap isi semua field yang wajib diisi (ditandai *)');
+
+        // Validasi khusus minlength
+        if (isValid) {
+            const minLengthFields = currentSection.querySelectorAll('[minlength]');
+            minLengthFields.forEach(field => {
+                const minLen = parseInt(field.getAttribute('minlength'));
+                if (field.value.trim().length < minLen) {
+                    field.classList.add('border-red-500');
+                    isValid = false;
+                    errorMessage = `Kekuatan dan Kelemahan masing-masing minimal harus diisi ${minLen} karakter!`;
+                } else {
+                    field.classList.remove('border-red-500');
+                }
+            });
         }
-        
+    
+        // Validasi khusus per section
+        if (currentStep === 3 && isValid) {
+            const skillNames = document.querySelectorAll('input[name="keterampilan_nama[]"]');
+            let filledSkills = 0;
+            skillNames.forEach(skill => {
+                if (skill.value.trim()) filledSkills++;
+            });
+            if (filledSkills < 3) {
+                isValid = false;
+                errorMessage = 'Minimal 3 keterampilan harus diisi!';
+            }
+        }
+    
+        if (currentStep === 4 && isValid) {
+            const bahasaNames = document.querySelectorAll('input[name="bahasa_nama[]"]');
+            const bahasaMembaca = document.querySelectorAll('select[name="bahasa_membaca[]"]');
+            const bahasaBerbicara = document.querySelectorAll('select[name="bahasa_berbicara[]"]');
+            const bahasaMenulis = document.querySelectorAll('select[name="bahasa_menulis[]"]');
+            for (let i = 0; i < bahasaNames.length; i++) {
+                if (bahasaNames[i] && bahasaNames[i].value.trim()) {
+                    const membaca = bahasaMembaca[i]?.value;
+                    const berbicara = bahasaBerbicara[i]?.value;
+                    const menulis = bahasaMenulis[i]?.value;
+                    if (!membaca || !berbicara || !menulis) {
+                        isValid = false;
+                        errorMessage = 'Untuk setiap bahasa asing, wajib memilih level Membaca, Berbicara, dan Menulis!';
+                        break;
+                    }
+                }
+            }
+        }
+    
+        if (!isValid) {
+            alert(errorMessage);
+        }
+    
         return isValid;
     }
     
@@ -224,36 +318,120 @@
     
     updateSteps();
 
+    // Form submit validation handler
+    document.getElementById('multiStepForm').addEventListener('submit', function(e) {
+        if (!validateCurrentStep()) {
+            e.preventDefault();
+        }
+    });
+
     // Toggle functions for family forms
     function togglePasanganForm(show) {
-        document.getElementById('pasangan-form').classList.toggle('hidden', !show);
+        const form = document.getElementById('pasangan-form');
+        if (!form) return;
+        form.classList.toggle('hidden', !show);
+        form.querySelectorAll('input, select, textarea').forEach(input => {
+            if (show) {
+                input.setAttribute('required', 'required');
+            } else {
+                input.removeAttribute('required');
+                input.value = '';
+            }
+        });
     }
-
     function toggleAnakForm(show) {
-        document.getElementById('anak-form').classList.toggle('hidden', !show);
+        const form = document.getElementById('anak-form');
+        if (!form) return;
+        form.classList.toggle('hidden', !show);
+        form.querySelectorAll('input, select, textarea').forEach(input => {
+            if (show) {
+                input.setAttribute('required', 'required');
+            } else {
+                input.removeAttribute('required');
+                input.value = '';
+            }
+        });
     }
-
+    function togglePenyakitKeluargaForm(show) {
+        const form = document.getElementById('penyakit-keluarga-form');
+        if (!form) return;
+        form.classList.toggle('hidden', !show);
+        form.querySelectorAll('input, select, textarea').forEach(input => {
+            if (show) {
+                input.setAttribute('required', 'required');
+            } else {
+                input.removeAttribute('required');
+                input.value = '';
+            }
+        });
+    }
     function toggleSaudaraForm(show) {
-        document.getElementById('saudara-form').classList.toggle('hidden', !show);
+        const form = document.getElementById('saudara-form');
+        if (!form) return;
+        form.classList.toggle('hidden', !show);
+        form.querySelectorAll('input, select, textarea').forEach(input => {
+            if (show) {
+                input.setAttribute('required', 'required');
+            } else {
+                input.removeAttribute('required');
+                input.value = '';
+            }
+        });
     }
-
     function toggleSakitBerat(show) {
-        document.getElementById('sakit-berat-detail').classList.toggle('hidden', !show);
+        const form = document.getElementById('sakit-berat-detail');
+        if (!form) return;
+        form.classList.toggle('hidden', !show);
+        form.querySelectorAll('input, select, textarea').forEach(input => {
+            if (show) {
+                input.setAttribute('required', 'required');
+            } else {
+                input.removeAttribute('required');
+                input.value = '';
+            }
+        });
     }
-
     function togglePenyakitKeturunan(show) {
-        document.getElementById('penyakit-keturunan-detail').classList.toggle('hidden', !show);
+        const form = document.getElementById('penyakit-keturunan-detail');
+        if (!form) return;
+        form.classList.toggle('hidden', !show);
+        form.querySelectorAll('input, select, textarea').forEach(input => {
+            if (show) {
+                input.setAttribute('required', 'required');
+            } else {
+                input.removeAttribute('required');
+                input.value = '';
+            }
+        });
     }
-
     function toggleKacamata(show) {
-        document.getElementById('kacamata-detail').classList.toggle('hidden', !show);
+        const form = document.getElementById('kacamata-detail');
+        if (!form) return;
+        form.classList.toggle('hidden', !show);
+        form.querySelectorAll('input, select, textarea').forEach(input => {
+            if (show) {
+                input.setAttribute('required', 'required');
+            } else {
+                input.removeAttribute('required');
+                input.value = '';
+            }
+        });
     }
-
     function toggleAlergi(show) {
-        document.getElementById('alergi-detail').classList.toggle('hidden', !show);
+        const form = document.getElementById('alergi-detail');
+        if (!form) return;
+        form.classList.toggle('hidden', !show);
+        form.querySelectorAll('input, select, textarea').forEach(input => {
+            if (show) {
+                input.setAttribute('required', 'required');
+            } else {
+                input.removeAttribute('required');
+                input.value = '';
+            }
+        });
     }
 
-    // Setup dynamic add for all dynamic containers
+    // Setup dynamic add
     function setupDynamicAdd(btnId, containerId, itemClass, removeBtnClass) {
         document.getElementById(btnId)?.addEventListener('click', function() {
             const container = document.getElementById(containerId);
@@ -278,7 +456,6 @@
     setupDynamicAdd('tambah-penyakit', 'penyakit-keluarga-container', '.penyakit-item', '.remove-penyakit');
     setupDynamicAdd('tambah-saudara-kandung', 'saudara-kandung-container', '.saudara-kandung-item', '.remove-saudara-kandung');
 
-    // Remove handlers for existing items
     document.querySelectorAll('.remove-pekerjaan, .remove-referensi, .remove-saudara, .remove-anak, .remove-penyakit, .remove-saudara-kandung').forEach(btn => {
         btn.addEventListener('click', function() {
             const container = this.closest('[id$="-container"]');

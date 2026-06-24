@@ -4,12 +4,12 @@
     
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
         <div>
-            <label class="block text-sm font-medium mb-1">Kekuatan / Kelebihan</label>
-            <textarea name="kekuatan" rows="3" class="w-full border rounded-lg px-3 py-2" placeholder="Tuliskan kekuatan/kelebihan Anda..."></textarea>
+            <label class="block text-sm font-medium mb-1">Kekuatan / Kelebihan <span class="text-red-500">*</span></label>
+            <textarea name="kekuatan" required minlength="10" rows="3" class="w-full border rounded-lg px-3 py-2" placeholder="Tuliskan kekuatan/kelebihan Anda..."></textarea>
         </div>
         <div>
-            <label class="block text-sm font-medium mb-1">Kelemahan / Kekurangan</label>
-            <textarea name="kelemahan" rows="3" class="w-full border rounded-lg px-3 py-2" placeholder="Tuliskan kelemahan/kekurangan Anda..."></textarea>
+            <label class="block text-sm font-medium mb-1">Kelemahan / Kekurangan <span class="text-red-500">*</span></label>
+            <textarea name="kelemahan" required minlength="10" rows="3" class="w-full border rounded-lg px-3 py-2" placeholder="Tuliskan kelemahan/kekurangan Anda..."></textarea>
         </div>
     </div>
     
@@ -202,44 +202,53 @@
     
     <!-- 3. Riwayat penyakit istri/suami/anak -->
     <div class="mb-6">
-        <h3 class="font-semibold text-gray-700 mb-3">3. Riwayat Penyakit Istri/Suami/Anak</h3>
-        <div id="penyakit-keluarga-container">
-            <div class="penyakit-item bg-gray-50 p-4 rounded-lg mb-3">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    <div><input type="text" name="penyakit_nama[]" placeholder="Nama" class="w-full border rounded-lg px-3 py-2"></div>
-                    <div><input type="text" name="penyakit_jenis[]" placeholder="Jenis Penyakit" class="w-full border rounded-lg px-3 py-2"></div>
-                    <div><input type="text" name="penyakit_hubungan[]" placeholder="Hubungan" class="w-full border rounded-lg px-3 py-2"></div>
-                    <div><input type="text" name="penyakit_tahun[]" placeholder="Tahun Dirawat" class="w-full border rounded-lg px-3 py-2"></div>
-                    <div><input type="text" name="penyakit_tempat[]" placeholder="Tempat" class="w-full border rounded-lg px-3 py-2"></div>
-                </div>
-                <button type="button" class="remove-penyakit text-red-500 text-sm mt-2 hover:text-red-700">Hapus</button>
-            </div>
+        <div class="flex items-center justify-between mb-3">
+            <h3 class="font-semibold text-gray-700">3. Riwayat Penyakit Istri/Suami/Anak</h3>
+            <label class="inline-flex items-center">
+                <input type="checkbox" name="punya_penyakit_keluarga" value="1" class="mr-2" onclick="togglePenyakitKeluargaForm(this.checked)">
+                <span class="text-sm">Punya Riwayat Penyakit Keluarga</span>
+            </label>
         </div>
-        <button type="button" id="tambah-penyakit" class="text-primary text-sm hover:text-primary-dark mt-2">+ Tambah Riwayat Penyakit</button>
+    
+        <div id="penyakit-keluarga-form" class="hidden">
+            <div id="penyakit-container">
+                <div class="penyakit-item bg-gray-50 p-4 rounded-lg mb-3">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div><input type="text" name="penyakit_nama[]" placeholder="Nama" class="w-full border rounded-lg px-3 py-2"></div>
+                        <div><input type="text" name="penyakit_jenis[]" placeholder="Jenis Penyakit" class="w-full border rounded-lg px-3 py-2"></div>
+                        <div><input type="text" name="penyakit_hubungan[]" placeholder="Hubungan" class="w-full border rounded-lg px-3 py-2"></div>
+                        <div><input type="text" name="penyakit_tahun[]" placeholder="Tahun Dirawat" class="w-full border rounded-lg px-3 py-2"></div>
+                        <div><input type="text" name="penyakit_tempat[]" placeholder="Tempat" class="w-full border rounded-lg px-3 py-2"></div>
+                    </div>
+                    <button type="button" class="remove-penyakit text-red-500 text-sm mt-2 hover:text-red-700">Hapus</button>
+                </div>
+            </div>
+            <button type="button" id="tambah-penyakit" class="text-primary text-sm hover:text-primary-dark mt-2">+ Tambah Riwayat Penyakit</button>
+        </div>
     </div>
     
     <!-- 4. Orang Tua -->
     <div class="mb-6">
-        <h3 class="font-semibold text-gray-700 mb-3">4. Orang Tua</h3>
+        <h3 class="font-semibold text-gray-700 mb-3">4. Orang Tua <span class="text-red-500">*</span></h3>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div class="bg-gray-50 p-4 rounded-lg">
-                <h4 class="font-medium text-primary mb-2">Ayah</h4>
+                <h4 class="font-medium text-primary mb-2">Ayah <span class="text-red-500">*</span></h4>
                 <div class="space-y-2">
-                    <input type="text" name="nama_ayah" placeholder="Nama Lengkap" class="w-full border rounded-lg px-3 py-2">
-                    <input type="text" name="agama_ayah" placeholder="Agama" class="w-full border rounded-lg px-3 py-2">
-                    <input type="number" name="usia_ayah" placeholder="Usia" class="w-full border rounded-lg px-3 py-2">
-                    <input type="text" name="pekerjaan_ayah" placeholder="Pekerjaan" class="w-full border rounded-lg px-3 py-2">
-                    <textarea name="alamat_ayah" rows="2" placeholder="Alamat & No. Telp" class="w-full border rounded-lg px-3 py-2"></textarea>
+                    <input type="text" name="nama_ayah" required placeholder="Nama Lengkap" class="w-full border rounded-lg px-3 py-2">
+                    <input type="text" name="agama_ayah" required placeholder="Agama" class="w-full border rounded-lg px-3 py-2">
+                    <input type="number" name="usia_ayah" required placeholder="Usia" class="w-full border rounded-lg px-3 py-2">
+                    <input type="text" name="pekerjaan_ayah" required placeholder="Pekerjaan" class="w-full border rounded-lg px-3 py-2">
+                    <textarea name="alamat_ayah" required rows="2" placeholder="Alamat & No. Telp" class="w-full border rounded-lg px-3 py-2"></textarea>
                 </div>
             </div>
             <div class="bg-gray-50 p-4 rounded-lg">
-                <h4 class="font-medium text-primary mb-2">Ibu</h4>
+                <h4 class="font-medium text-primary mb-2">Ibu <span class="text-red-500">*</span></h4>
                 <div class="space-y-2">
-                    <input type="text" name="nama_ibu" placeholder="Nama Lengkap" class="w-full border rounded-lg px-3 py-2">
-                    <input type="text" name="agama_ibu" placeholder="Agama" class="w-full border rounded-lg px-3 py-2">
-                    <input type="number" name="usia_ibu" placeholder="Usia" class="w-full border rounded-lg px-3 py-2">
-                    <input type="text" name="pekerjaan_ibu" placeholder="Pekerjaan" class="w-full border rounded-lg px-3 py-2">
-                    <textarea name="alamat_ibu" rows="2" placeholder="Alamat & No. Telp" class="w-full border rounded-lg px-3 py-2"></textarea>
+                    <input type="text" name="nama_ibu" required placeholder="Nama Lengkap" class="w-full border rounded-lg px-3 py-2">
+                    <input type="text" name="agama_ibu" required placeholder="Agama" class="w-full border rounded-lg px-3 py-2">
+                    <input type="number" name="usia_ibu" required placeholder="Usia" class="w-full border rounded-lg px-3 py-2">
+                    <input type="text" name="pekerjaan_ibu" required placeholder="Pekerjaan" class="w-full border rounded-lg px-3 py-2">
+                    <textarea name="alamat_ibu" required rows="2" placeholder="Alamat & No. Telp" class="w-full border rounded-lg px-3 py-2"></textarea>
                 </div>
             </div>
         </div>
@@ -284,29 +293,36 @@
     <h2 class="text-xl font-bold text-primary mb-4 border-b pb-2">J. REMUNERASI</h2>
     
     <div class="mb-8">
-        <label class="block text-sm font-medium mb-1">Gaji per bulan yang diharapkan</label>
-        <input type="text" name="gaji_diharapkan" class="w-full md:w-1/2 border rounded-lg px-3 py-2" placeholder="Contoh: Rp 5.000.000 (bruto/netto)">
+        <label class="block text-sm font-medium mb-1">Gaji per bulan yang diharapkan <span class="text-red-500">*</span></label>
+        <input type="text" name="gaji_diharapkan" required class="w-full md:w-1/2 border rounded-lg px-3 py-2" placeholder="Contoh: Rp 5.000.000 (bruto/netto)">
     </div>
     
     <!-- K. WAKTU -->
     <h2 class="text-xl font-bold text-primary mb-4 border-b pb-2">K. WAKTU</h2>
     
     <div class="mb-8">
-        <label class="block text-sm font-medium mb-1">Jika lamaran Anda diterima, berapa lama waktu yang Anda perlukan untuk dapat bergabung?</label>
-        <input type="text" name="waktu_bergabung" class="w-full md:w-1/2 border rounded-lg px-3 py-2" placeholder="Contoh: 2 minggu, 1 bulan, dll">
+        <label class="block text-sm font-medium mb-1">Jika lamaran Anda diterima, berapa lama waktu yang Anda perlukan untuk dapat bergabung? <span class="text-red-500">*</span></label>
+        <input type="text" name="waktu_bergabung" required class="w-full md:w-1/2 border rounded-lg px-3 py-2" placeholder="Contoh: 2 minggu, 1 bulan, dll">
     </div>
     
     <!-- L. PERNYATAAN -->
     <h2 class="text-xl font-bold text-primary mb-4 border-b pb-2">L. PERNYATAAN</h2>
-    
+
     <div class="mb-6 p-4 bg-gray-50 rounded-lg">
         <p class="text-sm mb-4">Dengan ini saya menyatakan bahwa semua keterangan yang saya cantumkan dalam formulir ini adalah benar dan sah. Seandainya saya diterima dan kemudian terbukti bahwa salah satu saja keterangan saya tersebut tidak benar, maka saya bersedia mengundurkan diri tanpa persyaratan apapun dengan segera dari perusahaan ini.</p>
-        
+    
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-            <div><input type="text" name="tempat_pernyataan" placeholder="Tempat" class="w-full border rounded-lg px-3 py-2"></div>
-            <div><input type="date" name="tanggal_pernyataan" class="w-full border rounded-lg px-3 py-2"></div>
+            <div>
+                <label class="block text-sm font-medium mb-1">Tempat</label>
+                <input type="text" name="tempat_pernyataan" placeholder="Tempat" class="w-full border rounded-lg px-3 py-2">
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-1">Tanggal Pernyataan</label>
+                <input type="text" value="{{ date('d/m/Y') }}" class="w-full border rounded-lg px-3 py-2 bg-gray-100" readonly disabled>
+                <input type="hidden" name="tanggal_pernyataan" value="{{ date('Y-m-d') }}">
+            </div>
         </div>
-        
+    
         <div>
             <label class="inline-flex items-center">
                 <input type="checkbox" name="pernyataan_setuju" value="1" required class="mr-2">

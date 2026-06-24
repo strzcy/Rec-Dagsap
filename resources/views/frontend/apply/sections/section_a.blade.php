@@ -23,16 +23,16 @@
             <input type="date" name="tanggal_lahir" required class="w-full border rounded-lg px-3 py-2">
         </div>
         <div>
-            <label class="block text-sm font-medium mb-1">Tinggi Badan (cm)</label>
-            <input type="number" name="tinggi_badan" class="w-full border rounded-lg px-3 py-2" placeholder="Contoh: 165">
+            <label class="block text-sm font-medium mb-1">Tinggi Badan (cm) <span class="text-red-500">*</span></label>
+            <input type="number" name="tinggi_badan" required class="w-full border rounded-lg px-3 py-2" placeholder="Contoh: 165">
         </div>
         <div>
-            <label class="block text-sm font-medium mb-1">Berat Badan (kg)</label>
-            <input type="number" name="berat_badan" class="w-full border rounded-lg px-3 py-2" placeholder="Contoh: 60">
+            <label class="block text-sm font-medium mb-1">Berat Badan (kg) <span class="text-red-500">*</span></label>
+            <input type="number" name="berat_badan" required class="w-full border rounded-lg px-3 py-2" placeholder="Contoh: 60">
         </div>
         <div>
-            <label class="block text-sm font-medium mb-1">Kewarganegaraan</label>
-            <input type="text" name="kewarganegaraan" value="Indonesia" class="w-full border rounded-lg px-3 py-2">
+            <label class="block text-sm font-medium mb-1">Kewarganegaraan <span class="text-red-500">*</span></label>
+            <input type="text" name="kewarganegaraan" value="Indonesia" required class="w-full border rounded-lg px-3 py-2">
         </div>
         <div>
             <label class="block text-sm font-medium mb-1">Agama <span class="text-red-500">*</span></label>
@@ -47,8 +47,8 @@
             </select>
         </div>
         <div>
-            <label class="block text-sm font-medium mb-1">Golongan Darah</label>
-            <select name="golongan_darah" class="w-full border rounded-lg px-3 py-2">
+            <label class="block text-sm font-medium mb-1">Golongan Darah <span class="text-red-500">*</span></label>
+            <select name="golongan_darah" required class="w-full border rounded-lg px-3 py-2">
                 <option value="">Pilih</option>
                 <option value="A">A</option>
                 <option value="B">B</option>
@@ -65,16 +65,16 @@
     </div>
     
     <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-3">
-        <div><input type="text" name="rt_rw_tinggal" placeholder="RT/RW" class="w-full border rounded-lg px-3 py-2"></div>
-        <div><input type="text" name="kelurahan_tinggal" placeholder="Kelurahan" class="w-full border rounded-lg px-3 py-2"></div>
-        <div><input type="text" name="kecamatan_tinggal" placeholder="Kecamatan" class="w-full border rounded-lg px-3 py-2"></div>
-        <div><input type="text" name="kabupaten_tinggal" placeholder="Kabupaten" class="w-full border rounded-lg px-3 py-2"></div>
-        <div><input type="text" name="kota_tinggal" placeholder="Kota" class="w-full border rounded-lg px-3 py-2"></div>
-        <div><input type="text" name="provinsi_tinggal" placeholder="Provinsi" class="w-full border rounded-lg px-3 py-2"></div>
-        <div><input type="text" name="kode_pos_tinggal" placeholder="Kode Pos" class="w-full border rounded-lg px-3 py-2"></div>
-        <div><input type="text" name="no_telp" placeholder="No. Telp" class="w-full border rounded-lg px-3 py-2"></div>
+        <div><input type="text" name="rt_rw_tinggal" placeholder="RT/RW" required class="w-full border rounded-lg px-3 py-2"></div>
+        <div><input type="text" name="kelurahan_tinggal" placeholder="Kelurahan" required class="w-full border rounded-lg px-3 py-2"></div>
+        <div><input type="text" name="kecamatan_tinggal" placeholder="Kecamatan" required class="w-full border rounded-lg px-3 py-2"></div>
+        <div><input type="text" name="kabupaten_tinggal" placeholder="Kabupaten" required class="w-full border rounded-lg px-3 py-2"></div>
+        <div><input type="text" name="kota_tinggal" placeholder="Kota" required class="w-full border rounded-lg px-3 py-2"></div>
+        <div><input type="text" name="provinsi_tinggal" placeholder="Provinsi" required class="w-full border rounded-lg px-3 py-2"></div>
+        <div><input type="text" name="kode_pos_tinggal" placeholder="Kode Pos" required class="w-full border rounded-lg px-3 py-2"></div>
+        <div><input type="text" name="no_telp" placeholder="No. Telp" required class="w-full border rounded-lg px-3 py-2"></div>
         <div><input type="text" name="no_hp" placeholder="No. HP" required class="w-full border rounded-lg px-3 py-2"></div>
-        <div><input type="text" name="no_wa" placeholder="No. WA" class="w-full border rounded-lg px-3 py-2"></div>
+        <div><input type="text" name="no_wa" placeholder="No. WA"required class="w-full border rounded-lg px-3 py-2"></div>
     </div>
     
     <div class="mt-4">
@@ -83,13 +83,13 @@
     </div>
     
     <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-3">
-        <div><input type="text" name="rt_rw_ktp" placeholder="RT/RW" class="w-full border rounded-lg px-3 py-2"></div>
-        <div><input type="text" name="kelurahan_ktp" placeholder="Kelurahan" class="w-full border rounded-lg px-3 py-2"></div>
-        <div><input type="text" name="kecamatan_ktp" placeholder="Kecamatan" class="w-full border rounded-lg px-3 py-2"></div>
-        <div><input type="text" name="kabupaten_ktp" placeholder="Kabupaten" class="w-full border rounded-lg px-3 py-2"></div>
-        <div><input type="text" name="kota_ktp" placeholder="Kota" class="w-full border rounded-lg px-3 py-2"></div>
-        <div><input type="text" name="provinsi_ktp" placeholder="Provinsi" class="w-full border rounded-lg px-3 py-2"></div>
-        <div><input type="text" name="kode_pos_ktp" placeholder="Kode Pos" class="w-full border rounded-lg px-3 py-2"></div>
+        <div><input type="text" name="rt_rw_ktp" placeholder="RT/RW" required class="w-full border rounded-lg px-3 py-2"></div>
+        <div><input type="text" name="kelurahan_ktp" placeholder="Kelurahan" required class="w-full border rounded-lg px-3 py-2"></div>
+        <div><input type="text" name="kecamatan_ktp" placeholder="Kecamatan" required class="w-full border rounded-lg px-3 py-2"></div>
+        <div><input type="text" name="kabupaten_ktp" placeholder="Kabupaten" required class="w-full border rounded-lg px-3 py-2"></div>
+        <div><input type="text" name="kota_ktp" placeholder="Kota" required class="w-full border rounded-lg px-3 py-2"></div>
+        <div><input type="text" name="provinsi_ktp" placeholder="Provinsi" required class="w-full border rounded-lg px-3 py-2"></div>
+        <div><input type="text" name="kode_pos_ktp" placeholder="Kode Pos" required class="w-full border rounded-lg px-3 py-2"></div>
     </div>
     
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-3">
@@ -99,11 +99,11 @@
         </div>
         <div>
             <label class="block text-sm font-medium mb-1">No. NPWP</label>
-            <input type="text" name="no_npwp" class="w-full border rounded-lg px-3 py-2">
+            <input type="text" name="no_npwp" required class="w-full border rounded-lg px-3 py-2">
         </div>
         <div>
             <label class="block text-sm font-medium mb-1">No. BPJS</label>
-            <input type="text" name="no_bpjs_ketenagakerjaan" placeholder="BPJS Ketenagakerjaan" class="w-full border rounded-lg px-3 py-2">
+            <input type="text" name="no_bpjs_ketenagakerjaan" placeholder="BPJS Ketenagakerjaan"required class="w-full border rounded-lg px-3 py-2">
         </div>
     </div>
     
@@ -123,12 +123,12 @@
         </div>
         <div>
             <label class="block text-sm font-medium mb-1">Hobby</label>
-            <input type="text" name="hobby" class="w-full border rounded-lg px-3 py-2">
+            <input type="text" name="hobby"required class="w-full border rounded-lg px-3 py-2">
         </div>
     </div>
     
     <div class="mt-3">
         <label class="block text-sm font-medium mb-1">Organisasi</label>
-        <textarea name="organisasi" rows="2" class="w-full border rounded-lg px-3 py-2" placeholder="Riwayat organisasi yang pernah diikuti"></textarea>
+        <textarea name="organisasi" rows="2"required class="w-full border rounded-lg px-3 py-2" placeholder="Riwayat organisasi yang pernah diikuti"></textarea>
     </div>
 </div>

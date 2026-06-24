@@ -9,6 +9,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\HRD\KirimJadwalInterviewRequest;
+use App\Http\Requests\HRD\UpdatePelamarStatusRequest;
 
 class PelamarController extends Controller
 {
@@ -43,23 +47,17 @@ class PelamarController extends Controller
     public function show(Pelamar $pelamar)
     {
         // Cek apakah pelamar ini dari lowongan HRD yang login
-        if ($pelamar->lowongan->hrd_id !== auth()->id()) {
-            abort(403);
-        }
+        Gate::authorize('view', $pelamar);
         
         $lowongans = Lowongan::where('hrd_id', auth()->id())->get();
         
         return view('hrd.pelamar.show', compact('pelamar', 'lowongans'));
     }
 
-    public function kirimJadwalInterview(Request $request, Pelamar $pelamar)
+    public function kirimJadwalInterview(KirimJadwalInterviewRequest $request, Pelamar $pelamar)
     {
-        $request->validate([
-            'tanggal_interview' => 'required|date',
-            'waktu_interview' => 'required',
-            'lokasi_interview' => 'required|string',
-            'catatan' => 'nullable|string'
-        ]);
+        Gate::authorize('updateStatus', $pelamar);
+        // Validated automatically by the FormRequest class
 
         $tanggal = $request->tanggal_interview;
         $waktu = $request->waktu_interview;
@@ -74,8 +72,8 @@ class PelamarController extends Controller
             $noTelepon = '62' . $noTelepon;
         }
         
-        $message = "Selamat! Anda dinyatakan lolos seleksi administrasi dan psikotest di Dagsap Recruitment.%0A%0A";
-        $message .= "Apakah Anda bersedia mengikuti interview lebih lanjut pada:%0A";
+        $message = "Selamat! Anda dinyatakan lolos seleksi administrasi di PT. Dagsap Endura Eatore.%0A%0A";
+        $message .= "Apakah Anda bersedia mengikuti tahap selanjutnya pada:%0A";
         $message .= "📅 Tanggal: {$tanggal}%0A";
         $message .= "⏰ Waktu: {$waktu}%0A";
         $message .= "📍 Lokasi: {$lokasi}%0A%0A";
@@ -84,13 +82,13 @@ class PelamarController extends Controller
             $message .= "📝 Catatan: " . $request->catatan . "%0A%0A";
         }
         
-        $message .= "Silakan balas YES jika bersedia atau NO jika tidak bersedia.%0A%0A";
+        $message .= "Kami tunggu balasan dari Anda.%0A%0A";
         $message .= "Terima kasih.";
 
         // Update status pelamar
         $pelamar->update([
             'status' => 'interview',
-            'catatan' => "Interview dijadwalkan pada {$tanggal} {$waktu} di {$lokasi}" . ($request->catatan ? "\nCatatan: " . $request->catatan : '')
+            'catatan' => "Tahap Lanjutan dijadwalkan pada {$tanggal} {$waktu} di {$lokasi}" . ($request->catatan ? "\nCatatan: " . $request->catatan : '')
         ]);
         
         // Simpan log pengiriman
@@ -107,12 +105,10 @@ class PelamarController extends Controller
             ->with('whatsapp_url', $whatsappUrl);
     }
     
-    public function updateStatus(Request $request, Pelamar $pelamar)
+    public function updateStatus(UpdatePelamarStatusRequest $request, Pelamar $pelamar)
     {
-        $request->validate([
-            'status' => 'required|in:pending,lolos_tahap1,psikotest,lolos_psikotest,interview,diterima,ditolak',
-            'catatan' => 'nullable|string',
-        ]);
+        Gate::authorize('updateStatus', $pelamar);
+        // Validated automatically by the FormRequest class
         
         $pelamar->update([
             'status' => $request->status,
@@ -131,13 +127,12 @@ class PelamarController extends Controller
     // Tambahkan method ini di dalam class PelamarController
     public function downloadCv(Pelamar $pelamar)
     {
-        if ($pelamar->lowongan->hrd_id !== auth()->id()) {
-            abort(403);
-        }
+        Gate::authorize('downloadCv', $pelamar);
     
-        $path = storage_path('app/public/' . $pelamar->cv_path);
-        if (file_exists($path)) {
-            return response()->download($path, 'CV_' . $pelamar->nama_lengkap . '.pdf');
+        if (Storage::disk('local')->exists($pelamar->cv_path)) {
+            return Storage::disk('local')->download($pelamar->cv_path, 'CV_' . $pelamar->nama_lengkap . '.pdf');
+        } elseif (Storage::disk('public')->exists($pelamar->cv_path)) {
+            return Storage::disk('public')->download($pelamar->cv_path, 'CV_' . $pelamar->nama_lengkap . '.pdf');
         }
     
         return back()->with('error', 'File tidak ditemukan.');
@@ -145,16 +140,45 @@ class PelamarController extends Controller
 
     public function downloadIjazah(Pelamar $pelamar)
     {
-        if ($pelamar->lowongan->hrd_id !== auth()->id()) {
-            abort(403);
-        }
+        Gate::authorize('downloadIjazah', $pelamar);
     
-        $path = storage_path('app/public/' . $pelamar->ijazah_path);
-        if (file_exists($path)) {
-            return response()->download($path, 'Ijazah_' . $pelamar->nama_lengkap . '.pdf');
+        if (Storage::disk('local')->exists($pelamar->ijazah_path)) {
+            return Storage::disk('local')->download($pelamar->ijazah_path, 'Ijazah_' . $pelamar->nama_lengkap . '.pdf');
+        } elseif (Storage::disk('public')->exists($pelamar->ijazah_path)) {
+            return Storage::disk('public')->download($pelamar->ijazah_path, 'Ijazah_' . $pelamar->nama_lengkap . '.pdf');
         }
     
         return back()->with('error', 'File tidak ditemukan.');
+    }
+
+    public function previewCv(Pelamar $pelamar)
+    {
+        Gate::authorize('downloadCv', $pelamar);
+    
+        if (Storage::disk('local')->exists($pelamar->cv_path)) {
+            $path = Storage::disk('local')->path($pelamar->cv_path);
+            return response()->file($path);
+        } elseif (Storage::disk('public')->exists($pelamar->cv_path)) {
+            $path = Storage::disk('public')->path($pelamar->cv_path);
+            return response()->file($path);
+        }
+    
+        return abort(404, 'File tidak ditemukan.');
+    }
+
+    public function previewIjazah(Pelamar $pelamar)
+    {
+        Gate::authorize('downloadIjazah', $pelamar);
+    
+        if (Storage::disk('local')->exists($pelamar->ijazah_path)) {
+            $path = Storage::disk('local')->path($pelamar->ijazah_path);
+            return response()->file($path);
+        } elseif (Storage::disk('public')->exists($pelamar->ijazah_path)) {
+            $path = Storage::disk('public')->path($pelamar->ijazah_path);
+            return response()->file($path);
+        }
+    
+        return abort(404, 'File tidak ditemukan.');
     }
     
     private function sendEmailInterview($pelamar, $tanggal, $waktu, $lokasi)
@@ -190,9 +214,7 @@ class PelamarController extends Controller
 
     public function printData(Pelamar $pelamar)
     {
-        if ($pelamar->lowongan->hrd_id !== auth()->id()) {
-            abort(403);
-        }
+        Gate::authorize('print', $pelamar);
     
         return view('hrd.pelamar.print', compact('pelamar'));
     }

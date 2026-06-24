@@ -4,12 +4,13 @@
 @section('content')
 <section class="hero-gradient text-white py-20">
     <div class="container mx-auto px-4 text-center">
-        <h1 class="text-4xl md:text-5xl font-bold mb-4">Mulai Karir Bersama Dagsap</h1>
-        <p class="text-lg md:text-xl mb-8 opacity-90">Bergabunglah dengan perusahaan terbaik dan kembangkan potensi Anda</p>
+        <br>
+        <h1 class="text-4xl md:text-5xl font-bold mb-4">Mulai Karir Bersama PT. Dagsap Endura Eatore</h1>
+        <p class="text-lg md:text-xl mb-8 opacity-90">Bergabunglah dengan perusahaan kami dan kembangkan potensi Anda</p>
         <div class="max-w-xl mx-auto">
             <form action="{{ route('frontend.lowongan') }}" method="GET" class="flex flex-col md:flex-row gap-2">
                 <input type="text" name="search" placeholder="Cari posisi, divisi, atau kata kunci..." 
-                       class="flex-1 px-4 py-3 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-primary">
+                    class="flex-1 px-4 py-3 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-primary">
                 <button type="submit" class="bg-white text-primary px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition shadow">
                     <i class="fas fa-search mr-2"></i> Cari Lowongan
                 </button>

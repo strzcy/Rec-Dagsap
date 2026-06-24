@@ -4,14 +4,25 @@ namespace App\Http\Controllers\Divisi;
 
 use App\Http\Controllers\Controller;
 use App\Models\PengajuanTenagaKerja;
+use App\Models\Divisi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
+use App\Http\Requests\Divisi\StorePengajuanRequest;
+use App\Http\Requests\Divisi\VerifyNikRequest;
 
 class PengajuanController extends Controller
 {
+    // HANYA SATU METHOD INDEX - TIDAK BOLEH DUPLIKAT
     public function index()
     {
-        $pengajuans = PengajuanTenagaKerja::where('user_id', Auth::id())
+        $nik = session('verified_nik');
+        
+        if (!$nik) {
+            return redirect()->route('divisi.pengajuan.verify');
+        }
+        
+        $pengajuans = PengajuanTenagaKerja::where('nip_pemohon', $nik)
             ->orderBy('created_at', 'desc')
             ->paginate(10);
         
@@ -20,29 +31,13 @@ class PengajuanController extends Controller
 
     public function create()
     {
-        return view('divisi.pengajuan.create');
+        $divisis = Divisi::all();
+        return view('divisi.pengajuan.create', compact('divisis'));
     }
 
-    public function store(Request $request)
+    public function store(StorePengajuanRequest $request)
     {
-        // Debug: dd($request->all());
-        
-        $validated = $request->validate([
-            'jenis' => 'required|in:penambahan,penggantian',
-            'posisi' => 'required|string|max:255',
-            'jumlah' => 'required|integer|min:1',
-            'tanggal_dibutuhkan' => 'required|date',
-            'deskripsi_pekerjaan' => 'required|string',
-            'kriteria_pendidikan' => 'required|string',
-            'kriteria_jurusan' => 'nullable|string',
-            'kriteria_pengalaman' => 'nullable|string',
-            'kriteria_ipk' => 'nullable|string',
-            'kriteria_keahlian' => 'nullable|string',
-            'tugas' => 'nullable|array',
-            'persyaratan' => 'nullable|array',
-            'menggantikan' => 'nullable|string',
-            'diajukan_oleh' => 'required|string|max:255', // Wajib diisi
-        ]);
+        $validated = $request->validated();
 
         // Build kriteria JSON
         $kriteria = [
@@ -52,41 +47,86 @@ class PengajuanController extends Controller
             'ipk' => $validated['kriteria_ipk'] ?? '',
             'keahlian' => $validated['kriteria_keahlian'] ?? '',
         ];
-        
+    
         $persyaratan = array_filter($request->persyaratan ?? []);
         if ($validated['jenis'] == 'penggantian' && $request->menggantikan) {
             $persyaratan[] = "Menggantikan karyawan: " . $request->menggantikan;
         }
-        
+    
         $tugas = array_filter($request->tugas ?? []);
 
         $pengajuanData = [
-            'divisi_id' => Auth::user()->divisi_id,
+            // Identitas Pemohon
+            'nama_pemohon' => $validated['nama_pemohon'],
+            'nip_pemohon' => $validated['nip_pemohon'],
+            'jabatan_pemohon' => $validated['jabatan_pemohon'],
+            'no_hp_pemohon' => $validated['no_hp_pemohon'],
+            'departemen_dipilih' => $validated['departemen_dipilih'],
+            'divisi_id' => $validated['departemen_dipilih'],
             'user_id' => Auth::id(),
-            'diajukan_oleh' => $validated['diajukan_oleh'], // Pastikan ini terisi
+            'diajukan_oleh' => $validated['nama_pemohon'],
+        
+            // Data PTK
             'jenis' => $validated['jenis'],
             'posisi' => $validated['posisi'],
             'jumlah' => $validated['jumlah'],
             'tanggal_dibutuhkan' => $validated['tanggal_dibutuhkan'],
-            'kriteria' => json_encode($kriteria),
-            'persyaratan' => json_encode(array_values($persyaratan)),
+            'kriteria' => $kriteria,
+            'persyaratan' => array_values($persyaratan),
             'deskripsi_pekerjaan' => $validated['deskripsi_pekerjaan'],
-            'tugas' => json_encode(array_values($tugas)),
+            'tugas' => array_values($tugas),
             'status' => 'pending',
         ];
 
         PengajuanTenagaKerja::create($pengajuanData);
 
-        return redirect()->route('divisi.pengajuan.index')
-            ->with('success', 'Pengajuan tenaga kerja berhasil dikirim!');
+        // HAPUS SESSION VERIFIED NIK AGAR USER HARUS VERIFIKASI ULANG
+        session()->forget('verified_nik');
+    
+        $divisiNama = \App\Models\Divisi::find($validated['departemen_dipilih'])->nama_divisi;
+    
+        // Redirect ke DASHBOARD (bukan ke create atau index)
+        return redirect()->route('divisi.dashboard')
+            ->with('success_submit', true)
+            ->with('success_message', 'Pengajuan tenaga kerja berhasil dikirim!')
+            ->with('ptk_data', [
+                'posisi' => $validated['posisi'],
+                'divisi' => $divisiNama,
+                'jumlah' => $validated['jumlah'],
+                'tanggal_dibutuhkan' => \Carbon\Carbon::parse($validated['tanggal_dibutuhkan'])->format('d/m/Y')
+            ]);
     }
 
     public function show(PengajuanTenagaKerja $pengajuan)
     {
-        if ($pengajuan->user_id !== Auth::id()) {
-            abort(403, 'Anda tidak memiliki akses ke pengajuan ini.');
-        }
+        Gate::authorize('view', $pengajuan);
         
         return view('divisi.pengajuan.show', compact('pengajuan'));
+    }
+    
+    public function verifyForm()
+    {
+        // Hapus session lama
+        session()->forget('verified_nik');
+        return view('divisi.pengajuan.verify_nik');
+    }
+
+    public function verify(VerifyNikRequest $request)
+    {
+        $validated = $request->validated();
+        
+        $nik = $validated['nik'];
+        
+        // Cek apakah ada pengajuan dengan NIK tersebut
+        $exists = PengajuanTenagaKerja::where('nip_pemohon', $nik)->exists();
+        
+        if (!$exists) {
+            return back()->with('error', 'NIK/NIP tidak ditemukan. Pastikan Anda menggunakan NIK yang sama saat mengajukan PTK.');
+        }
+        
+        // Simpan NIK ke session
+        session(['verified_nik' => $nik]);
+        
+        return redirect()->route('divisi.pengajuan.index');
     }
 }

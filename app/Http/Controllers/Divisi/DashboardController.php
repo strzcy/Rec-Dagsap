@@ -12,7 +12,6 @@ class DashboardController extends Controller
     public function index()
     {
         $userId = Auth::id();
-        $divisiId = Auth::user()->divisi_id;
         
         $totalPengajuan = PengajuanTenagaKerja::where('user_id', $userId)->count();
         $pendingPengajuan = PengajuanTenagaKerja::where('user_id', $userId)
@@ -23,20 +22,16 @@ class DashboardController extends Controller
             ->where('status', 'ditolak')->count();
             
         $recentPengajuan = PengajuanTenagaKerja::where('user_id', $userId)
-            ->latest()->take(5)->get();
-            
-        // Cek lowongan aktif dari pengajuan yang disetujui
-        $activeLowongan = Lowongan::whereHas('pengajuan', function($q) use ($divisiId) {
-            $q->where('divisi_id', $divisiId);
-        })->where('status', 'publikasi')->count();
+            ->latest()
+            ->take(5)
+            ->get();
             
         return view('divisi.dashboard', compact(
             'totalPengajuan', 
             'pendingPengajuan', 
             'approvedPengajuan', 
             'rejectedPengajuan',
-            'recentPengajuan',
-            'activeLowongan'
+            'recentPengajuan'
         ));
     }
 }

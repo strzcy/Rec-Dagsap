@@ -6,11 +6,11 @@
 <div class="min-h-screen flex items-center justify-center px-4 mt-16">
     <div class="bg-white rounded-lg shadow-lg p-8 w-full max-w-md">
         <div class="text-center mb-8">
-            <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
-                <i class="fas fa-building text-white text-2xl"></i>
+            <div style="text-align:center; justify-content:center; display:flex;">
+                <img class="w-40" src="{{ asset('logo.png') }}">
             </div>
             <h2 class="text-2xl font-bold text-primary">Dagsap Recruitment</h2>
-            <p class="text-gray-600 mt-2">Portal User dan SDM</p>
+            <p class="text-gray-600 mt-2">Portal Departemen</p>
         </div>
         
         @if($errors->any())
@@ -29,7 +29,7 @@
                        class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
                        placeholder="Masukkan username" required autofocus>
             </div>
-            
+
             <div class="mb-6">
                 <label class="block text-gray-700 text-sm font-bold mb-2">
                     <i class="fas fa-lock mr-2"></i> Password
@@ -45,13 +45,13 @@
             </div>
             
             <button type="submit" class="w-full bg-primary text-white py-2 rounded-lg hover:bg-primary-dark transition transform hover:scale-105">
-                <i class="fas fa-sign-in-alt mr-2"></i> Login
+                Login
             </button>
         </form>
         
         <div class="mt-6 text-center text-sm text-gray-600">
             <a href="{{ url('/') }}" class="text-primary hover:underline">
-                <i class="fas fa-arrow-left mr-1"></i> Kembali ke Halaman Utama
+                Kembali ke Halaman Utama
             </a>
         </div>
     </div>

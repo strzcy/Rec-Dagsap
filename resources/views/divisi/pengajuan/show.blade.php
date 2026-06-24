@@ -32,7 +32,7 @@
         <!-- Informasi Pengajuan -->
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6 pb-6 border-b">
             <div>
-                <label class="text-xs text-gray-500">Divisi Pengaju</label>
+                <label class="text-xs text-gray-500">Departemen</label>
                 <p class="font-medium">{{ $pengajuan->divisi->nama_divisi ?? '-' }}</p>
             </div>
             <div>

@@ -40,8 +40,13 @@ class Pelamar extends Model
         $lowongan = $this->lowongan;
         $pengajuan = $lowongan->pengajuan;
         
-        // Parse kriteria dan persyaratan (bisa disimpan sebagai JSON)
-        $kriteria = json_decode($pengajuan->kriteria, true) ?? [];
+        $kriteria = $pengajuan->kriteria;
+        if (is_string($kriteria)) {
+            $kriteria = json_decode($kriteria, true) ?? [];
+        }
+        if (!is_array($kriteria)) {
+            $kriteria = [];
+        }
         
         // Logika pengecekan kelulusan
         // Contoh sederhana:

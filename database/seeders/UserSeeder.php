@@ -11,68 +11,77 @@ class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        // HRD - username sederhana
+        // HRD
         User::create([
             'username' => 'hrd_dagsap',
             'name' => 'HRD Dagsap',
             'email' => 'hrd@dagsap.com',
             'password' => Hash::make('hrd_dagsap123'),
             'role' => 'hrd',
-            'no_telepon' => '6281294491075' // Format 62
+            'no_telepon' => '6281367826052'
         ]);
 
-        // Management per divisi
+        // Management
         $managementData = [
-            'FAT' => ['username' => 'manager_fat', 'password' => 'manager_fat123'],
-            'HRD&GA' => ['username' => 'manager_hrdga', 'password' => 'manager_hrdga123'],
-            'Internal Audit' => ['username' => 'manager_audit', 'password' => 'manager_audit123'],
-            'Maintenance' => ['username' => 'manager_mtn', 'password' => 'manager_mtn123'],
-            'PPIC&Purchasing' => ['username' => 'manager_ppic', 'password' => 'manager_ppic123'],
-            'Produksi' => ['username' => 'manager_prod', 'password' => 'manager_prod123'],
-            'QAQC' => ['username' => 'manager_qaqc', 'password' => 'manager_qaqc123'],
-            'Sales & Marketing' => ['username' => 'manager_sales', 'password' => 'manager_sales123'],
+            'FAT' => [
+                'username' => 'FAT',
+                'password' => 'FAT123'
+            ],
+            'HRD&GA' => [
+                'username' => 'HRD&GA',
+                'password' => 'HRD&GA123'
+            ],
+            'Internal Audit' => [
+                'username' => 'InternalAudit',
+                'password' => 'InternalAudit123'
+            ],
+            'Maintenance' => [
+                'username' => 'Maintenance',
+                'password' => 'Maintenance123'
+            ],
+            'PPIC&Purchasing' => [
+                'username' => 'PPIC&Purchasing',
+                'password' => 'PPIC&Purchasing123'
+            ],
+            'Produksi' => [
+                'username' => 'Produksi',
+                'password' => 'Produksi123'
+            ],
+            'QAQC' => [
+                'username' => 'QAQC',
+                'password' => 'QAQC123'
+            ],
+            'Sales & Marketing' => [
+                'username' => 'Sales&Marketing',
+                'password' => 'Sales&Marketing123'
+            ],
         ];
 
         foreach ($managementData as $divisiNama => $cred) {
             $divisi = Divisi::where('nama_divisi', $divisiNama)->first();
+
             if ($divisi) {
                 User::create([
                     'username' => $cred['username'],
                     'name' => 'Management ' . $divisiNama,
-                    'email' => strtolower(str_replace(' ', '.', $divisiNama)) . '@dagsap.com',
+                    'email' => strtolower(str_replace([' ', '&'], ['.', 'and'], $cred['username'])) . '@dagsap.com',
                     'password' => Hash::make($cred['password']),
                     'role' => 'management',
                     'managed_divisi_id' => $divisi->id,
-                    'no_telepon' => '6281234567' . (90 + $divisi->id)
+                    'no_telepon' => '6281367826052'
                 ]);
             }
         }
 
-        // Divisi users
-        $divisiUsers = [
-            'FAT' => ['username' => 'user_fat', 'password' => 'user_fat123', 'name' => 'Staff FAT'],
-            'HRD&GA' => ['username' => 'user_hrdga', 'password' => 'user_hrdga123', 'name' => 'Staff HRDGA'],
-            'Internal Audit' => ['username' => 'user_audit', 'password' => 'user_audit123', 'name' => 'Staff Audit'],
-            'Maintenance' => ['username' => 'user_mtn', 'password' => 'user_mtn123', 'name' => 'Staff Maintenance'],
-            'PPIC&Purchasing' => ['username' => 'user_ppic', 'password' => 'user_ppic123', 'name' => 'Staff PPIC'],
-            'Produksi' => ['username' => 'user_prod', 'password' => 'user_prod123', 'name' => 'Staff Produksi'],
-            'QAQC' => ['username' => 'user_qaqc', 'password' => 'user_qaqc123', 'name' => 'Staff QAQC'],
-            'Sales & Marketing' => ['username' => 'user_sales', 'password' => 'user_sales123', 'name' => 'Staff Sales'],
-        ];
-
-        foreach ($divisiUsers as $divisiNama => $cred) {
-            $divisi = Divisi::where('nama_divisi', $divisiNama)->first();
-            if ($divisi) {
-                User::create([
-                    'username' => $cred['username'],
-                    'name' => $cred['name'],
-                    'email' => strtolower(str_replace(' ', '.', $divisiNama)) . '.user@dagsap.com',
-                    'password' => Hash::make($cred['password']),
-                    'role' => 'divisi',
-                    'divisi_id' => $divisi->id,
-                    'no_telepon' => '6281234567' . (80 + $divisi->id)
-                ]);
-            }
-        }
+        // Divisi
+        User::create([
+            'username' => 'user_dagsap',
+            'name' => 'User Divisi',
+            'email' => 'user.divisi@dagsap.com',
+            'password' => Hash::make('user_dagsap123'),
+            'role' => 'divisi',
+            'divisi_id' => null,
+            'no_telepon' => '6281367826052'
+        ]);
     }
 }

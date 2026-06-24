@@ -8,6 +8,11 @@ use App\Models\Lowongan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\HRD\StoreLowonganRequest;
+use App\Http\Requests\HRD\UpdateLowonganRequest;
+use Illuminate\Support\Facades\Gate;
+use SimpleSoftwareIO\QrCode\Facades\QrCode; 
+
 
 class LowonganController extends Controller
 {
@@ -33,16 +38,9 @@ class LowonganController extends Controller
         return view('hrd.lowongan.create', compact('pengajuans'));
     }
 
-    public function store(Request $request)
+    public function store(StoreLowonganRequest $request)
     {
-        $validated = $request->validate([
-            'pengajuan_id' => 'required|exists:pengajuan_tenaga_kerjas,id',
-            'judul' => 'required|string|max:255',
-            'deskripsi' => 'required|string',
-            'tanggal_mulai' => 'required|date',
-            'tanggal_selesai' => 'required|date|after:tanggal_mulai',
-            'banner_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-        ]);
+        $validated = $request->validated();
 
         $validated['hrd_id'] = Auth::id();
         $validated['status'] = 'publikasi';
@@ -60,36 +58,23 @@ class LowonganController extends Controller
 
     public function show(Lowongan $lowongan)
     {
-        if ($lowongan->hrd_id !== Auth::id()) {
-            abort(403);
-        }
+        Gate::authorize('view', $lowongan);
         
         return view('hrd.lowongan.show', compact('lowongan'));
     }
 
     public function edit(Lowongan $lowongan)
     {
-        if ($lowongan->hrd_id !== Auth::id()) {
-            abort(403);
-        }
+        Gate::authorize('update', $lowongan);
         
         return view('hrd.lowongan.edit', compact('lowongan'));
     }
 
-    public function update(Request $request, Lowongan $lowongan)
+    public function update(UpdateLowonganRequest $request, Lowongan $lowongan)
     {
-        if ($lowongan->hrd_id !== Auth::id()) {
-            abort(403);
-        }
+        Gate::authorize('update', $lowongan);
 
-        $validated = $request->validate([
-            'judul' => 'required|string|max:255',
-            'deskripsi' => 'required|string',
-            'tanggal_mulai' => 'required|date',
-            'tanggal_selesai' => 'required|date|after:tanggal_mulai',
-            'banner_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'status' => 'required|in:draft,publikasi,ditutup',
-        ]);
+        $validated = $request->validated();
 
         if ($request->hasFile('banner_image')) {
             if ($lowongan->banner_image) {
@@ -107,9 +92,7 @@ class LowonganController extends Controller
 
     public function destroy(Lowongan $lowongan)
     {
-        if ($lowongan->hrd_id !== Auth::id()) {
-            abort(403);
-        }
+        Gate::authorize('delete', $lowongan);
 
         if ($lowongan->banner_image) {
             Storage::disk('public')->delete($lowongan->banner_image);
@@ -120,4 +103,39 @@ class LowonganController extends Controller
         return redirect()->route('hrd.lowongan.index')
             ->with('success', 'Lowongan berhasil dihapus!');
     }
+
+    public function printData(Lowongan $lowongan)
+    {
+        Gate::authorize('print', $lowongan);
+
+        $pengajuan = $lowongan->pengajuan;
+
+        // QR CODE UNTUK MANAGER (Diketahui Oleh / Atasan)
+        $qrDataManager = "PTK-" . str_pad($pengajuan->id, 6, '0', STR_PAD_LEFT) . " | " .
+            ($pengajuan->disetujui_oleh ?? 'Belum disetujui') . " | " .
+            ($pengajuan->jabatan_penyetuju ?? '-') . " | " .
+            ($pengajuan->approved_at ? \Carbon\Carbon::parse($pengajuan->approved_at)->format('d/m/Y') : '-') . " | " .
+            $pengajuan->posisi;
+
+        $qrCodeManager = QrCode::errorCorrection('L')
+            ->size(70)
+            ->color(0, 0, 0)
+            ->generate($qrDataManager);
+
+        // QR CODE UNTUK PEMOHON (Diajukan Oleh)
+        $qrDataPemohon = "PTK-" . str_pad($pengajuan->id, 6, '0', STR_PAD_LEFT) . " | " .
+            $pengajuan->posisi . " | " .
+            ($pengajuan->departemen->nama_divisi ?? '') . " | " .
+            $pengajuan->created_at->format('d/m/Y') . " | " .
+            $pengajuan->nama_pemohon;
+
+        $qrCodePemohon = QrCode::errorCorrection('L')
+            ->size(70)
+            ->color(0, 0, 0)
+            ->generate($qrDataPemohon);
+
+        return view('management.pengajuan.print', compact('pengajuan', 'qrCodePemohon', 'qrCodeManager'));
+    }
+
+    
 }

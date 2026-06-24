@@ -18,10 +18,6 @@
 
                             <span>{{ Auth::user()->username }}</span>
 
-                            <span class="ml-2 text-xs bg-white bg-opacity-20 px-2 py-1 rounded">
-                                {{ ucfirst(Auth::user()->role) }}
-                            </span>
-
                             <i class="fas fa-chevron-down ml-2 text-sm"></i>
                         </button>
 
