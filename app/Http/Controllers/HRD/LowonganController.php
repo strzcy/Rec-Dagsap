@@ -111,11 +111,11 @@ class LowonganController extends Controller
         $pengajuan = $lowongan->pengajuan;
 
         // QR CODE UNTUK MANAGER (Diketahui Oleh / Atasan)
-        $qrDataManager = "PTK-" . str_pad($pengajuan->id, 6, '0', STR_PAD_LEFT) . " | " .
+        $qrDataManager = "PTK-" . str_pad($pengajuan->id, 6, '0', STR_PAD_LEFT) . " - " .
+            $pengajuan->posisi . "  |  " .
             ($pengajuan->disetujui_oleh ?? 'Belum disetujui') . " | " .
             ($pengajuan->jabatan_penyetuju ?? '-') . " | " .
-            ($pengajuan->approved_at ? \Carbon\Carbon::parse($pengajuan->approved_at)->format('d/m/Y') : '-') . " | " .
-            $pengajuan->posisi;
+            ($pengajuan->approved_at ? \Carbon\Carbon::parse($pengajuan->approved_at)->format('d/m/Y H:i') : '-') ;
 
         $qrCodeManager = QrCode::errorCorrection('L')
             ->size(70)
@@ -123,11 +123,10 @@ class LowonganController extends Controller
             ->generate($qrDataManager);
 
         // QR CODE UNTUK PEMOHON (Diajukan Oleh)
-        $qrDataPemohon = "PTK-" . str_pad($pengajuan->id, 6, '0', STR_PAD_LEFT) . " | " .
-            $pengajuan->posisi . " | " .
-            ($pengajuan->departemen->nama_divisi ?? '') . " | " .
-            $pengajuan->created_at->format('d/m/Y') . " | " .
-            $pengajuan->nama_pemohon;
+        $qrDataPemohon = "PTK-" . str_pad($pengajuan->id, 6, '0', STR_PAD_LEFT) . " - " .
+        $pengajuan->posisi . " | " .
+        $pengajuan->nama_pemohon . " " .
+        $pengajuan->created_at->format('d/m/Y H:i');
 
         $qrCodePemohon = QrCode::errorCorrection('L')
             ->size(70)
