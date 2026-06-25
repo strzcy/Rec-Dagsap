@@ -322,19 +322,22 @@
                 <tr><td>Jumlah Dibutuhkan</td><td>: {{ $pengajuan->jumlah }} Orang</td></tr>
                 <tr><td>Tanggal Dibutuhkan</td><td>: 
                     {{ $pengajuan->tanggal_dibutuhkan
-                        ? \Carbon\Carbon::parse($pengajuan->tanggal_dibutuhkan)->format('d/m/Y')
-                        : '-' }}
+                    ? \Carbon\Carbon::parse($pengajuan->tanggal_dibutuhkan)
+                        ->locale('id')
+                        ->translatedFormat('d F Y')
+                    : '-' }}
                 </td></tr>
             </table>
 
             <div class="section">
                 <div class="section-title">Kebutuhan Untuk :</div>
-                <p>( {{ $pengajuan->jenis == 'rencana' ? '✓' : '' }} ) Sesuai Rencana</p>
-                <p>( {{ $pengajuan->jenis == 'penambahan' ? '✓' : '' }} ) Penambahan</p>
-                <p>( {{ $pengajuan->jenis == 'penggantian' ? '✓' : '' }} ) Penggantian</p>
+                <p>( {{ $pengajuan->jenis == 'rencana' ? ' ✓ ' : "ㅤ" }} ) Sesuai Rencana</p>
+                <p>( {{ $pengajuan->jenis == 'penambahan' ? ' ✓ ' : 'ㅤ' }} ) Penambahan</p>
+                <p>( {{ $pengajuan->jenis == 'penggantian' ? ' ✓ ' : 'ㅤ' }} ) Penggantian</p>
                 <br>
 
                 @php
+                    $spasi = "  ";
                     $persyaratan = is_array($pengajuan->persyaratan) ? $pengajuan->persyaratan : json_decode($pengajuan->persyaratan, true);
                     $namaKaryawan = '';
                     if (!empty($persyaratan) && is_array($persyaratan)) {

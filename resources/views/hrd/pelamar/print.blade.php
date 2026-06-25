@@ -576,7 +576,9 @@
                     </tr>
                     @empty
                         @for($i=0; $i<2; $i++)
-                        <tr><td align="center">{{ $i+1 }}</td><td colspan="5">-</td></tr>
+                        <tr>
+                            <td align="center">{{ $i+1 }}</td><td colspan="5">-</td>
+                        </tr>
                         @endfor
                     @endforelse
                 </tbody>
@@ -592,7 +594,7 @@
             <div class="section-title">H. RIWAYAT KESEHATAN</div>
             
             <div style="margin-bottom: 12px;">
-                <div>1. Apakah Anda pernah menderita sakit berat dan dirawat di rumah sakit selama 2 years terakhir?</div>
+                <div>1. Apakah Anda pernah menderita sakit berat dan dirawat di rumah sakit selama 2 tahun terakhir?</div>
                 <div>( {{ ($detail->pernah_sakit_berat ?? false) ? '✓' : '' }} ) ya ( {{ !($detail->pernah_sakit_berat ?? false) ? '✓' : '' }} ) tidak</div>
                 <div style="border-bottom: 1px dotted #999; margin-top: 5px; padding: 3px;">: {{ $detail->sakit_berat_keterangan ?? '' }}</div>
             </div>
@@ -824,7 +826,8 @@
             <div class="signature-area" style="text-transform:capitalize;">
                 <div class="sign-box">
                     <div>Tempat & Tanggal : {{ $detail->tempat_pernyataan ?? '-' }},
-                    {{ $detail->tanggal_pernyataan ? \Carbon\Carbon::parse($detail->tanggal_pernyataan)->format('d/m/Y') : '-' }}</div>
+                    {{ $detail->tanggal_pernyataan ? \Carbon\Carbon::parse($detail->tanggal_pernyataan)->locale('id')
+                    ->translatedFormat('d F Y') : '-' }}</div>
                     <br>
                     <div>Yang Menyatakan :</div>
                     <div class="signan">
