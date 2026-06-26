@@ -10,18 +10,13 @@
             <h1 class="text-4xl md:text-1xl font-bold mb-4">Selamat Datang di Dashboard User</h1>
             <p class="text-lg md:text-xl mb-8 opacity-90">Di dashboard ini, anda bisa mengajukan Permintaan Tenaga Kerja (PTK) Penambahan maupun Penggantian</p>
             <div>
-
-            <div class="text-2xlbg-bl text-white px-4 py-2 rounded-lg" style="text-align:center;">
-                <a href="{{ route('divisi.pengajuan.create') }}" class=" px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark" style="text-align:center;">
+                <a href="{{ route('divisi.pengajuan.create') }}" class="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark inline-block">
                     Ajukan Form PTK
                 </a>
-            </div>                  
             </div>
         </div>
     </section>
 </div>
-
-
 
 <!-- Modal Popup Sukses Submit -->
 @if(session('success_submit'))
@@ -47,6 +42,15 @@
             </div>
             @endif
             
+            <!-- PESAN TAMBAHAN: SCREENSHOOT -->
+            <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mb-4">
+                <p class="text-yellow-800 text-sm">
+                    <i class="fas fa-camera mr-2"></i>
+                    <strong>Silakan screenshot halaman ini untuk bukti pengajuan!</strong><br>
+                </p>
+                <p class="text-sm text-gray-500 mt-px"><span class="font-sm">Waktu Pengajuan:</span> {{ $ptkData['waktu_pengajuan'] ?? now()->format('d/m/Y H:i:s') }}</p>
+            </div>
+            
             <div class="flex gap-3">
                 <a href="{{ route('divisi.dashboard') }}" class="flex-1 bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-dark transition">
                     <i class="fas fa-home mr-2"></i> Ke Dashboard
@@ -68,4 +72,6 @@
     });
 </script>
 @endif
+
 @endsection
+
