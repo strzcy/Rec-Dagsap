@@ -129,8 +129,31 @@
                     </div>
                 
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">IPK (jika S1/D3)</label>
-                        <input type="text" name="ipk" class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:border-primary" placeholder="Contoh: 3.50">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">IPK (jika S1/D3) <span class="text-red-500" id="ipk-required">*</span></label>
+                        <select name="ipk" id="ipk-select" class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:border-primary">
+                            <option value="">Pilih IPK</option>
+                            <option value="2.00">2.00</option>
+                            <option value="2.10">2.10</option>
+                            <option value="2.20">2.20</option>
+                            <option value="2.30">2.30</option>
+                            <option value="2.40">2.40</option>
+                            <option value="2.50">2.50</option>
+                            <option value="2.60">2.60</option>
+                            <option value="2.70">2.70</option>
+                            <option value="2.80">2.80</option>
+                            <option value="2.90">2.90</option>
+                            <option value="3.00">3.00</option>
+                            <option value="3.10">3.10</option>
+                            <option value="3.20">3.20</option>
+                            <option value="3.30">3.30</option>
+                            <option value="3.40">3.40</option>
+                            <option value="3.50">3.50</option>
+                            <option value="3.60">3.60</option>
+                            <option value="3.70">3.70</option>
+                            <option value="3.80">3.80</option>
+                            <option value="3.90">3.90</option>
+                            <option value="4.00">4.00</option>
+                        </select>
                     </div>
                 
                     <!-- Pengalaman Kerja -->
@@ -175,6 +198,29 @@
 
 @push('scripts')
 <script>
+        // Toggle required IPK berdasarkan pendidikan
+        const pendidikanSelect = document.querySelector('select[name="pendidikan_terakhir"]');
+        const ipkSelect = document.getElementById('ipk-select');
+        const ipkRequired = document.getElementById('ipk-required');
+    
+        function toggleIpkRequired() {
+            const pendidikan = pendidikanSelect.value;
+            const isDiatasD3 = ['D3', 'S1', 'S2'].includes(pendidikan);
+        
+            if (isDiatasD3) {
+                ipkSelect.setAttribute('required', 'required');
+                ipkRequired.style.display = 'inline';
+                ipkSelect.closest('div').querySelector('.text-xs.text-gray-500').textContent = 'Wajib diisi untuk D3/S1/S2';
+            } else {
+                ipkSelect.removeAttribute('required');
+                ipkRequired.style.display = 'none';
+                ipkSelect.closest('div').querySelector('.text-xs.text-gray-500').textContent = 'Opsional untuk pendidikan di bawah D3';
+            }
+        }
+    
+        pendidikanSelect.addEventListener('change', toggleIpkRequired);
+        toggleIpkRequired(); // Jalankan saat pertama kali load
+
     let currentStep = 1;
     const totalSteps = 4;
     

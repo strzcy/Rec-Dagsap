@@ -1,3 +1,4 @@
+
 <div>
     <!-- E. KEKUATAN & KELEMAHAN -->
     <h2 class="text-xl font-bold text-primary mb-4 border-b pb-2">E. KEKUATAN &amp; KELEMAHAN</h2>
@@ -21,12 +22,18 @@
         <div id="pekerjaan-container">
             <div class="pekerjaan-item bg-gray-50 p-4 rounded-lg mb-3">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    <div><input type="text" name="pekerjaan_perusahaan[]" placeholder="Nama Perusahaan" class="w-full border rounded-lg px-3 py-2"></div>
-                    <div><input type="date" name="pekerjaan_tgl_masuk[]" placeholder="Tanggal Masuk" class="w-full border rounded-lg px-3 py-2"></div>
-                    <div><input type="date" name="pekerjaan_tgl_keluar[]" placeholder="Tanggal Keluar" class="w-full border rounded-lg px-3 py-2"></div>
-                    <div><input type="text" name="pekerjaan_jabatan[]" placeholder="Jabatan Terakhir & Tugas Utama" class="w-full border rounded-lg px-3 py-2"></div>
-                    <div><input type="text" name="pekerjaan_gaji[]" placeholder="Gaji Terakhir" class="w-full border rounded-lg px-3 py-2"></div>
-                    <div><input type="text" name="pekerjaan_alasan[]" placeholder="Alasan Keluar" class="w-full border rounded-lg px-3 py-2"></div>
+                    <div><label class="block text-sm font-medium mb-2">Nama Perusahaan</label>
+                        <input type="text" name="pekerjaan_perusahaan[]" class="w-full border rounded-lg px-3 py-2"></div>
+                    <div> <label class="block text-sm font-medium mb-2">Tanggal Masuk</label>
+                        <input type="date" name="pekerjaan_tgl_masuk[]" placeholder="Tanggal Masuk" class="w-full border rounded-lg px-3 py-2"></div>
+                    <div><label class="block text-sm font-medium mb-2">Tanggal Keluar</label>
+                        <input type="date" name="pekerjaan_tgl_keluar[]" placeholder="Tanggal Keluar" class="w-full border rounded-lg px-3 py-2"></div>
+                    <div><label class="block text-sm font-medium mb-2">Jabatan Terakhir</label>
+                        <input type="text" name="pekerjaan_jabatan[]" placeholder="Jabatan Terakhir & Tugas Utama" class="w-full border rounded-lg px-3 py-2"></div>
+                    <div><label class="block text-sm font-medium mb-2">Gaji Terakhir</label>
+                        <input type="number" name="pekerjaan_gaji[]" class="w-full border rounded-lg px-3 py-2"></div>
+                    <div><label class="block text-sm font-medium mb-2">Alasan Keluar</label>
+                        <input type="text" name="pekerjaan_alasan[]" class="w-full border rounded-lg px-3 py-2"></div>
                 </div>
                 <button type="button" class="remove-pekerjaan text-red-500 text-sm mt-2 hover:text-red-700">Hapus</button>
             </div>
@@ -55,16 +62,22 @@
     
     <!-- G. REFERENSI -->
     <h2 class="text-xl font-bold text-primary mb-4 border-b pb-2">G. REFERENSI</h2>
-    
+    <label class="block text-sm font-medium mb-2">Siapa yang mereferensikan / merekomendasikan anda untuk melamar di perusahaan kami ?</label>
+
     <div class="mb-6">
         <div id="referensi-container">
             <div class="referensi-item bg-gray-50 p-4 rounded-lg mb-3">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    <div><input type="text" name="referensi_nama[]" placeholder="Nama Lengkap" class="w-full border rounded-lg px-3 py-2"></div>
-                    <div><input type="text" name="referensi_alamat[]" placeholder="Alamat Lengkap" class="w-full border rounded-lg px-3 py-2"></div>
-                    <div><input type="text" name="referensi_telp[]" placeholder="No. Telp/HP" class="w-full border rounded-lg px-3 py-2"></div>
-                    <div><input type="text" name="referensi_hubungan[]" placeholder="Hubungan" class="w-full border rounded-lg px-3 py-2"></div>
-                    <div><input type="text" name="referensi_lama_kenal[]" placeholder="Lama Kenal" class="w-full border rounded-lg px-3 py-2"></div>
+                    <div><label class="block text-sm font-medium mb-2">Nama Lengkap</label>
+                        <input type="text" name="referensi_nama[]" class="w-full border rounded-lg px-3 py-2"></div>
+                    <div><label class="block text-sm font-medium mb-2">Alamat Lengkap</label>
+                        <input type="text" name="referensi_alamat[]" class="w-full border rounded-lg px-3 py-2"></div>
+                    <div><label class="block text-sm font-medium mb-2">No. Telp/HP</label>
+                        <input type="number" name="referensi_telp[]"  class="w-full border rounded-lg px-3 py-2"></div>
+                    <div><label class="block text-sm font-medium mb-2">Hubungan</label>
+                        <input type="text" name="referensi_hubungan[]" class="w-full border rounded-lg px-3 py-2"></div>
+                    <div><label class="block text-sm font-medium mb-2">Lama Kenal</label>
+                        <input type="text" name="referensi_lama_kenal[]" class="w-full border rounded-lg px-3 py-2"></div>
                 </div>
                 <button type="button" class="remove-referensi text-red-500 text-sm mt-2 hover:text-red-700">Hapus</button>
             </div>
@@ -85,10 +98,14 @@
             <div id="saudara-container">
                 <div class="saudara-item bg-gray-50 p-4 rounded-lg mb-3">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        <div><input type="text" name="saudara_nama[]" placeholder="Nama Lengkap" class="w-full border rounded-lg px-3 py-2"></div>
-                        <div><input type="text" name="saudara_jabatan[]" placeholder="Jabatan/Unit Kerja" class="w-full border rounded-lg px-3 py-2"></div>
-                        <div><input type="text" name="saudara_lama_kenal[]" placeholder="Lama Kenal" class="w-full border rounded-lg px-3 py-2"></div>
-                        <div><input type="text" name="saudara_hubungan[]" placeholder="Hubungan" class="w-full border rounded-lg px-3 py-2"></div>
+                        <div><label class="block text-sm font-medium mb-2">Nama Lengkap</label>
+                            <input type="text" name="saudara_nama[]" class="w-full border rounded-lg px-3 py-2"></div>
+                        <div><label class="block text-sm font-medium mb-2">Jabatan/Unit Kerja</label>
+                            <input type="text" name="saudara_jabatan[]"  class="w-full border rounded-lg px-3 py-2"></div>
+                        <div><label class="block text-sm font-medium mb-2">Lama Kenal</label>
+                            <input type="text" name="saudara_lama_kenal[]" class="w-full border rounded-lg px-3 py-2"></div>
+                        <div><label class="block text-sm font-medium mb-2">Hubungan</label>
+                            <input type="text" name="saudara_hubungan[]" class="w-full border rounded-lg px-3 py-2"></div>
                     </div>
                     <button type="button" class="remove-saudara text-red-500 text-sm mt-2 hover:text-red-700">Hapus</button>
                 </div>
@@ -155,7 +172,7 @@
             <h3 class="font-semibold text-gray-700">1. Data Istri/Suami</h3>
             <label class="inline-flex items-center">
                 <input type="checkbox" name="punya_pasangan" value="1" class="mr-2" onclick="togglePasanganForm(this.checked)">
-                <span class="text-sm">Punya Istri/Suami</span>
+                <span class="text-sm">Data Istri/Suami</span>
             </label>
         </div>
         
@@ -163,9 +180,20 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div><input type="text" name="nama_pasangan" placeholder="Nama Lengkap" class="w-full border rounded-lg px-3 py-2"></div>
                 <div><input type="text" name="tempat_lahir_pasangan" placeholder="Tempat Lahir" class="w-full border rounded-lg px-3 py-2"></div>
-                <div><input type="date" name="tanggal_lahir_pasangan" placeholder="Tanggal Lahir" class="w-full border rounded-lg px-3 py-2"></div>
-                <div><input type="date" name="tanggal_menikah" placeholder="Tanggal Menikah" class="w-full border rounded-lg px-3 py-2"></div>
-                <div><input type="text" name="agama_pasangan" placeholder="Agama" class="w-full border rounded-lg px-3 py-2"></div>
+                <div><label class="block text-sm font-medium mb-2">Tanggal Lahir Pasangan</label>
+                    <input type="date" name="tanggal_lahir_pasangan" placeholder="Tanggal Lahir" class="w-full border rounded-lg px-3 py-2"></div>
+                <div><label class="block text-sm font-medium mb-2">Tanggal Menikah</label>
+                    <input type="date" name="tanggal_menikah" placeholder="Tanggal Menikah" class="w-full border rounded-lg px-3 py-2"></div>
+                <div>
+                    <select name="agama_pasangan" required class="w-full border rounded-lg px-3 py-2">
+                    <option value="">Agama</option>
+                    <option value="Islam">Islam</option>
+                    <option value="Kristen">Kristen</option>
+                    <option value="Katolik">Katolik</option>
+                    <option value="Hindu">Hindu</option>
+                    <option value="Buddha">Buddha</option>
+                    <option value="Konghucu">Konghucu</option>
+                </select></div>
                 <div><textarea name="alamat_pasangan" rows="2" placeholder="Alamat Tinggal" class="w-full border rounded-lg px-3 py-2"></textarea></div>
                 <div><input type="text" name="pekerjaan_pasangan" placeholder="Pekerjaan" class="w-full border rounded-lg px-3 py-2"></div>
                 <div><input type="text" name="jabatan_pasangan" placeholder="Jabatan" class="w-full border rounded-lg px-3 py-2"></div>
@@ -179,7 +207,7 @@
             <h3 class="font-semibold text-gray-700">2. Data Pribadi Anak</h3>
             <label class="inline-flex items-center">
                 <input type="checkbox" name="punya_anak" value="1" class="mr-2" onclick="toggleAnakForm(this.checked)">
-                <span class="text-sm">Punya Anak</span>
+                <span class="text-sm">Data Anak</span>
             </label>
         </div>
         
@@ -189,8 +217,10 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                         <div><input type="text" name="anak_nama[]" placeholder="Nama Lengkap" class="w-full border rounded-lg px-3 py-2"></div>
                         <div><select name="anak_jenis_kelamin[]" class="w-full border rounded-lg px-3 py-2"><option value="">Jenis Kelamin</option><option value="L">Laki-laki</option><option value="P">Perempuan</option></select></div>
-                        <div><input type="text" name="anak_tempat_lahir[]" placeholder="Tempat Lahir" class="w-full border rounded-lg px-3 py-2"></div>
-                        <div><input type="date" name="anak_tanggal_lahir[]" placeholder="Tanggal Lahir" class="w-full border rounded-lg px-3 py-2"></div>
+                        <div><label class="block text-sm font-medium mb-2">Tempat Lahir</label>
+                            <input type="text" name="anak_tempat_lahir[]" placeholder="Tempat Lahir" class="w-full border rounded-lg px-3 py-2"></div>
+                        <div><label class="block text-sm font-medium mb-2">Tanggal Lahir</label>
+                            <input type="date" name="anak_tanggal_lahir[]" placeholder="Tanggal Lahir" class="w-full border rounded-lg px-3 py-2"></div>
                         <div><input type="text" name="anak_pendidikan[]" placeholder="Pendidikan" class="w-full border rounded-lg px-3 py-2"></div>
                     </div>
                     <button type="button" class="remove-anak text-red-500 text-sm mt-2 hover:text-red-700">Hapus</button>
@@ -206,7 +236,7 @@
             <h3 class="font-semibold text-gray-700">3. Riwayat Penyakit Istri/Suami/Anak</h3>
             <label class="inline-flex items-center">
                 <input type="checkbox" name="punya_penyakit_keluarga" value="1" class="mr-2" onclick="togglePenyakitKeluargaForm(this.checked)">
-                <span class="text-sm">Punya Riwayat Penyakit Keluarga</span>
+                <span class="text-sm">Data Riwayat Penyakit Keluarga</span>
             </label>
         </div>
     
@@ -232,23 +262,48 @@
         <h3 class="font-semibold text-gray-700 mb-3">4. Orang Tua <span class="text-red-500">*</span></h3>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div class="bg-gray-50 p-4 rounded-lg">
-                <h4 class="font-medium text-primary mb-2">Ayah <span class="text-red-500">*</span></h4>
+                <h4 class="font-medium text-black mb-2">Ayah <span class="text-red-500">*</span></h4>
                 <div class="space-y-2">
-                    <input type="text" name="nama_ayah" required placeholder="Nama Lengkap" class="w-full border rounded-lg px-3 py-2">
-                    <input type="text" name="agama_ayah" required placeholder="Agama" class="w-full border rounded-lg px-3 py-2">
-                    <input type="number" name="usia_ayah" required placeholder="Usia" class="w-full border rounded-lg px-3 py-2">
-                    <input type="text" name="pekerjaan_ayah" required placeholder="Pekerjaan" class="w-full border rounded-lg px-3 py-2">
-                    <textarea name="alamat_ayah" required rows="2" placeholder="Alamat & No. Telp" class="w-full border rounded-lg px-3 py-2"></textarea>
+                    <label class="block text-sm text-gray-700 font-medium mb-2">ㅤNama Lengkap</label>
+                    <input type="text" name="nama_ayah" required  class="w-full border rounded-lg px-3 py-2">
+                    <label class="block text-sm text-gray-700 font-medium mb-2">ㅤAgama</label>
+                    <select name="agama_ayah" required class="w-full border rounded-lg px-3 py-2">
+                        <option value="">Pilih</option>
+                        <option value="Islam">Islam</option>
+                        <option value="Kristen">Kristen</option>
+                        <option value="Katolik">Katolik</option>
+                        <option value="Hindu">Hindu</option>
+                        <option value="Buddha">Buddha</option>
+                        <option value="Konghucu">Konghucu</option>
+                    </select>
+                    <label class="block text-sm text-gray-700 font-medium mb-2">ㅤUsia</label>
+                    <input type="number" name="usia_ayah" required class="w-full border rounded-lg px-3 py-2">
+                    <label class="block text-sm text-gray-700 font-medium mb-2">ㅤPekerjaan Ayah</label>
+                    <input type="text" name="pekerjaan_ayah" required class="w-full border rounded-lg px-3 py-2">
+                    <label class="block text-sm text-gray-700 font-medium mb-2">ㅤAlamat & No. Telp</label>
+                    <textarea name="alamat_ayah" required rows="2" placeholder="Alamat ( No. Telp )" class="w-full border rounded-lg px-3 py-2"></textarea>
                 </div>
             </div>
             <div class="bg-gray-50 p-4 rounded-lg">
-                <h4 class="font-medium text-primary mb-2">Ibu <span class="text-red-500">*</span></h4>
+                <h4 class="font-medium text-black mb-2">Ibu <span class="text-red-500">*</span></h4>
                 <div class="space-y-2">
-                    <input type="text" name="nama_ibu" required placeholder="Nama Lengkap" class="w-full border rounded-lg px-3 py-2">
-                    <input type="text" name="agama_ibu" required placeholder="Agama" class="w-full border rounded-lg px-3 py-2">
-                    <input type="number" name="usia_ibu" required placeholder="Usia" class="w-full border rounded-lg px-3 py-2">
-                    <input type="text" name="pekerjaan_ibu" required placeholder="Pekerjaan" class="w-full border rounded-lg px-3 py-2">
-                    <textarea name="alamat_ibu" required rows="2" placeholder="Alamat & No. Telp" class="w-full border rounded-lg px-3 py-2"></textarea>
+                    <label class="block text-sm text-gray-700 font-medium mb-2">ㅤNama Lengkap</label>
+                    <input type="text" name="nama_ibu" required class="w-full border rounded-lg px-3 py-2">
+                    <label class="block text-sm text-gray-700 font-medium mb-2">ㅤAgama</label>
+                    <select name="agama_ibu" required class="w-full border rounded-lg px-3 py-2">
+                    <option value="">Pilih</option>
+                    <option value="Islam">Islam</option>
+                    <option value="Kristen">Kristen</option>
+                    <option value="Katolik">Katolik</option>
+                    <option value="Hindu">Hindu</option>
+                    <option value="Buddha">Buddha</option>
+                    <option value="Konghucu">Konghucu</option></select>
+                    <label class="block text-sm text-gray-700 font-medium mb-2">ㅤUsia</label>
+                    <input type="number" name="usia_ibu" required class="w-full border rounded-lg px-3 py-2">
+                    <label class="block text-sm text-gray-700 font-medium mb-2">ㅤPekerjaan</label>
+                    <input type="text" name="pekerjaan_ibu" required class="w-full border rounded-lg px-3 py-2">
+                    <label class="block text-sm text-gray-700 font-medium mb-2">ㅤAlamat & No. Telp</label>
+                    <textarea name="alamat_ibu" required rows="2" placeholder="Alamat ( No. Telp )" class="w-full border rounded-lg px-3 py-2"></textarea>
                 </div>
             </div>
         </div>
@@ -259,13 +314,20 @@
         <h3 class="font-semibold text-gray-700 mb-3">5. Orang Terdekat yang Dapat Dihubungi dalam Keadaan Darurat</h3>
         <div class="bg-gray-50 p-4 rounded-lg">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                <div><input type="text" name="kontak_darurat_nama" placeholder="Nama Lengkap" class="w-full border rounded-lg px-3 py-2"></div>
-                <div><input type="text" name="kontak_darurat_hubungan" placeholder="Hubungan" class="w-full border rounded-lg px-3 py-2"></div>
-                <div><textarea name="kontak_darurat_alamat" rows="2" placeholder="Alamat Tinggal" class="w-full border rounded-lg px-3 py-2"></textarea></div>
-                <div><input type="text" name="kontak_darurat_telp" placeholder="No. Telp" class="w-full border rounded-lg px-3 py-2"></div>
-                <div><input type="text" name="kontak_darurat_hp" placeholder="No. HP" class="w-full border rounded-lg px-3 py-2"></div>
-                <div><input type="text" name="kontak_darurat_pekerjaan" placeholder="Pekerjaan" class="w-full border rounded-lg px-3 py-2"></div>
-                <div><input type="text" name="kontak_darurat_jabatan" placeholder="Jabatan" class="w-full border rounded-lg px-3 py-2"></div>
+                <div><label class="block text-sm font-medium mb-2">Nama Lengkap</label>
+                    <input type="text" name="kontak_darurat_nama" class="w-full border rounded-lg px-3 py-2"></div>
+                <div><label class="block text-sm font-medium mb-2">Hubungan</label>
+                    <input type="text" name="kontak_darurat_hubungan" class="w-full border rounded-lg px-3 py-2"></div>
+                <div><label class="block text-sm font-medium mb-2">Alamat Tinggal</label>
+                    <textarea name="kontak_darurat_alamat" rows="2" class="w-full border rounded-lg px-3 py-2"></textarea></div>
+                <div><label class="block text-sm font-medium mb-2">No. Telepon</label>
+                    <input type="number" name="kontak_darurat_telp" class="w-full border rounded-lg px-3 py-2"></div>
+                <div><label class="block text-sm font-medium mb-2">No. Handphone</label>
+                    <input type="number" name="kontak_darurat_hp" class="w-full border rounded-lg px-3 py-2"></div>
+                <div><label class="block text-sm font-medium mb-2">Pekerjaan</label>
+                    <input type="text" name="kontak_darurat_pekerjaan" class="w-full border rounded-lg px-3 py-2"></div>
+                <div><label class="block text-sm font-medium mb-2">Jabatan</label>
+                    <input type="text" name="kontak_darurat_jabatan" class="w-full border rounded-lg px-3 py-2"></div>
             </div>
         </div>
     </div>
@@ -276,12 +338,18 @@
         <div id="saudara-kandung-container">
             <div class="saudara-kandung-item bg-gray-50 p-4 rounded-lg mb-3">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    <div><input type="text" name="saudara_kandung_nama[]" placeholder="Nama Lengkap" class="w-full border rounded-lg px-3 py-2"></div>
-                    <div><select name="saudara_kandung_jk[]" class="w-full border rounded-lg px-3 py-2"><option value="">L/P</option><option value="L">Laki-laki</option><option value="P">Perempuan</option></select></div>
-                    <div><input type="number" name="saudara_kandung_usia[]" placeholder="Usia" class="w-full border rounded-lg px-3 py-2"></div>
-                    <div><input type="text" name="saudara_kandung_pendidikan[]" placeholder="Pendidikan" class="w-full border rounded-lg px-3 py-2"></div>
-                    <div><input type="text" name="saudara_kandung_pekerjaan[]" placeholder="Pekerjaan" class="w-full border rounded-lg px-3 py-2"></div>
-                    <div><input type="text" name="saudara_kandung_hubungan[]" placeholder="Hubungan" class="w-full border rounded-lg px-3 py-2"></div>
+                    <div><label class="block text-sm font-medium mb-2">Nama Lengkap</label>
+                        <input type="text" name="saudara_kandung_nama[]" class="w-full border rounded-lg px-3 py-2"></div>
+                    <div><label class="block text-sm font-medium mb-2">Jenis Kelamin</label>
+                        <select name="saudara_kandung_jk[]" class="w-full border rounded-lg px-3 py-2"><option value="">L/P</option><option value="L">Laki-laki</option><option value="P">Perempuan</option></select></div>
+                    <div><label class="block text-sm font-medium mb-2">Usia</label>
+                        <input type="number" name="saudara_kandung_usia[]" class="w-full border rounded-lg px-3 py-2"></div>
+                    <div><label class="block text-sm font-medium mb-2">Pendidikan</label>
+                        <input type="text" name="saudara_kandung_pendidikan[]" class="w-full border rounded-lg px-3 py-2"></div>
+                    <div><label class="block text-sm font-medium mb-2">Pekerjaan</label>
+                        <input type="text" name="saudara_kandung_pekerjaan[]" class="w-full border rounded-lg px-3 py-2"></div>
+                    <div><label class="block text-sm font-medium mb-2">Hubungan</label>
+                        <input type="text" name="saudara_kandung_hubungan[]" class="w-full border rounded-lg px-3 py-2"></div>
                 </div>
                 <button type="button" class="remove-saudara-kandung text-red-500 text-sm mt-2 hover:text-red-700">Hapus</button>
             </div>
@@ -294,7 +362,7 @@
     
     <div class="mb-8">
         <label class="block text-sm font-medium mb-1">Gaji per bulan yang diharapkan <span class="text-red-500">*</span></label>
-        <input type="text" name="gaji_diharapkan" required class="w-full md:w-1/2 border rounded-lg px-3 py-2" placeholder="Contoh: Rp 5.000.000 (bruto/netto)">
+        <input type="number" name="gaji_diharapkan" required class="w-full md:w-1/2 border rounded-lg px-3 py-2" placeholder="Contoh: Rp 5.000.000 (bruto/netto)">
     </div>
     
     <!-- K. WAKTU -->

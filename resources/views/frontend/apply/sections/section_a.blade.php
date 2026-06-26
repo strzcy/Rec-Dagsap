@@ -65,16 +65,26 @@
     </div>
     
     <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-3">
-        <div><input type="text" name="rt_rw_tinggal" placeholder="RT/RW" required class="w-full border rounded-lg px-3 py-2"></div>
-        <div><input type="text" name="kelurahan_tinggal" placeholder="Kelurahan" required class="w-full border rounded-lg px-3 py-2"></div>
-        <div><input type="text" name="kecamatan_tinggal" placeholder="Kecamatan" required class="w-full border rounded-lg px-3 py-2"></div>
-        <div><input type="text" name="kabupaten_tinggal" placeholder="Kabupaten" required class="w-full border rounded-lg px-3 py-2"></div>
-        <div><input type="text" name="kota_tinggal" placeholder="Kota" required class="w-full border rounded-lg px-3 py-2"></div>
-        <div><input type="text" name="provinsi_tinggal" placeholder="Provinsi" required class="w-full border rounded-lg px-3 py-2"></div>
-        <div><input type="text" name="kode_pos_tinggal" placeholder="Kode Pos" required class="w-full border rounded-lg px-3 py-2"></div>
-        <div><input type="text" name="no_telp" placeholder="No. Telp" required class="w-full border rounded-lg px-3 py-2"></div>
-        <div><input type="text" name="no_hp" placeholder="No. HP" required class="w-full border rounded-lg px-3 py-2"></div>
-        <div><input type="text" name="no_wa" placeholder="No. WA"required class="w-full border rounded-lg px-3 py-2"></div>
+        <div><label class="block text-xs text-gray-700 font-medium mb-2">ㅤRT/RW</label>
+            <input type="text" name="rt_rw_tinggal"  required class="w-full border rounded-lg px-3 py-2"></div>
+        <div><label class="block text-xs text-gray-700 font-medium mb-2">ㅤKelurahan</label>
+            <input type="text" name="kelurahan_tinggal"  required class="w-full border rounded-lg px-3 py-2"></div>
+        <div><label class="block text-xs text-gray-700 font-medium mb-2">ㅤKecamatan</label>
+            <input type="text" name="kecamatan_tinggal"  required class="w-full border rounded-lg px-3 py-2"></div>
+        <div><label class="block text-xs text-gray-700 font-medium mb-2">ㅤKabupaten</label>
+            <input type="text" name="kabupaten_tinggal"  required class="w-full border rounded-lg px-3 py-2"></div>
+        <div><label class="block text-xs text-gray-700 font-medium mb-2">ㅤKota</label>
+            <input type="text" name="kota_tinggal"  required class="w-full border rounded-lg px-3 py-2"></div>
+        <div><label class="block text-xs text-gray-700 font-medium mb-2">ㅤProvinsi</label>
+            <input type="text" name="provinsi_tinggal" required class="w-full border rounded-lg px-3 py-2"></div>
+        <div><label class="block text-xs text-gray-700 font-medium mb-2">ㅤKode Pos</label>
+            <input type="number" name="kode_pos_tinggal"  required class="w-full border rounded-lg px-3 py-2"></div>
+        <div><label class="block text-xs text-gray-700 font-medium mb-2">ㅤNo. Telepon</label>
+            <input type="number" name="no_telp" required class="w-full border rounded-lg px-3 py-2"></div>
+        <div><label class="block text-xs text-gray-700 font-medium mb-2">ㅤNo. Handphone</label>
+            <input type="number" name="no_hp" required class="w-full border rounded-lg px-3 py-2"></div>
+        <div><label class="block text-xs text-gray-700 font-medium mb-2">ㅤNo. WhatsApp</label>
+            <input type="number" name="no_wa" required class="w-full border rounded-lg px-3 py-2"></div>
     </div>
     
     <div class="mt-4">
@@ -83,13 +93,20 @@
     </div>
     
     <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-3">
-        <div><input type="text" name="rt_rw_ktp" placeholder="RT/RW" required class="w-full border rounded-lg px-3 py-2"></div>
-        <div><input type="text" name="kelurahan_ktp" placeholder="Kelurahan" required class="w-full border rounded-lg px-3 py-2"></div>
-        <div><input type="text" name="kecamatan_ktp" placeholder="Kecamatan" required class="w-full border rounded-lg px-3 py-2"></div>
-        <div><input type="text" name="kabupaten_ktp" placeholder="Kabupaten" required class="w-full border rounded-lg px-3 py-2"></div>
-        <div><input type="text" name="kota_ktp" placeholder="Kota" required class="w-full border rounded-lg px-3 py-2"></div>
-        <div><input type="text" name="provinsi_ktp" placeholder="Provinsi" required class="w-full border rounded-lg px-3 py-2"></div>
-        <div><input type="text" name="kode_pos_ktp" placeholder="Kode Pos" required class="w-full border rounded-lg px-3 py-2"></div>
+        <div><label class="block text-xs text-gray-700 font-medium mb-2">ㅤRT/RW</label>
+            <input type="text" name="rt_rw_ktp" required class="w-full border rounded-lg px-3 py-2"></div>
+        <div><label class="block text-xs text-gray-700 font-medium mb-2">ㅤKelurahan</label>
+            <input type="text" name="kelurahan_ktp" required class="w-full border rounded-lg px-3 py-2"></div>
+        <div><label class="block text-xs text-gray-700 font-medium mb-2">ㅤKecamatan</label>
+            <input type="text" name="kecamatan_ktp" required class="w-full border rounded-lg px-3 py-2"></div>
+        <div><label class="block text-xs text-gray-700 font-medium mb-2">ㅤKabupaten</label>
+            <input type="text" name="kabupaten_ktp" required class="w-full border rounded-lg px-3 py-2"></div>
+        <div><label class="block text-xs text-gray-700 font-medium mb-2">ㅤKota</label>
+            <input type="text" name="kota_ktp" required class="w-full border rounded-lg px-3 py-2"></div>
+        <div><label class="block text-xs text-gray-700 font-medium mb-2">ㅤProvinsi</label>
+            <input type="text" name="provinsi_ktp" required class="w-full border rounded-lg px-3 py-2"></div>
+        <div><label class="block text-xs text-gray-700 font-medium mb-2">ㅤKode Pos</label>
+            <input type="number" name="kode_pos_ktp" required class="w-full border rounded-lg px-3 py-2"></div>
     </div>
     
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-3">
@@ -99,11 +116,11 @@
         </div>
         <div>
             <label class="block text-sm font-medium mb-1">No. NPWP</label>
-            <input type="text" name="no_npwp" required class="w-full border rounded-lg px-3 py-2">
+            <input type="number" name="no_npwp" required class="w-full border rounded-lg px-3 py-2">
         </div>
         <div>
             <label class="block text-sm font-medium mb-1">No. BPJS</label>
-            <input type="text" name="no_bpjs_ketenagakerjaan" placeholder="BPJS Ketenagakerjaan"required class="w-full border rounded-lg px-3 py-2">
+            <input type="number" name="no_bpjs_ketenagakerjaan" placeholder="BPJS Ketenagakerjaan"required class="w-full border rounded-lg px-3 py-2">
         </div>
     </div>
     
@@ -122,7 +139,7 @@
             <input type="email" name="email" value="{{ $pelamar->email }}" required class="w-full border rounded-lg px-3 py-2 bg-gray-100" readonly>
         </div>
         <div>
-            <label class="block text-sm font-medium mb-1">Hobby</label>
+            <label class="block text-sm font-medium mb-1">Hobi</label>
             <input type="text" name="hobby"required class="w-full border rounded-lg px-3 py-2">
         </div>
     </div>

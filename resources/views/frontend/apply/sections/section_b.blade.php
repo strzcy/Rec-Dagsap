@@ -7,14 +7,22 @@
         <div id="pendidikan-formal-container">
             <div class="pendidikan-formal-item bg-gray-50 p-4 rounded-lg mb-3">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                    <div><input type="text" name="pendidikan_tingkat[]" placeholder="Tingkat Pendidikan (SD/SMP/SMA/D3/S1/S2)" class="w-full border rounded-lg px-3 py-2" required></div>
-                    <div><input type="text" name="pendidikan_nama[]" placeholder="Nama Sekolah/Universitas" class="w-full border rounded-lg px-3 py-2" required></div>
-                    <div><input type="text" name="pendidikan_kota[]" placeholder="Kota" class="w-full border rounded-lg px-3 py-2" required></div>
-                    <div><input type="text" name="pendidikan_jurusan[]" placeholder="Jurusan" class="w-full border rounded-lg px-3 py-2" required></div>
-                    <div><input type="number" name="pendidikan_tahun_masuk[]" placeholder="Tahun Masuk" class="w-full border rounded-lg px-3 py-2"></div>
-                    <div><input type="number" name="pendidikan_tahun_lulus[]" placeholder="Tahun Lulus" class="w-full border rounded-lg px-3 py-2"></div>
-                    <div><input type="text" name="pendidikan_ipk[]" placeholder="IPK/Nilai" class="w-full border rounded-lg px-3 py-2"></div>
-                    <div class="md:col-span-2"><input type="text" name="pendidikan_keterangan[]" placeholder="Keterangan" class="w-full border rounded-lg px-3 py-2"></div>
+                    <div><label class="block text-xs text-gray-700 font-medium mb-2">ㅤTingkat Pendidikan</label>
+                        <input type="text" name="pendidikan_tingkat[]" placeholder="(SD/SMP/SMA/D3/S1/S2)" class="w-full border rounded-lg px-3 py-2" required></div>
+                    <div><label class="block text-xs text-gray-700 font-medium mb-2">ㅤNama Sekolah/Universitas</label>
+                        <input type="text" name="pendidikan_nama[]" class="w-full border rounded-lg px-3 py-2" required></div>
+                    <div><label class="block text-xs text-gray-700 font-medium mb-2">ㅤKota</label>
+                        <input type="text" name="pendidikan_kota[]" class="w-full border rounded-lg px-3 py-2" required></div>
+                    <div><label class="block text-xs text-gray-700 font-medium mb-2">ㅤJurusan</label>
+                        <input type="text" name="pendidikan_jurusan[]" class="w-full border rounded-lg px-3 py-2" required></div>
+                    <div><label class="block text-xs text-gray-700 font-medium mb-2">ㅤTahun Masuk</label>
+                        <input type="number" name="pendidikan_tahun_masuk[]" class="w-full border rounded-lg px-3 py-2"></div>
+                    <div><label class="block text-xs text-gray-700 font-medium mb-2">ㅤTahun Lulus</label>
+                        <input type="number" name="pendidikan_tahun_lulus[]" class="w-full border rounded-lg px-3 py-2"></div>
+                    <div><label class="block text-xs text-gray-700 font-medium mb-2">ㅤIPK/Nilai</label>
+                        <input type="text" name="pendidikan_ipk[]"  class="w-full border rounded-lg px-3 py-2"></div>
+                    <div class="md:col-span-2"><label class="block text-xs text-gray-700 font-medium mb-2">ㅤKeterangan</label>
+                        <input type="text" name="pendidikan_keterangan[]"  class="w-full border rounded-lg px-3 py-2"></div>
                 </div>
                 <button type="button" class="remove-pendidikan text-red-500 text-sm mt-2 hover:text-red-700">Hapus</button>
             </div>
@@ -30,11 +38,16 @@
         <div id="pelatihan-container">
             <div class="pelatihan-item bg-gray-50 p-4 rounded-lg mb-3">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    <div><input type="text" name="pelatihan_nama[]" placeholder="Nama Pelatihan/Kursus" class="w-full border rounded-lg px-3 py-2"></div>
-                    <div><input type="date" name="pelatihan_tgl_mulai[]" placeholder="Tanggal Mulai" class="w-full border rounded-lg px-3 py-2"></div>
-                    <div><input type="date" name="pelatihan_tgl_selesai[]" placeholder="Tanggal Selesai" class="w-full border rounded-lg px-3 py-2"></div>
-                    <div><input type="text" name="pelatihan_lembaga[]" placeholder="Lembaga Penyelenggara" class="w-full border rounded-lg px-3 py-2"></div>
-                    <div class="md:col-span-2"><input type="text" name="pelatihan_sertifikat[]" placeholder="Sertifikat (Ada/Tidak)" class="w-full border rounded-lg px-3 py-2"></div>
+                    <div><label class="block text-xs text-gray-700 font-medium mb-2">ㅤNama Pelatihan / Kursus</label>
+                        <input type="text" name="pelatihan_nama[]"class="w-full border rounded-lg px-3 py-2"></div>
+                    <div><label class="block text-xs text-gray-700 font-medium mb-2">ㅤTanggal Mulai</label>
+                        <input type="date" name="pelatihan_tgl_mulai[]" placeholder="Tanggal Mulai" class="w-full border rounded-lg px-3 py-2"></div>
+                    <div><label class="block text-xs text-gray-700 font-medium mb-2">ㅤTanggal Selesai</label>
+                        <input type="date" name="pelatihan_tgl_selesai[]" placeholder="Tanggal Selesai" class="w-full border rounded-lg px-3 py-2"></div>
+                    <div><label class="block text-xs text-gray-700 font-medium mb-2">ㅤLembaga Penyelenggara</label>
+                        <input type="text" name="pelatihan_lembaga[]" class="w-full border rounded-lg px-3 py-2"></div>
+                    <div class="md:col-span-2"> <label class="block text-xs text-gray-700 font-medium mb-2">ㅤSertifikat</label>
+                        <input type="text" name="pelatihan_sertifikat[]" placeholder="(Ada/Tidak)" class="w-full border rounded-lg px-3 py-2"></div>
                 </div>
                 <button type="button" class="remove-pelatihan text-red-500 text-sm mt-2 hover:text-red-700">Hapus</button>
             </div>

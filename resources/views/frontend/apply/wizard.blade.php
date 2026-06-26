@@ -56,6 +56,8 @@
         border-color: #424862;
         ring: 2px solid #424862;
     }
+    label.block.text-xs.text-gray-700.font-medium.mb-2 {
+    margin-bottom: 2px; }
 </style>
 @endpush
 

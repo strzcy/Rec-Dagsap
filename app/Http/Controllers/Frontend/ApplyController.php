@@ -184,7 +184,7 @@ class ApplyController extends Controller
             'kota_ktp' => 'required|string',
             'provinsi_ktp' => 'required|string',
             'kode_pos_ktp' => 'required|string',
-            'no_ktp' => 'required|string|min:16|max:16',
+            'no_ktp' => 'required|string',
             'status_perkawinan' => 'required|string',
             'email' => 'required|email',
             'hobby' => 'nullable|string',
