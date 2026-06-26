@@ -42,7 +42,7 @@
                     <td class="px-6 py-4">{{ $pengajuan->jumlah }}</td>
                     <td class="px-6 py-4">
                         @if($pengajuan->status == 'pending')
-                            <span class="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-800">Menunggu</span>
+                            <span class="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-800">Pending</span>
                         @elseif($pengajuan->status == 'disetujui')
                             <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">Disetujui</span>
                         @else

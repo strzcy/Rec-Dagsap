@@ -55,7 +55,7 @@
                     <td class="px-6 py-4">{{ $item->nama_pemohon ?? '-' }}</td>
                     <td class="px-6 py-4">
                         @if($item->status == 'pending')
-                            <span class="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-800">Menunggu</span>
+                            <span class="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-800">Pending</span>
                         @elseif($item->status == 'disetujui')
                             <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">Disetujui</span>
                         @else

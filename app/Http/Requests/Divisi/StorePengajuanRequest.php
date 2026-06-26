@@ -45,6 +45,18 @@ class StorePengajuanRequest extends FormRequest
             'tugas' => 'nullable|array',
             'persyaratan' => 'nullable|array',
             'menggantikan' => 'nullable|string',
+            
+            // LAMPIRAN - WAJIB
+            'lampiran' => 'required|file|mimes:pdf,png,jpg,jpeg,docx|max:5120',
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'lampiran.mimes' => 'Format file harus PDF, PNG, JPG, atau DOCX',
+            'lampiran.max' => 'Ukuran file maksimal 5MB',
+            'tanggal_dibutuhkan.after' => 'Tanggal dibutuhkan harus setelah hari ini',
         ];
     }
 }
