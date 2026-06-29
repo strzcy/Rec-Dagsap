@@ -1,3 +1,4 @@
+
 <div>
     <h2 class="text-xl font-bold text-primary mb-4 border-b pb-2">A. DATA PRIBADI</h2>
     
@@ -24,11 +25,11 @@
         </div>
         <div>
             <label class="block text-sm font-medium mb-1">Tinggi Badan (cm) <span class="text-red-500">*</span></label>
-            <input type="number" name="tinggi_badan" required class="w-full border rounded-lg px-3 py-2" placeholder="Contoh: 165">
+            <input type="number" name="tinggi_badan" required class="w-full border rounded-lg px-3 py-2" >
         </div>
         <div>
             <label class="block text-sm font-medium mb-1">Berat Badan (kg) <span class="text-red-500">*</span></label>
-            <input type="number" name="berat_badan" required class="w-full border rounded-lg px-3 py-2" placeholder="Contoh: 60">
+            <input type="number" name="berat_badan" required class="w-full border rounded-lg px-3 py-2">
         </div>
         <div>
             <label class="block text-sm font-medium mb-1">Kewarganegaraan <span class="text-red-500">*</span></label>
@@ -65,25 +66,28 @@
     </div>
     
     <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-3">
-        <div><label class="block text-xs text-gray-700 font-medium mb-2">ㅤRT/RW</label>
+        <div><label class="block text-xs text-gray-400 font-medium mb-2">ㅤ No. Rumah</label>
+            <input type="text" name="no_rumah_tinggal" required class="w-full border rounded-lg px-3 py-2">
+        </div>
+        <div><label class="block text-xs text-gray-400 font-medium mb-2">ㅤ RT/RW</label>
             <input type="text" name="rt_rw_tinggal"  required class="w-full border rounded-lg px-3 py-2"></div>
-        <div><label class="block text-xs text-gray-700 font-medium mb-2">ㅤKelurahan</label>
+        <div><label class="block text-xs text-gray-400 font-medium mb-2">ㅤ Kelurahan</label>
             <input type="text" name="kelurahan_tinggal"  required class="w-full border rounded-lg px-3 py-2"></div>
-        <div><label class="block text-xs text-gray-700 font-medium mb-2">ㅤKecamatan</label>
+        <div><label class="block text-xs text-gray-400 font-medium mb-2">ㅤ Kecamatan</label>
             <input type="text" name="kecamatan_tinggal"  required class="w-full border rounded-lg px-3 py-2"></div>
-        <div><label class="block text-xs text-gray-700 font-medium mb-2">ㅤKabupaten</label>
+        <div><label class="block text-xs text-gray-400 font-medium mb-2">ㅤ Kabupaten</label>
             <input type="text" name="kabupaten_tinggal"  required class="w-full border rounded-lg px-3 py-2"></div>
-        <div><label class="block text-xs text-gray-700 font-medium mb-2">ㅤKota</label>
+        <div><label class="block text-xs text-gray-400 font-medium mb-2">ㅤ Kota</label>
             <input type="text" name="kota_tinggal"  required class="w-full border rounded-lg px-3 py-2"></div>
-        <div><label class="block text-xs text-gray-700 font-medium mb-2">ㅤProvinsi</label>
+        <div><label class="block text-xs text-gray-400 font-medium mb-2">ㅤ Provinsi</label>
             <input type="text" name="provinsi_tinggal" required class="w-full border rounded-lg px-3 py-2"></div>
-        <div><label class="block text-xs text-gray-700 font-medium mb-2">ㅤKode Pos</label>
+        <div><label class="block text-xs text-gray-400 font-medium mb-2">ㅤ Kode Pos</label>
             <input type="number" name="kode_pos_tinggal"  required class="w-full border rounded-lg px-3 py-2"></div>
-        <div><label class="block text-xs text-gray-700 font-medium mb-2">ㅤNo. Telepon</label>
+        <div><label class="block text-xs text-gray-400 font-medium mb-2">ㅤ No. Telepon</label>
             <input type="number" name="no_telp" required class="w-full border rounded-lg px-3 py-2"></div>
-        <div><label class="block text-xs text-gray-700 font-medium mb-2">ㅤNo. Handphone</label>
+        <div><label class="block text-xs text-gray-400 font-medium mb-2">ㅤ No. Handphone</label>
             <input type="number" name="no_hp" required class="w-full border rounded-lg px-3 py-2"></div>
-        <div><label class="block text-xs text-gray-700 font-medium mb-2">ㅤNo. WhatsApp</label>
+        <div><label class="block text-xs text-gray-400 font-medium mb-2">ㅤ No. WhatsApp</label>
             <input type="number" name="no_wa" required class="w-full border rounded-lg px-3 py-2"></div>
     </div>
     
@@ -93,19 +97,21 @@
     </div>
     
     <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-3">
-        <div><label class="block text-xs text-gray-700 font-medium mb-2">ㅤRT/RW</label>
+        <div><label class="block text-xs text-gray-400 font-medium mb-2">ㅤ No. Rumah</label>
+            <input type="text" name="no_rumah_ktp" required class="w-full border rounded-lg px-3 py-2"></div>
+        <div><label class="block text-xs text-gray-400 font-medium mb-2">ㅤ RT/RW</label>
             <input type="text" name="rt_rw_ktp" required class="w-full border rounded-lg px-3 py-2"></div>
-        <div><label class="block text-xs text-gray-700 font-medium mb-2">ㅤKelurahan</label>
+        <div><label class="block text-xs text-gray-400 font-medium mb-2">ㅤ Kelurahan</label>
             <input type="text" name="kelurahan_ktp" required class="w-full border rounded-lg px-3 py-2"></div>
-        <div><label class="block text-xs text-gray-700 font-medium mb-2">ㅤKecamatan</label>
+        <div><label class="block text-xs text-gray-400 font-medium mb-2">ㅤ Kecamatan</label>
             <input type="text" name="kecamatan_ktp" required class="w-full border rounded-lg px-3 py-2"></div>
-        <div><label class="block text-xs text-gray-700 font-medium mb-2">ㅤKabupaten</label>
+        <div><label class="block text-xs text-gray-400 font-medium mb-2">ㅤ Kabupaten</label>
             <input type="text" name="kabupaten_ktp" required class="w-full border rounded-lg px-3 py-2"></div>
-        <div><label class="block text-xs text-gray-700 font-medium mb-2">ㅤKota</label>
+        <div><label class="block text-xs text-gray-400 font-medium mb-2">ㅤ Kota</label>
             <input type="text" name="kota_ktp" required class="w-full border rounded-lg px-3 py-2"></div>
-        <div><label class="block text-xs text-gray-700 font-medium mb-2">ㅤProvinsi</label>
+        <div><label class="block text-xs text-gray-400 font-medium mb-2">ㅤ Provinsi</label>
             <input type="text" name="provinsi_ktp" required class="w-full border rounded-lg px-3 py-2"></div>
-        <div><label class="block text-xs text-gray-700 font-medium mb-2">ㅤKode Pos</label>
+        <div><label class="block text-xs text-gray-400 font-medium mb-2">ㅤ Kode Pos</label>
             <input type="number" name="kode_pos_ktp" required class="w-full border rounded-lg px-3 py-2"></div>
     </div>
     
@@ -115,16 +121,17 @@
             <input type="text" name="no_ktp" required class="w-full border rounded-lg px-3 py-2">
         </div>
         <div>
-            <label class="block text-sm font-medium mb-1">No. NPWP</label>
+            <label class="block text-sm font-medium mb-1">No. NPWP <span class="text-red-500">*</span></label>
             <input type="number" name="no_npwp" required class="w-full border rounded-lg px-3 py-2">
         </div>
         <div>
-            <label class="block text-sm font-medium mb-1">No. BPJS</label>
-            <input type="number" name="no_bpjs_ketenagakerjaan" placeholder="BPJS Ketenagakerjaan"required class="w-full border rounded-lg px-3 py-2">
+            <label class="block text-sm font-medium mb-1">No. BPJS Kesehatan <span class="text-red-500">*</span></label>
+            <input type="number" name="no_bpjs_kesehatan" class="w-full border rounded-lg px-3 py-2">
         </div>
-    </div>
-    
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-3">
+        <div>
+            <label class="block text-sm font-medium mb-1">No. BPJS Ketenagakerjaan <span class="text-red-500">*</span></label>
+            <input type="number" name="no_bpjs_ketenagakerjaan"  class="w-full border rounded-lg px-3 py-2">
+        </div>
         <div>
             <label class="block text-sm font-medium mb-1">Status Perkawinan <span class="text-red-500">*</span></label>
             <select name="status_perkawinan" required class="w-full border rounded-lg px-3 py-2">
@@ -139,13 +146,81 @@
             <input type="email" name="email" value="{{ $pelamar->email }}" required class="w-full border rounded-lg px-3 py-2 bg-gray-100" readonly>
         </div>
         <div>
-            <label class="block text-sm font-medium mb-1">Hobi</label>
+            <label class="block text-sm font-medium mb-1">Hobi <span class="text-red-500">*</span></label>
             <input type="text" name="hobby"required class="w-full border rounded-lg px-3 py-2">
         </div>
     </div>
     
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-3">
+    </div>
+    
+
     <div class="mt-3">
         <label class="block text-sm font-medium mb-1">Organisasi</label>
-        <textarea name="organisasi" rows="2"required class="w-full border rounded-lg px-3 py-2" placeholder="Riwayat organisasi yang pernah diikuti"></textarea>
+        <div id="organisasi-container">
+            <div class="organisasi-item flex items-center mb-2">
+                <span class="organisasi-number w-6 text-sm font-medium text-gray-600">1.</span>
+                <input type="text" name="organisasi[]" class="flex-1 border rounded-lg px-3 py-2" placeholder="...">
+                <button type="button" class="remove-organisasi ml-2 text-red-500 hover:text-red-700 hidden">✕</button>
+            </div>
+        </div>
+        <button type="button" onclick="addOrganisasi()" class="text-primary text-sm hover:text-primary-dark mt-1 ml-6">
+            + Tambah Organisasi
+        </button>
     </div>
 </div>
+
+<script>
+    // ============================================
+    // ORGANISASI
+    // ============================================
+    function updateOrganisasiPlaceholders() {
+        const items = document.querySelectorAll('#organisasi-container .organisasi-item');
+        items.forEach((item, index) => {
+            // Update nomor di luar box
+            const numberSpan = item.querySelector('.organisasi-number');
+            if (numberSpan) numberSpan.textContent = `${index + 1}.`;
+            
+            // Placeholder di dalam box sekarang cukup "..." saja
+            const input = item.querySelector('input');
+            if (input) input.placeholder = `...`;
+        });
+        
+        // Toggle tombol hapus: hanya jika > 1
+        const removeBtns = document.querySelectorAll('#organisasi-container .remove-organisasi');
+        removeBtns.forEach(btn => {
+            if (items.length > 1) {
+                btn.classList.remove('hidden');
+            } else {
+                btn.classList.add('hidden');
+            }
+        });
+    }
+
+    function addOrganisasi() {
+        const container = document.getElementById('organisasi-container');
+        const div = document.createElement('div');
+        div.className = 'organisasi-item flex items-center mb-2';
+        const index = container.children.length + 1;
+        
+        // Menambahkan elemen span untuk nomor di luar input
+        div.innerHTML = `
+            <span class="organisasi-number w-6 text-sm font-medium text-gray-600">${index}.</span>
+            <input type="text" name="organisasi[]" class="flex-1 border rounded-lg px-3 py-2" placeholder="...">
+            <button type="button" onclick="removeOrganisasi(this)" class="remove-organisasi ml-2 text-red-500 hover:text-red-700">✕</button>
+        `;
+        container.appendChild(div);
+        updateOrganisasiPlaceholders();
+    }
+
+    function removeOrganisasi(btn) {
+        const container = document.getElementById('organisasi-container');
+        if (container.children.length > 1) {
+            btn.parentElement.remove();
+            updateOrganisasiPlaceholders();
+        }
+    }
+
+    // Inisialisasi
+    updateOrganisasiPlaceholders();
+</script>

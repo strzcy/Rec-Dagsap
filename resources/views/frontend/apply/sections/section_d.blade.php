@@ -1,18 +1,31 @@
 
+
+
+
 <div>
     <!-- E. KEKUATAN & KELEMAHAN -->
     <h2 class="text-xl font-bold text-primary mb-4 border-b pb-2">E. KEKUATAN &amp; KELEMAHAN</h2>
-    
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         <div>
-            <label class="block text-sm font-medium mb-1">Kekuatan / Kelebihan <span class="text-red-500">*</span></label>
-            <textarea name="kekuatan" required minlength="10" rows="3" class="w-full border rounded-lg px-3 py-2" placeholder="Tuliskan kekuatan/kelebihan Anda..."></textarea>
+            <label class="block text-sm font-medium mb-2">Kekuatan / Kelebihan</label>
+            <div id="kekuatan-container">
+                </div>
+            <button type="button" onclick="addKekuatan()" class="text-primary text-sm font-semibold hover:text-primary-dark mt-2 block pl-6">
+                + Tambah Kekuatan
+            </button>
         </div>
         <div>
-            <label class="block text-sm font-medium mb-1">Kelemahan / Kekurangan <span class="text-red-500">*</span></label>
-            <textarea name="kelemahan" required minlength="10" rows="3" class="w-full border rounded-lg px-3 py-2" placeholder="Tuliskan kelemahan/kekurangan Anda..."></textarea>
+            <label class="block text-sm font-medium mb-2">Kelemahan / Kekurangan</label>
+            <div id="kelemahan-container">
+                </div>
+            <button type="button" onclick="addKelemahan()" class="text-primary text-sm font-semibold hover:text-primary-dark mt-2 block pl-6">
+                + Tambah Kelemahan
+            </button>
         </div>
     </div>
+
+    
     
     <!-- F. RIWAYAT PEKERJAAN -->
     <h2 class="text-xl font-bold text-primary mb-4 border-b pb-2">F. RIWAYAT PEKERJAAN</h2>
@@ -28,8 +41,11 @@
                         <input type="date" name="pekerjaan_tgl_masuk[]" placeholder="Tanggal Masuk" class="w-full border rounded-lg px-3 py-2"></div>
                     <div><label class="block text-sm font-medium mb-2">Tanggal Keluar</label>
                         <input type="date" name="pekerjaan_tgl_keluar[]" placeholder="Tanggal Keluar" class="w-full border rounded-lg px-3 py-2"></div>
+
                     <div><label class="block text-sm font-medium mb-2">Jabatan Terakhir</label>
-                        <input type="text" name="pekerjaan_jabatan[]" placeholder="Jabatan Terakhir & Tugas Utama" class="w-full border rounded-lg px-3 py-2"></div>
+                        <input type="text" name="pekerjaan_jabatan[]"  class="w-full border rounded-lg px-3 py-2"></div>
+                    <div><label class="block text-sm font-medium mb-2">Tugas Utama</label>
+                        <input type="text" name="pekerjaan_tugas_utama[]" class="w-full border rounded-lg px-3 py-2"></div>
                     <div><label class="block text-sm font-medium mb-2">Gaji Terakhir</label>
                         <input type="number" name="pekerjaan_gaji[]" class="w-full border rounded-lg px-3 py-2"></div>
                     <div><label class="block text-sm font-medium mb-2">Alasan Keluar</label>
@@ -359,10 +375,25 @@
     
     <!-- J. REMUNERASI -->
     <h2 class="text-xl font-bold text-primary mb-4 border-b pb-2">J. REMUNERASI</h2>
-    
+
     <div class="mb-8">
-        <label class="block text-sm font-medium mb-1">Gaji per bulan yang diharapkan <span class="text-red-500">*</span></label>
-        <input type="number" name="gaji_diharapkan" required class="w-full md:w-1/2 border rounded-lg px-3 py-2" placeholder="Contoh: Rp 5.000.000 (bruto/netto)">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                <label class="block text-sm font-medium mb-1">Gaji per bulan yang diharapkan</label>
+                <input type="number" required name="gaji_diharapkan" class="w-full border rounded-lg px-3 py-2">
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-1 opacity-0" >ㅤ</label>
+                <div class="flex gap-4 mt-2">
+                    <label class="inline-flex items-center">
+                        <input type="radio" name="gaji_tipe" value="brutto" class="mr-2"> Brutto
+                    </label>
+                    <label class="inline-flex items-center">
+                        <input type="radio" name="gaji_tipe" value="netto" class="mr-2" checked> Netto
+                    </label>
+                </div>
+            </div>
+        </div>
     </div>
     
     <!-- K. WAKTU -->
@@ -399,3 +430,103 @@
         </div>
     </div>
 </div>
+
+<script>
+    const MIN_ITEMS = 5; // Batas minimal input
+
+    // ============================================
+    // KEKUATAN
+    // ============================================
+    function updateKekuatanNumbers() {
+        const items = document.querySelectorAll('#kekuatan-container .kekuatan-item');
+        items.forEach((item, index) => {
+            // Update angka di luar input
+            const numSpan = item.querySelector('.item-number');
+            if (numSpan) numSpan.textContent = `${index + 1}.`;
+        });
+        
+        const removeBtns = document.querySelectorAll('#kekuatan-container .remove-kekuatan');
+        removeBtns.forEach(btn => {
+            if (items.length > MIN_ITEMS) {
+                btn.classList.remove('hidden');
+            } else {
+                btn.classList.add('hidden');
+            }
+        });
+    }
+
+    function addKekuatan() {
+        const container = document.getElementById('kekuatan-container');
+        const div = document.createElement('div');
+        div.className = 'kekuatan-item flex items-center mb-2';
+        div.innerHTML = `
+            <span class="item-number w-6 text-sm font-medium text-gray-500 text-left"></span>
+            <input type="text" name="kekuatan[]" class="flex-1 border rounded-lg px-3 py-2">
+            <button type="button" onclick="removeKekuatan(this)" class="remove-kekuatan ml-2 text-red-500 hover:text-red-700 hidden">✕</button>
+        `;
+        container.appendChild(div);
+        updateKekuatanNumbers();
+    }
+
+    function removeKekuatan(btn) {
+        const container = document.getElementById('kekuatan-container');
+        if (container.children.length > MIN_ITEMS) {
+            btn.parentElement.remove();
+            updateKekuatanNumbers();
+        }
+    }
+
+    // ============================================
+    // KELEMAHAN
+    // ============================================
+    function updateKelemahanNumbers() {
+        const items = document.querySelectorAll('#kelemahan-container .kelemahan-item');
+        items.forEach((item, index) => {
+            // Update angka di luar input
+            const numSpan = item.querySelector('.item-number');
+            if (numSpan) numSpan.textContent = `${index + 1}.`;
+        });
+        
+        const removeBtns = document.querySelectorAll('#kelemahan-container .remove-kelemahan');
+        removeBtns.forEach(btn => {
+            if (items.length > MIN_ITEMS) {
+                btn.classList.remove('hidden');
+            } else {
+                btn.classList.add('hidden');
+            }
+        });
+    }
+
+    function addKelemahan() {
+        const container = document.getElementById('kelemahan-container');
+        const div = document.createElement('div');
+        div.className = 'kelemahan-item flex items-center mb-2';
+        div.innerHTML = `
+            <span class="item-number w-6 text-sm font-medium text-gray-500 text-left"></span>
+            <input type="text" name="kelemahan[]" class="flex-1 border rounded-lg px-3 py-2">
+            <button type="button" onclick="removeKelemahan(this)" class="remove-kelemahan ml-2 text-red-500 hover:text-red-700 hidden">✕</button>
+        `;
+        container.appendChild(div);
+        updateKelemahanNumbers();
+    }
+
+    function removeKelemahan(btn) {
+        const container = document.getElementById('kelemahan-container');
+        if (container.children.length > MIN_ITEMS) {
+            btn.parentElement.remove();
+            updateKelemahanNumbers();
+        }
+    }
+
+    // ============================================
+    // INISIALISASI (Looping 5 input pertama)
+    // ============================================
+    function initForm() {
+        for (let i = 0; i < MIN_ITEMS; i++) {
+            addKekuatan();
+            addKelemahan();
+        }
+    }
+
+    initForm();
+</script>   

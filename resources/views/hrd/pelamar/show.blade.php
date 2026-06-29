@@ -166,22 +166,38 @@
         </div>
         
         <!-- F. RIWAYAT PEKERJAAN -->
+        <!-- F. RIWAYAT PEKERJAAN -->
         <div class="detail-section">
             <h4>F. RIWAYAT PEKERJAAN</h4>
             @if($detail->pengalaman_kerja)
             <div class="overflow-x-auto mb-2">
                 <table class="min-w-full text-sm border">
-                    <thead class="bg-gray-50"><tr><th class="px-2 py-1 border">Perusahaan</th><th class="px-2 py-1 border">Jabatan</th><th class="px-2 py-1 border">Periode</th><th class="px-2 py-1 border">Gaji</th><th class="px-2 py-1 border">Alasan Keluar</th></tr></thead>
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-2 py-1 border">No</th>
+                            <th class="px-2 py-1 border">Perusahaan</th>
+                            <th class="px-2 py-1 border">Periode</th>
+                            <th class="px-2 py-1 border">Jabatan Terakhir</th>
+                            <th class="px-2 py-1 border">Tugas Utama</th>
+                            <th class="px-2 py-1 border">Gaji</th>
+                            <th class="px-2 py-1 border">Alasan Keluar</th>
+                        </tr>
+                    </thead>
                     <tbody>
-                        @foreach($detail->pengalaman_kerja as $kerja)
-                        <tr><td class="px-2 py-1 border">{{ $kerja['perusahaan'] ?? '-' }}</td><td class="px-2 py-1 border">{{ $kerja['jabatan'] ?? '-' }}</td><td class="px-2 py-1 border">{{ $kerja['tgl_masuk'] ?? '-' }} s/d {{ $kerja['tgl_keluar'] ?? '-' }}</td><td class="px-2 py-1 border">{{ $kerja['gaji'] ?? '-' }}</td><td class="px-2 py-1 border">{{ $kerja['alasan_keluar'] ?? '-' }}</td></tr>
+                        @foreach($detail->pengalaman_kerja as $idx => $kerja)
+                        <tr>
+                            <td class="px-2 py-1 border" align="center">{{ $idx+1 }}</td>
+                            <td class="px-2 py-1 border">{{ $kerja['perusahaan'] ?? '-' }}</td>
+                            <td class="px-2 py-1 border">{{ $kerja['tgl_masuk'] ?? '-' }} s/d {{ $kerja['tgl_keluar'] ?? '-' }}</td>
+                            <td class="px-2 py-1 border">{{ $kerja['jabatan'] ?? '-' }}</td>
+                            <td class="px-2 py-1 border">{{ $kerja['tugas_utama'] ?? '-' }}</td>
+                            <td class="px-2 py-1 border">{{ $kerja['gaji'] ?? '-' }}</td>
+                            <td class="px-2 py-1 border">{{ $kerja['alasan_keluar'] ?? '-' }}</td>
+                        </tr>
                         @endforeach
                     </tbody>
                 </table>
             </div>
-            @endif
-            @if($detail->bidang_minat)
-            <div><strong>Bidang Minat:</strong> {{ implode(', ', $detail->bidang_minat) }}</div>
             @endif
         </div>
         

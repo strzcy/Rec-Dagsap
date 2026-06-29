@@ -131,7 +131,7 @@
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">IPK (jika S1/D3) <span class="text-red-500" id="ipk-required">*</span></label>
                         <select name="ipk" id="ipk-select" class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:border-primary">
-                            <option value="">Pilih IPK</option>
+                            <option value="">Bukan D3-S2</option>
                             <option value="2.00">2.00</option>
                             <option value="2.10">2.10</option>
                             <option value="2.20">2.20</option>

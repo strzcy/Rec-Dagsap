@@ -257,6 +257,24 @@ class ApplyController extends Controller
             }
         }
 
+        // PENGALAMAN KERJA
+        $pengalamanKerja = [];
+        if ($request->has('pekerjaan_perusahaan')) {
+            for ($i = 0; $i < count($request->pekerjaan_perusahaan); $i++) {
+                if (!empty($request->pekerjaan_perusahaan[$i])) {
+                    $pengalamanKerja[] = [
+                        'perusahaan' => $request->pekerjaan_perusahaan[$i],
+                        'tgl_masuk' => $request->pekerjaan_tgl_masuk[$i] ?? '',
+                        'tgl_keluar' => $request->pekerjaan_tgl_keluar[$i] ?? '',
+                        'jabatan' => $request->pekerjaan_jabatan[$i] ?? '',           // JABATAN TERAKHIR
+                        'tugas_utama' => $request->pekerjaan_tugas_utama[$i] ?? '',   // TUGAS UTAMA (baru)
+                        'gaji' => $request->pekerjaan_gaji[$i] ?? '',
+                        'alasan_keluar' => $request->pekerjaan_alasan[$i] ?? '',
+                    ];
+                }
+            }
+        }
+
         // REFERENSI
         $referensi = [];
         if ($request->has('referensi_nama')) {

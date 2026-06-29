@@ -51,6 +51,9 @@
             </div>
             <button type="button" class="remove-bahasa text-red-500 text-sm mt-2">Hapus</button>
         </div>
+        <button type="button" id="tambah-keterampilan" class="text-primary text-sm hover:text-primary-dark mt-2">
+            <i class="fas fa-plus mr-1"></i> Tambah Keterampilan
+        </button>
     </div>
 </div>
 
