@@ -81,6 +81,8 @@ class PengajuanController extends Controller
             // Data PTK
             'jenis' => $validated['jenis'],
             'posisi' => $validated['posisi'],
+            'area_penempatan' => $validated['area_penempatan'] ?? null,
+            'toko_penempatan' => $validated['toko_penempatan'] ?? null,
             'jumlah' => $validated['jumlah'],
             'tanggal_dibutuhkan' => $validated['tanggal_dibutuhkan'],
             'kriteria' => $kriteria,

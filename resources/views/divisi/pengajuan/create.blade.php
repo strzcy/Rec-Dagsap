@@ -76,7 +76,19 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">Nama Jabatan *</label>
-                <input type="text" name="posisi" class="w-full border rounded-lg px-3 py-2" required>
+                <input type="text" name="posisi" id="posisi" class="w-full border rounded-lg px-3 py-2" required>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Area Penempatan *</label>
+                <input type="text" name="area_penempatan" id="area_penempatan" class="w-full border rounded-lg px-3 py-2" required>
+            </div>
+            <div id="toko_penempatan_field" style="display: none;">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Toko Penempatan *</label>
+                <input type="text" name="toko_penempatan" id="toko_penempatan" class="w-full border rounded-lg px-3 py-2">
+                <p class="text-xs text-orange-600 mt-1">
+                    <i class="fas fa-info-circle mr-1"></i> 
+                    Wajib diisi karena jabatan mengandung "SPG" atau "SPB"
+                </p>
             </div>
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">Jumlah Dibutuhkan *</label>
@@ -183,7 +195,7 @@
                 <div>
                     <label class="block text-xs text-gray-500 mb-1">IPK Minimal (jika S1)</label>
                     <select required name="kriteria_ipk" class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:border-primary">
-                        <option value="">Pilih IPK</option>
+                        <option value="">Bukan D3-S2</option>
                         <option value="2.00">2.00</option>
                         <option value="2.10">2.10</option>
                         <option value="2.20">2.20</option>
@@ -407,6 +419,33 @@
     function submitForm() {
         document.getElementById('ptkForm').submit();
     }
+
+    // ============================================
+    // TOGGLE TOKO PENEMPATAN (SPG / SPB)
+    // ============================================
+    const posisiInput = document.getElementById('posisi');
+    const tokoField = document.getElementById('toko_penempatan_field');
+    const tokoInput = document.getElementById('toko_penempatan');
+
+    function toggleTokoPenempatan() {
+        const posisi = posisiInput.value.toUpperCase().trim();
+        const isSpgOrSpb = posisi.startsWith('SPG') || posisi.startsWith('SPB');
+    
+        if (isSpgOrSpb) {
+            tokoField.style.display = 'block';
+            tokoInput.setAttribute('required', 'required');
+        } else {
+            tokoField.style.display = 'none';
+            tokoInput.removeAttribute('required');
+            tokoInput.value = '';
+        }
+    }
+
+    // Event listener saat user mengetik
+    posisiInput.addEventListener('input', toggleTokoPenempatan);
+
+    // Jalankan saat load untuk cek kondisi awal
+    setTimeout(toggleTokoPenempatan, 100);
 </script>
 @endpush
 @endsection

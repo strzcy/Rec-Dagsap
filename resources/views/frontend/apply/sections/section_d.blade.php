@@ -201,7 +201,7 @@
                 <div><label class="block text-sm font-medium mb-2">Tanggal Menikah</label>
                     <input type="date" name="tanggal_menikah" placeholder="Tanggal Menikah" class="w-full border rounded-lg px-3 py-2"></div>
                 <div>
-                    <select name="agama_pasangan" required class="w-full border rounded-lg px-3 py-2">
+                    <select name="agama_pasangan" class="w-full border rounded-lg px-3 py-2">
                     <option value="">Agama</option>
                     <option value="Islam">Islam</option>
                     <option value="Kristen">Kristen</option>

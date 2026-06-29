@@ -37,7 +37,9 @@ class PengajuanTenagaKerja extends Model
         'approved_at',
         'lampiran_path',
         'lampiran_nama',
-        'lampiran_jenis'
+        'lampiran_jenis',
+        'area_penempatan',
+        'toko_penempatan'
     ];
 
     protected $casts = [

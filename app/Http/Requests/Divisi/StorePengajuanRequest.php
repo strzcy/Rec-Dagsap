@@ -24,6 +24,8 @@ class StorePengajuanRequest extends FormRequest
             // Data PTK
             'jenis' => 'required|in:penambahan,penggantian',
             'posisi' => 'required|string|max:255',
+            'area_penempatan' => 'required|string|max:255',
+            'toko_penempatan' => 'nullable|string|max:255',
             'jumlah' => 'required|integer|min:1',
             'tanggal_dibutuhkan' => [
                 'required',

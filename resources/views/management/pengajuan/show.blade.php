@@ -84,6 +84,16 @@
                     <p class="font-medium">{{ $pengajuan->posisi }}</p>
                 </div>
                 <div>
+                    <label class="text-xs text-gray-500">Area Penempatan</label>
+                    <p class="font-medium">{{ $pengajuan->area_penempatan ?? '-' }}</p>
+                </div>
+                @if($pengajuan->toko_penempatan)
+                <div>
+                    <label class="text-xs text-gray-500">Toko Penempatan</label>
+                    <p class="font-medium">{{ $pengajuan->toko_penempatan }}</p>
+                </div>
+                @endif
+                <div>
                     <label class="text-xs text-gray-500">Jumlah Dibutuhkan</label>
                     <p class="font-medium">{{ $pengajuan->jumlah }} orang</p>
                 </div>

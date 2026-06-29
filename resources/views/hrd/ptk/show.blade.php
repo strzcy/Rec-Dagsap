@@ -82,6 +82,16 @@
                     <p class="font-medium">{{ $ptk->posisi }}</p>
                 </div>
                 <div>
+                    <label class="text-xs text-gray-500">Area Penempatan</label>
+                    <p class="font-medium">{{ $ptk->area_penempatan ?? '-' }}</p>
+                </div>
+                @if($ptk->toko_penempatan)
+                <div>
+                    <label class="text-xs text-gray-500">Toko Penempatan</label>
+                    <p class="font-medium">{{ $ptk->toko_penempatan }}</p>
+                </div>
+                @endif
+                <div>
                     <label class="text-xs text-gray-500">Jumlah Dibutuhkan</label>
                     <p class="font-medium">{{ $ptk->jumlah }} orang</p>
                 </div>

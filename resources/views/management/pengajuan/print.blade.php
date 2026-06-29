@@ -317,7 +317,7 @@
             </table>
 
             <table class="detail-table">
-                <tr><td width="200">Nama Jabatan</td><td>: {{ $pengajuan->posisi }}</td></tr>
+                <tr><td width="200">Nama Jabatan</td><td>: {{ $pengajuan->posisi }} ㅤ-ㅤ {{ $pengajuan->area_penempatan ?? '-' }} @if($pengajuan->toko_penempatan) ㅤ-ㅤ {{ $pengajuan->toko_penempatan }} @endif </td></tr>
                 <tr><td>Unit Kerja</td><td>: {{ $pengajuan->divisi->nama_divisi ?? '-' }}</td></tr>
                 <tr><td>Jumlah Dibutuhkan</td><td>: {{ $pengajuan->jumlah }} Orang</td></tr>
                 <tr><td>Tanggal Dibutuhkan</td><td>: 

@@ -33,9 +33,6 @@
     <a href="{{ route('hrd.pelamar.print', $pelamar) }}" target="_blank" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-dark">
         <i class="fas fa-print mr-2"></i> Cetak Data (A4)
     </a>
-    <button onclick="window.print()" class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700">
-        <i class="fas fa-print mr-2"></i> Print Halaman Ini
-    </button>
 </div>
 
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">

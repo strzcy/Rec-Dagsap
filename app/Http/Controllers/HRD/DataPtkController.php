@@ -43,7 +43,7 @@ class DataPtkController extends Controller
         // QR CODE UNTUK PEMOHON
         $qrDataPemohon = "PTK-" . str_pad($pengajuan->id, 6, '0', STR_PAD_LEFT) . " - " .
         $pengajuan->posisi . " | " .
-        $pengajuan->nama_pemohon . " " .
+        $pengajuan->nama_pemohon . " " .    
         $pengajuan->created_at->format('d/m/Y H:i');
         
         $qrCodePemohon = QrCode::errorCorrection('L')
