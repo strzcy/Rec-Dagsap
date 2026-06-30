@@ -124,7 +124,7 @@
                         </div>
                     </div>
                     <p class="text-sm text-gray-400 leading-relaxed">
-                        Dagsap Recruitment adalah web app portal lowongan kerja untuk PT Dagsap Endura Eatore
+                        Dagsap Recruitment adalah web app portal lowongan kerja untuk PT. Dagsap Endura Eatore
                     </p>
                     
                     <div class="w-full h-44 rounded-lg overflow-hidden shadow-sm border border-gray-700 relative group">

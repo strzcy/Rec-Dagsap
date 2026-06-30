@@ -72,7 +72,7 @@ class PelamarController extends Controller
             $noTelepon = '62' . $noTelepon;
         }
         
-        $message = "Selamat! Anda dinyatakan lolos seleksi administrasi di PT Dagsap Endura Eatore.%0A%0A";
+        $message = "Selamat! Anda dinyatakan lolos seleksi administrasi di PT. Dagsap Endura Eatore.%0A%0A";
         $message .= "Apakah Anda bersedia mengikuti tahap selanjutnya pada:%0A";
         $message .= "📅 Tanggal: {$tanggal}%0A";
         $message .= "⏰ Waktu: {$waktu}%0A";
