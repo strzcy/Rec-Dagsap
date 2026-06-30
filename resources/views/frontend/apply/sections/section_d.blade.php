@@ -1,7 +1,5 @@
 
 
-
-
 <div>
     <!-- E. KEKUATAN & KELEMAHAN -->
     <h2 class="text-xl font-bold text-primary mb-4 border-b pb-2">E. KEKUATAN &amp; KELEMAHAN</h2>
@@ -386,10 +384,10 @@
                 <label class="block text-sm font-medium mb-1 opacity-0" >ㅤ</label>
                 <div class="flex gap-4 mt-2">
                     <label class="inline-flex items-center">
-                        <input type="radio" name="gaji_tipe" value="brutto" class="mr-2"> Brutto
+                        <input type="radio" name="gaji_tipe" value="brutto" class="mr-2"> Kotor
                     </label>
                     <label class="inline-flex items-center">
-                        <input type="radio" name="gaji_tipe" value="netto" class="mr-2" checked> Netto
+                        <input type="radio" name="gaji_tipe" value="netto" class="mr-2" checked> Bersih
                     </label>
                 </div>
             </div>
@@ -432,19 +430,18 @@
 </div>
 
 <script>
-    const MIN_ITEMS = 5; // Batas minimal input
+    // ============================================
+    // KEKUATAN & KELEMAHAN
+    // ============================================
+    const MIN_ITEMS = 5;
 
-    // ============================================
-    // KEKUATAN
-    // ============================================
     function updateKekuatanNumbers() {
         const items = document.querySelectorAll('#kekuatan-container .kekuatan-item');
         items.forEach((item, index) => {
-            // Update angka di luar input
             const numSpan = item.querySelector('.item-number');
             if (numSpan) numSpan.textContent = `${index + 1}.`;
         });
-        
+    
         const removeBtns = document.querySelectorAll('#kekuatan-container .remove-kekuatan');
         removeBtns.forEach(btn => {
             if (items.length > MIN_ITEMS) {
@@ -476,17 +473,13 @@
         }
     }
 
-    // ============================================
-    // KELEMAHAN
-    // ============================================
     function updateKelemahanNumbers() {
         const items = document.querySelectorAll('#kelemahan-container .kelemahan-item');
         items.forEach((item, index) => {
-            // Update angka di luar input
             const numSpan = item.querySelector('.item-number');
             if (numSpan) numSpan.textContent = `${index + 1}.`;
         });
-        
+    
         const removeBtns = document.querySelectorAll('#kelemahan-container .remove-kelemahan');
         removeBtns.forEach(btn => {
             if (items.length > MIN_ITEMS) {
@@ -518,15 +511,340 @@
         }
     }
 
-    // ============================================
-    // INISIALISASI (Looping 5 input pertama)
-    // ============================================
-    function initForm() {
+    function initKekuatanKelemahan() {
+        // Kosongkan container
+        const kekuatanContainer = document.getElementById('kekuatan-container');
+        const kelemahanContainer = document.getElementById('kelemahan-container');
+    
+        kekuatanContainer.innerHTML = '';
+        kelemahanContainer.innerHTML = '';
+    
+        // Buat item pertama
         for (let i = 0; i < MIN_ITEMS; i++) {
             addKekuatan();
             addKelemahan();
         }
+    
+        updateKekuatanNumbers();
+        updateKelemahanNumbers();
     }
 
-    initForm();
+    // Jalankan setelah DOM siap
+    document.addEventListener('DOMContentLoaded', function() {
+        initKekuatanKelemahan();
+    });
+
+    // ============================================
+    // PEKERJAAN
+    // ============================================
+    function updateRemovePekerjaan() {
+        const items = document.querySelectorAll('#pekerjaan-container .pekerjaan-item');
+        const buttons = document.querySelectorAll('#pekerjaan-container .remove-pekerjaan');
+    
+        buttons.forEach(btn => {
+            if (items.length > 1) {
+                btn.classList.remove('hidden');
+            } else {
+                btn.classList.add('hidden');
+            }
+        });
+    }
+
+    document.getElementById('tambah-pekerjaan')?.addEventListener('click', function() {
+        const container = document.getElementById('pekerjaan-container');
+        const template = container.children[0].cloneNode(true);
+        template.querySelectorAll('input').forEach(input => input.value = '');
+        container.appendChild(template);
+    
+        template.querySelector('.remove-pekerjaan')?.addEventListener('click', function() {
+            if (container.children.length > 1) {
+                template.remove();
+                updateRemovePekerjaan();
+            }
+        });
+    
+        updateRemovePekerjaan();
+    });
+
+    // Setup remove untuk item pertama
+    document.addEventListener('DOMContentLoaded', function() {
+        const container = document.getElementById('pekerjaan-container');
+        if (container) {
+            container.querySelectorAll('.pekerjaan-item').forEach(item => {
+                const removeBtn = item.querySelector('.remove-pekerjaan');
+                if (removeBtn) {
+                    removeBtn.addEventListener('click', function() {
+                        if (container.children.length > 1) {
+                            item.remove();
+                            updateRemovePekerjaan();
+                        }
+                    });
+                }
+            });
+            updateRemovePekerjaan();
+        }
+    });
+
+    // ============================================
+    // REFERENSI
+    // ============================================
+    function updateRemoveReferensi() {
+        const items = document.querySelectorAll('#referensi-container .referensi-item');
+        const buttons = document.querySelectorAll('#referensi-container .remove-referensi');
+    
+        buttons.forEach(btn => {
+            if (items.length > 1) {
+                btn.classList.remove('hidden');
+            } else {
+                btn.classList.add('hidden');
+            }
+        });
+    }
+
+    document.getElementById('tambah-referensi')?.addEventListener('click', function() {
+        const container = document.getElementById('referensi-container');
+        const template = container.children[0].cloneNode(true);
+        template.querySelectorAll('input').forEach(input => input.value = '');
+        container.appendChild(template);
+    
+        template.querySelector('.remove-referensi')?.addEventListener('click', function() {
+            if (container.children.length > 1) {
+                template.remove();
+                updateRemoveReferensi();
+            }
+        });
+    
+        updateRemoveReferensi();
+    });
+
+    // Setup remove untuk item pertama
+    document.addEventListener('DOMContentLoaded', function() {
+        const container = document.getElementById('referensi-container');
+        if (container) {
+            container.querySelectorAll('.referensi-item').forEach(item => {
+                const removeBtn = item.querySelector('.remove-referensi');
+                if (removeBtn) {
+                    removeBtn.addEventListener('click', function() {
+                        if (container.children.length > 1) {
+                            item.remove();
+                            updateRemoveReferensi();
+                        }
+                    });
+                }
+            });
+            updateRemoveReferensi();
+        }
+    });
+
+    // ============================================
+    // SAUDARA/KENALAN DI PERUSAHAAN
+    // ============================================
+    function updateRemoveSaudara() {
+        const items = document.querySelectorAll('#saudara-container .saudara-item');
+        const buttons = document.querySelectorAll('#saudara-container .remove-saudara');
+    
+        buttons.forEach(btn => {
+            if (items.length > 1) {
+                btn.classList.remove('hidden');
+            } else {
+                btn.classList.add('hidden');
+            }
+        });
+    }
+
+    document.getElementById('tambah-saudara')?.addEventListener('click', function() {
+        const container = document.getElementById('saudara-container');
+        const template = container.children[0].cloneNode(true);
+        template.querySelectorAll('input').forEach(input => input.value = '');
+        container.appendChild(template);
+    
+        template.querySelector('.remove-saudara')?.addEventListener('click', function() {
+            if (container.children.length > 1) {
+                template.remove();
+                updateRemoveSaudara();
+            }
+        });
+    
+        updateRemoveSaudara();
+    });
+
+    // Setup remove untuk item pertama
+    document.addEventListener('DOMContentLoaded', function() {
+        const container = document.getElementById('saudara-container');
+        if (container) {
+            container.querySelectorAll('.saudara-item').forEach(item => {
+                const removeBtn = item.querySelector('.remove-saudara');
+                if (removeBtn) {
+                    removeBtn.addEventListener('click', function() {
+                        if (container.children.length > 1) {
+                            item.remove();
+                            updateRemoveSaudara();
+                        }
+                    });
+                }
+            });
+            updateRemoveSaudara();
+        }
+    });
+
+    // ============================================
+    // DATA ANAK
+    // ============================================
+    function updateRemoveAnak() {
+        const items = document.querySelectorAll('#anak-container .anak-item');
+        const buttons = document.querySelectorAll('#anak-container .remove-anak');
+    
+        buttons.forEach(btn => {
+            if (items.length > 1) {
+                btn.classList.remove('hidden');
+            } else {
+                btn.classList.add('hidden');
+            }
+        });
+    }
+
+    document.getElementById('tambah-anak')?.addEventListener('click', function() {
+        const container = document.getElementById('anak-container');
+        const template = container.children[0].cloneNode(true);
+        template.querySelectorAll('input, select').forEach(input => {
+            if (input.type !== 'radio' && input.type !== 'checkbox') {
+                input.value = '';
+            }
+        });
+        container.appendChild(template);
+    
+        template.querySelector('.remove-anak')?.addEventListener('click', function() {
+            if (container.children.length > 1) {
+                template.remove();
+                updateRemoveAnak();
+            }
+        });
+    
+        updateRemoveAnak();
+    });
+
+    // Setup remove untuk item pertama
+    document.addEventListener('DOMContentLoaded', function() {
+        const container = document.getElementById('anak-container');
+        if (container) {
+            container.querySelectorAll('.anak-item').forEach(item => {
+                const removeBtn = item.querySelector('.remove-anak');
+                if (removeBtn) {
+                    removeBtn.addEventListener('click', function() {
+                        if (container.children.length > 1) {
+                            item.remove();
+                            updateRemoveAnak();
+                        }
+                    });
+                }
+            });
+            updateRemoveAnak();
+        }
+    });
+
+    // ============================================
+    // RIWAYAT PENYAKIT KELUARGA
+    // ============================================
+    function updateRemovePenyakit() {
+        const items = document.querySelectorAll('#penyakit-container .penyakit-item');
+        const buttons = document.querySelectorAll('#penyakit-container .remove-penyakit');
+    
+        buttons.forEach(btn => {
+            if (items.length > 1) {
+                btn.classList.remove('hidden');
+            } else {
+                btn.classList.add('hidden');
+            }
+        });
+    }
+
+    document.getElementById('tambah-penyakit')?.addEventListener('click', function() {
+        const container = document.getElementById('penyakit-container');
+        const template = container.children[0].cloneNode(true);
+        template.querySelectorAll('input').forEach(input => input.value = '');
+        container.appendChild(template);
+    
+        template.querySelector('.remove-penyakit')?.addEventListener('click', function() {
+            if (container.children.length > 1) {
+                template.remove();
+                updateRemovePenyakit();
+            }
+        });
+    
+        updateRemovePenyakit();
+    });
+
+    // Setup remove untuk item pertama
+    document.addEventListener('DOMContentLoaded', function() {
+        const container = document.getElementById('penyakit-container');
+        if (container) {
+            container.querySelectorAll('.penyakit-item').forEach(item => {
+                const removeBtn = item.querySelector('.remove-penyakit');
+                if (removeBtn) {
+                    removeBtn.addEventListener('click', function() {
+                        if (container.children.length > 1) {
+                            item.remove();
+                            updateRemovePenyakit();
+                        }
+                    });
+                }
+            });
+            updateRemovePenyakit();
+        }
+    });
+
+    // ============================================
+    // SAUDARA KANDUNG
+    // ============================================
+    function updateRemoveSaudaraKandung() {
+        const items = document.querySelectorAll('#saudara-kandung-container .saudara-kandung-item');
+        const buttons = document.querySelectorAll('#saudara-kandung-container .remove-saudara-kandung');
+    
+        buttons.forEach(btn => {
+            if (items.length > 1) {
+                btn.classList.remove('hidden');
+            } else {
+                btn.classList.add('hidden');
+            }
+        });
+    }
+
+    document.getElementById('tambah-saudara-kandung')?.addEventListener('click', function() {
+        const container = document.getElementById('saudara-kandung-container');
+        const template = container.children[0].cloneNode(true);
+        template.querySelectorAll('input, select').forEach(input => {
+            if (input.type !== 'radio' && input.type !== 'checkbox') {
+                input.value = '';
+            }
+        });
+        container.appendChild(template);
+    
+        template.querySelector('.remove-saudara-kandung')?.addEventListener('click', function() {
+            if (container.children.length > 1) {
+                template.remove();
+                updateRemoveSaudaraKandung();
+            }
+        });
+    
+        updateRemoveSaudaraKandung();
+    });
+
+    // Setup remove untuk item pertama
+    document.addEventListener('DOMContentLoaded', function() {
+        const container = document.getElementById('saudara-kandung-container');
+        if (container) {
+            container.querySelectorAll('.saudara-kandung-item').forEach(item => {
+                const removeBtn = item.querySelector('.remove-saudara-kandung');
+                if (removeBtn) {
+                    removeBtn.addEventListener('click', function() {
+                        if (container.children.length > 1) {
+                            item.remove();
+                            updateRemoveSaudaraKandung();
+                        }
+                    });
+                }
+            });
+            updateRemoveSaudaraKandung();
+        }
+    });
 </script>   
