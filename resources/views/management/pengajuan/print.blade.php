@@ -300,7 +300,7 @@
                             </div>
 
                             <div class="company-name">
-                                PT. Dagsap Endura Eatore
+                                PT Dagsap Endura Eatore
                             </div>
                         </div>
                     </td>
