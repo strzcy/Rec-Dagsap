@@ -24,32 +24,28 @@
                     Nama Lengkap Pemohon <span class="text-red-500">*</span>
                 </label>
                 <input type="text" name="nama_pemohon" required 
-                       class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:border-primary"
-                       placeholder="Contoh: Ahmad Supriyadi, S.T.">
+                       class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:border-primary">
             </div>
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">
                     NIP / NIK <span class="text-red-500">*</span>
                 </label>
                 <input type="text" name="nip_pemohon" required 
-                       class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:border-primary"
-                       placeholder="Nomor Induk Pegawai">
+                       class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:border-primary">
             </div>
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">
                     Jabatan <span class="text-red-500">*</span>
                 </label>
                 <input type="text" name="jabatan_pemohon" required 
-                       class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:border-primary"
-                       placeholder="Contoh: Kepala Divisi, Manager, Staff">
+                       class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:border-primary">
             </div>
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">
                     No. HP / WhatsApp <span class="text-red-500">*</span>
                 </label>
                 <input type="tel" name="no_hp_pemohon" required 
-                       class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:border-primary"
-                       placeholder="Contoh: 081234567890">
+                       class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:border-primary">
             </div>
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">
@@ -142,16 +138,21 @@
             <p class="text-xs text-gray-500 mt-1">PDF/JPG/PNG/DOCX, maks 5MB</p>
         </div>
         
-        <!-- Tugas dan Tanggung Jawab -->
-        <div class="mb-6">
+        <div class="mb-6" style="page-break-inside: avoid; break-inside: avoid;">
             <label class="block text-sm font-medium text-gray-700 mb-2">Tugas dan Tanggung Jawab *</label>
-            <div id="tugas_list">
-                <div class="flex mb-2">
-                    <input required type="text" name="tugas[]" class="flex-1 border rounded-lg px-3 py-2" placeholder="1. ..." required>
+    
+            <div id="tugas_list" style="counter-reset: tugas-counter; padding-left: 5px;">
+                <div class="flex items-center mb-2" style="counter-increment: tugas-counter;">
+                    <span style="min-width: 25px; font-weight: 500; font-size: 14px; text-align: left; color: #4b5563;">
+                        <script>document.write(document.querySelectorAll('#tugas_list > div').length || 1);</script>.
+                    </span>
+            
+                    <input required type="text" name="tugas[]" class="flex-1 border rounded-lg px-3 py-2" placeholder=" ..." required>
                     <button type="button" onclick="removeTugas(this)" class="ml-2 text-red-500 hover:text-red-700">✕</button>
                 </div>
             </div>
-            <button type="button" onclick="addTugas()" class="mt-2 text-primary hover:text-primary-dark text-sm">
+    
+            <button type="button" onclick="addTugas()" class="mt-2 text-primary hover:text-primary-dark text-sm" style="padding-left: 25px;">
                 + Tambah Tugas
             </button>
         </div>
@@ -175,7 +176,7 @@
                 </div>
                 <div>
                     <label class="block text-xs text-gray-500 mb-1">Jurusan</label>
-                    <input required type="text" name="kriteria_jurusan" class="w-full border rounded-lg px-3 py-2" placeholder="Contoh: Teknik Informatika">
+                    <input required type="text" name="kriteria_jurusan" class="w-full border rounded-lg px-3 py-2" >
                 </div>
             </div>
             
@@ -223,7 +224,7 @@
             
             <div>
                 <label class="block text-xs text-gray-500 mb-1">Keahlian yang Dibutuhkan</label>
-                <textarea  required name="kriteria_keahlian" rows="3" class="w-full border rounded-lg px-3 py-2" placeholder="Pisahkan dengan koma, contoh: PHP, Laravel, MySQL"></textarea>
+                <textarea  required name="kriteria_keahlian" rows="3" class="w-full border rounded-lg px-3 py-2" ></textarea>
             </div>
         </div>
         
@@ -232,7 +233,7 @@
             <label class="block text-sm font-medium text-gray-700 mb-2">Persyaratan Lainnya</label>
             <div id="persyaratan_list">
                 <div class="flex mb-2">
-                    <input required type="text" name="persyaratan[]" class="flex-1 border rounded-lg px-3 py-2" placeholder="Contoh: Bersedia ditempatkan di seluruh Indonesia">
+                    <input required type="text" name="persyaratan[]" class="flex-1 border rounded-lg px-3 py-2" >
                     <button type="button" onclick="removePersyaratan(this)" class="ml-2 text-red-500 hover:text-red-700">✕</button>
                 </div>
             </div>
@@ -336,26 +337,30 @@
 
     // Add Tugas
     function addTugas() {
-        const container = document.getElementById('tugas_list');
-        const index = container.children.length + 1;
-        const div = document.createElement('div');
-        div.className = 'flex mb-2';
-        div.innerHTML = `
-            <input type="text" name="tugas[]" class="flex-1 border rounded-lg px-3 py-2" placeholder="${index}. ..." required>
+        const list = document.getElementById('tugas_list');
+        const currentCount = list.children.length + 1;
+
+        const newRow = document.createElement('div');
+        newRow.className = 'flex items-center mb-2';
+    
+        newRow.innerHTML = `
+            <span style="min-width: 25px; font-weight: 500; font-size: 14px; text-align: left; color: #4b5563;">${currentCount}.</span>
+            <input required type="text" name="tugas[]" class="flex-1 border rounded-lg px-3 py-2" placeholder="..." required>
             <button type="button" onclick="removeTugas(this)" class="ml-2 text-red-500 hover:text-red-700">✕</button>
         `;
-        container.appendChild(div);
-    }
     
-    function removeTugas(btn) {
-        const container = document.getElementById('tugas_list');
-        if (container.children.length > 1) {
-            btn.parentElement.remove();
-            Array.from(container.children).forEach((child, idx) => {
-                const input = child.querySelector('input');
-                if (input) input.placeholder = `${idx + 1}. ...`;
-            });
-        }
+        list.appendChild(newRow);
+    }
+
+    function removeTugas(button) {
+        const row = button.parentElement;
+        const list = document.getElementById('tugas_list');
+        row.remove();
+    
+        // Urutkan ulang angka setelah ada yang dihapus agar tidak lompat
+        Array.from(list.children).forEach((child, index) => {
+            child.querySelector('span').innerText = `${index + 1}.`;
+        });
     }
     
     function addPersyaratan() {

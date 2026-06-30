@@ -39,7 +39,14 @@ class PengajuanTenagaKerja extends Model
         'lampiran_nama',
         'lampiran_jenis',
         'area_penempatan',
-        'toko_penempatan'
+        'toko_penempatan',
+        'catatan_ptk',
+        'catatan_dibuat_oleh',
+        'catatan_jabatan_dibuat',
+        'catatan_dibuat_at',
+        'catatan_diubah_oleh',
+        'catatan_jabatan_diubah',
+        'catatan_diubah_at'
     ];
 
     protected $casts = [
