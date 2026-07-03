@@ -146,7 +146,7 @@
             <input type="email" name="email" value="{{ $pelamar->email }}" required class="w-full border rounded-lg px-3 py-2 bg-gray-100" readonly>
         </div>
         <div>
-            <label class="block text-sm font-medium mb-1">Hobi <span class="text-red-500">*</span></label>
+            <label class="block text-sm font-medium mb-1">Hobi<span class="text-red-500">*</span></label>
             <input type="text" name="hobby"required class="w-full border rounded-lg px-3 py-2">
         </div>
     </div>
@@ -224,3 +224,9 @@
     // Inisialisasi
     updateOrganisasiPlaceholders();
 </script>
+
+
+
+
+
+

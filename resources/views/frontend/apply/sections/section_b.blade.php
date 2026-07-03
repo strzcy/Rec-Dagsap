@@ -16,7 +16,7 @@
                             <option value="">Pilih</option>
                             <option value="SD Sederajat">SD Sederajat</option>
                             <option value="SLTP">SLTP</option>
-                            <option value="SMU">SMU</option>
+                            <option value="SLTA">SLTA</option>
                             <option value="Diploma">Diploma</option>
                             <option value="S1">S1</option>
                             <option value="S2">S2</option>

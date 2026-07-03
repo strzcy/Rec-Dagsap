@@ -220,6 +220,7 @@ class ApplyController extends Controller
                         'nama_sekolah' => $request->pendidikan_nama[$i] ?? '',
                         'kota' => $request->pendidikan_kota[$i] ?? '',
                         'jurusan' => $request->pendidikan_jurusan[$i] ?? '',
+                        'tahun_masuk' => $request->pendidikan_tahun_masuk[$i] ?? '',
                         'tahun_lulus' => $request->pendidikan_tahun_lulus[$i] ?? '',
                         'ipk' => $request->pendidikan_ipk[$i] ?? '',
                     ];
