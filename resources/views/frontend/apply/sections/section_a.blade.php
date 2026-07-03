@@ -117,8 +117,12 @@
     
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-3">
         <div>
-            <label class="block text-sm font-medium mb-1">No. KTP/Passport <span class="text-red-500">*</span></label>
+            <label class="block text-sm font-medium mb-1">No. KTP/Passport <span class="text-red-500">  *</span></label>
             <input type="text" name="no_ktp" required class="w-full border rounded-lg px-3 py-2">
+        </div>
+        <div>
+            <label class="block text-sm font-medium mb-1">Dikeluarkan di :<span class="text-red-500">*</span></label>
+            <input type="text" name="dikeluarkan_di" class="w-full border rounded-lg px-3 py-2">
         </div>
         <div>
             <label class="block text-sm font-medium mb-1">No. NPWP <span class="text-red-500">*</span></label>
@@ -157,14 +161,43 @@
 
     <div class="mt-3">
         <label class="block text-sm font-medium mb-1">Organisasi</label>
-        <div id="organisasi-container">
-            <div class="organisasi-item flex items-center mb-2">
-                <span class="organisasi-number w-6 text-sm font-medium text-gray-600">1.</span>
-                <input type="text" name="organisasi[]" class="flex-1 border rounded-lg px-3 py-2" placeholder="...">
-                <button type="button" class="remove-organisasi ml-2 text-red-500 hover:text-red-700 hidden">✕</button>
-            </div>
+        <div class="overflow-x-auto">
+            <table class="w-full border-collapse">
+                <thead>
+                    <tr class="bg-gray-50">
+                        <th class="border border-gray-300 px-3 py-2 text-left text-xs font-medium text-gray-500 w-12">No.</th>
+                        <th class="border border-gray-300 px-3 py-2 text-left text-xs font-medium text-gray-500">Nama Organisasi</th>
+                        <th class="border border-gray-300 px-3 py-2 text-left text-xs font-medium text-gray-500 w-40">Waktu</th>
+                        <th class="border border-gray-300 px-3 py-2 text-left text-xs font-medium text-gray-500 w-36">Jabatan</th>
+                        <th class="border border-gray-300 px-3 py-2 text-left text-xs font-medium text-gray-500 w-40">Jenis Organisasi</th>
+                        <th class="border border-gray-300 px-3 py-2 text-center text-xs font-medium text-gray-500 w-12">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="organisasi-tbody">
+                    <tr class="organisasi-item">
+                        <td class="border border-gray-300 px-2 py-2 text-center text-sm organisasi-number">1.</td>
+                        <td class="border border-gray-300 px-2 py-2">
+                            <input type="text" name="organisasi_nama[]" class="w-full border-0 focus:ring-0 px-1 py-0 text-sm" placeholder="...">
+                        </td>
+                        <td class="border border-gray-300 px-2 py-2">
+                            <input type="text" name="organisasi_waktu[]" class="w-full border-0 focus:ring-0 px-1 py-0 text-sm" placeholder="...">
+                        </td>
+                        <td class="border border-gray-300 px-2 py-2">
+                            <input type="text" name="organisasi_jabatan[]" class="w-full border-0 focus:ring-0 px-1 py-0 text-sm" placeholder="...">
+                        </td>
+                        <td class="border border-gray-300 px-2 py-2">
+                            <input type="text" name="organisasi_jenis[]" class="w-full border-0 focus:ring-0 px-1 py-0 text-sm" placeholder="...">
+                        </td>
+                        <td class="border border-gray-300 px-2 py-2 text-center">
+                            <button type="button" class="remove-organisasi text-red-500 hover:text-red-700 text-xs hidden" title="Hapus">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-        <button type="button" onclick="addOrganisasi()" class="text-primary text-sm hover:text-primary-dark mt-1 ml-6">
+        <button type="button" onclick="addOrganisasi()" class="text-primary text-sm hover:text-primary-dark mt-2">
             + Tambah Organisasi
         </button>
     </div>
@@ -174,22 +207,20 @@
     // ============================================
     // ORGANISASI
     // ============================================
-    function updateOrganisasiPlaceholders() {
-        const items = document.querySelectorAll('#organisasi-container .organisasi-item');
-        items.forEach((item, index) => {
-            // Update nomor di luar box
-            const numberSpan = item.querySelector('.organisasi-number');
-            if (numberSpan) numberSpan.textContent = `${index + 1}.`;
-            
-            // Placeholder di dalam box sekarang cukup "..." saja
-            const input = item.querySelector('input');
-            if (input) input.placeholder = `...`;
+    // ============================================
+    // ORGANISASI - TABEL
+    // ============================================
+    function updateOrganisasiNumber() {
+        const rows = document.querySelectorAll('#organisasi-tbody .organisasi-item');
+        rows.forEach((row, index) => {
+            const numberCell = row.querySelector('.organisasi-number');
+            if (numberCell) numberCell.textContent = `${index + 1}.`;
         });
-        
+    
         // Toggle tombol hapus: hanya jika > 1
-        const removeBtns = document.querySelectorAll('#organisasi-container .remove-organisasi');
+        const removeBtns = document.querySelectorAll('#organisasi-tbody .remove-organisasi');
         removeBtns.forEach(btn => {
-            if (items.length > 1) {
+            if (rows.length > 1) {
                 btn.classList.remove('hidden');
             } else {
                 btn.classList.add('hidden');
@@ -198,31 +229,47 @@
     }
 
     function addOrganisasi() {
-        const container = document.getElementById('organisasi-container');
-        const div = document.createElement('div');
-        div.className = 'organisasi-item flex items-center mb-2';
-        const index = container.children.length + 1;
-        
-        // Menambahkan elemen span untuk nomor di luar input
-        div.innerHTML = `
-            <span class="organisasi-number w-6 text-sm font-medium text-gray-600">${index}.</span>
-            <input type="text" name="organisasi[]" class="flex-1 border rounded-lg px-3 py-2" placeholder="...">
-            <button type="button" onclick="removeOrganisasi(this)" class="remove-organisasi ml-2 text-red-500 hover:text-red-700">✕</button>
+        const tbody = document.getElementById('organisasi-tbody');
+        const newRow = document.createElement('tr');
+        newRow.className = 'organisasi-item';
+        const rowCount = tbody.children.length + 1;
+    
+        newRow.innerHTML = `
+            <td class="border border-gray-300 px-2 py-2 text-center text-sm organisasi-number">${rowCount}.</td>
+            <td class="border border-gray-300 px-2 py-2">
+                <input type="text" name="organisasi_nama[]" class="w-full border-0 focus:ring-0 px-1 py-0 text-sm" placeholder="...">
+            </td>
+            <td class="border border-gray-300 px-2 py-2">
+                <input type="text" name="organisasi_waktu[]" class="w-full border-0 focus:ring-0 px-1 py-0 text-sm" placeholder="...">
+            </td>
+            <td class="border border-gray-300 px-2 py-2">
+                <input type="text" name="organisasi_jabatan[]" class="w-full border-0 focus:ring-0 px-1 py-0 text-sm" placeholder="...">
+            </td>
+            <td class="border border-gray-300 px-2 py-2">
+                <input type="text" name="organisasi_jenis[]" class="w-full border-0 focus:ring-0 px-1 py-0 text-sm" placeholder="...">
+            </td>
+            <td class="border border-gray-300 px-2 py-2 text-center">
+                <button type="button" onclick="removeOrganisasi(this)" class="remove-organisasi text-red-500 hover:text-red-700 text-xs" title="Hapus">
+                    <i class="fas fa-times"></i>
+                </button>
+            </td>
         `;
-        container.appendChild(div);
-        updateOrganisasiPlaceholders();
+    
+        tbody.appendChild(newRow);
+        updateOrganisasiNumber();
     }
 
     function removeOrganisasi(btn) {
-        const container = document.getElementById('organisasi-container');
-        if (container.children.length > 1) {
-            btn.parentElement.remove();
-            updateOrganisasiPlaceholders();
+        const row = btn.closest('.organisasi-item');
+        const tbody = document.getElementById('organisasi-tbody');
+        if (tbody.children.length > 1) {
+            row.remove();
+            updateOrganisasiNumber();
         }
     }
 
     // Inisialisasi
-    updateOrganisasiPlaceholders();
+    updateOrganisasiNumber();
 </script>
 
 

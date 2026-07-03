@@ -102,6 +102,36 @@
                 <div class="col-span-2"><strong>Alamat Tinggal:</strong> {{ $detail->alamat_tinggal ?? '-' }}</div>
                 <div class="col-span-2"><strong>Alamat KTP:</strong> {{ $detail->alamat_ktp ?? '-' }}</div>
             </div>
+            @if($detail->organisasi)
+            <div class="mt-2">
+                <strong>Organisasi:</strong>
+                <div class="overflow-x-auto mt-1">
+                    <table class="min-w-full text-xs border">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-2 py-1 border">No</th>
+                                <th class="px-2 py-1 border">Nama Organisasi</th>
+                                <th class="px-2 py-1 border">Waktu</th>
+                                <th class="px-2 py-1 border">Jabatan</th>
+                                <th class="px-2 py-1 border">Jenis Organisasi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($detail->organisasi as $idx => $org)
+                            <tr>
+                                <td class="px-2 py-1 border" align="center">{{ $idx+1 }}</td>
+                                <td class="px-2 py-1 border">{{ $org['nama'] ?? '-' }}</td>
+                                <td class="px-2 py-1 border">{{ $org['waktu'] ?? '-' }}</td>
+                                <td class="px-2 py-1 border">{{ $org['jabatan'] ?? '-' }}</td>
+                                <td class="px-2 py-1 border">{{ $org['jenis'] ?? '-' }}</td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            @endif
+
         </div>
         
         <!-- B. PENDIDIKAN -->
@@ -162,7 +192,6 @@
             </div>
         </div>
         
-        <!-- F. RIWAYAT PEKERJAAN -->
         <!-- F. RIWAYAT PEKERJAAN -->
         <div class="detail-section">
             <h4>F. RIWAYAT PEKERJAAN</h4>
