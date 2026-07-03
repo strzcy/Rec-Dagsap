@@ -84,11 +84,11 @@
         <div><label class="block text-xs text-gray-400 font-medium mb-2">ㅤ Kode Pos</label>
             <input type="number" name="kode_pos_tinggal"  required class="w-full border rounded-lg px-3 py-2"></div>
         <div><label class="block text-xs text-gray-400 font-medium mb-2">ㅤ No. Telepon</label>
-            <input type="number" name="no_telp" required class="w-full border rounded-lg px-3 py-2"></div>
+            <input type="number" name="no_telp" required class="w-full border rounded-lg px-3 py-2" placeholder="08**********" value="08"></div>
         <div><label class="block text-xs text-gray-400 font-medium mb-2">ㅤ No. Handphone</label>
-            <input type="number" name="no_hp" required class="w-full border rounded-lg px-3 py-2"></div>
+            <input type="number" name="no_hp" required class="w-full border rounded-lg px-3 py-2" placeholder="08**********" value="08"></div>
         <div><label class="block text-xs text-gray-400 font-medium mb-2">ㅤ No. WhatsApp</label>
-            <input type="number" name="no_wa" required class="w-full border rounded-lg px-3 py-2"></div>
+            <input type="number" name="no_wa" required class="w-full border rounded-lg px-3 py-2" placeholder="08**********" value="08"></div>
     </div>
     
     <div class="mt-4">

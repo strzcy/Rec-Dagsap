@@ -87,7 +87,7 @@
                     <div><label class="block text-sm font-medium mb-2">Alamat Lengkap</label>
                         <input type="text" name="referensi_alamat[]" class="w-full border rounded-lg px-3 py-2"></div>
                     <div><label class="block text-sm font-medium mb-2">No. Telp/HP</label>
-                        <input type="number" name="referensi_telp[]"  class="w-full border rounded-lg px-3 py-2"></div>
+                        <input type="number" name="referensi_telp[]"  class="w-full border rounded-lg px-3 py-2" placeholder="08**********" value="08"></div>
                     <div><label class="block text-sm font-medium mb-2">Hubungan</label>
                         <input type="text" name="referensi_hubungan[]" class="w-full border rounded-lg px-3 py-2"></div>
                     <div><label class="block text-sm font-medium mb-2">Lama Kenal</label>
@@ -295,7 +295,7 @@
                     <label class="block text-sm text-gray-700 font-medium mb-2">ㅤPekerjaan Ayah</label>
                     <input type="text" name="pekerjaan_ayah" required class="w-full border rounded-lg px-3 py-2">
                     <label class="block text-sm text-gray-700 font-medium mb-2">ㅤAlamat & No. Telp</label>
-                    <textarea name="alamat_ayah" required rows="2" placeholder="Alamat ( No. Telp )" class="w-full border rounded-lg px-3 py-2"></textarea>
+                    <textarea name="alamat_ayah" required rows="2" placeholder="Alamat ( 08********** )" class="w-full border rounded-lg px-3 py-2"></textarea>
                 </div>
             </div>
             <div class="bg-gray-50 p-4 rounded-lg">
@@ -317,7 +317,7 @@
                     <label class="block text-sm text-gray-700 font-medium mb-2">ㅤPekerjaan</label>
                     <input type="text" name="pekerjaan_ibu" required class="w-full border rounded-lg px-3 py-2">
                     <label class="block text-sm text-gray-700 font-medium mb-2">ㅤAlamat & No. Telp</label>
-                    <textarea name="alamat_ibu" required rows="2" placeholder="Alamat ( No. Telp )" class="w-full border rounded-lg px-3 py-2"></textarea>
+                    <textarea name="alamat_ibu" required rows="2" placeholder="Alamat ( 08********** )" class="w-full border rounded-lg px-3 py-2"></textarea>
                 </div>
             </div>
         </div>
@@ -337,7 +337,7 @@
                 <div><label class="block text-sm font-medium mb-2">No. Telepon</label>
                     <input type="number" name="kontak_darurat_telp" class="w-full border rounded-lg px-3 py-2"></div>
                 <div><label class="block text-sm font-medium mb-2">No. Handphone</label>
-                    <input type="number" name="kontak_darurat_hp" class="w-full border rounded-lg px-3 py-2"></div>
+                    <input type="number" name="kontak_darurat_hp" class="w-full border rounded-lg px-3 py-2" placeholder="08**********" value="08"></div>
                 <div><label class="block text-sm font-medium mb-2">Pekerjaan</label>
                     <input type="text" name="kontak_darurat_pekerjaan" class="w-full border rounded-lg px-3 py-2"></div>
                 <div><label class="block text-sm font-medium mb-2">Jabatan</label>
