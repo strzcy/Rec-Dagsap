@@ -196,7 +196,7 @@
                                 {{ Storage::disk('public')->exists($ptk->lampiran_path) ? round(Storage::disk('public')->size($ptk->lampiran_path) / 1024, 2) : 0 }} KB
                             </p>
                             <p class="text-xs text-gray-500">
-                                Jenis: {{ $ptk->jenis == 'penambahan' ? 'Komitmen Kerja' : 'Surat Resign' }}
+                                Jenis: {{ $ptk->jenis == 'penambahan' ? 'Komitmen Target' : 'Surat Resign' }}
                             </p>
                         </div>
                     </div>
@@ -209,6 +209,33 @@
                            class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-dark transition">
                             <i class="fas fa-download mr-2"></i> Download
                         </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endif
+
+        <!-- CATATAN PTK -->
+        @if($ptk->catatan_ptk)
+        <div class="mt-6 pt-4 border-t">
+            <h3 class="text-lg font-semibold mb-3">Catatan PTK</h3>
+            <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <div class="flex items-start">
+                    <div class="flex-1">
+                        <p class="text-gray-700 whitespace-pre-wrap">{{ $ptk->catatan_ptk }}</p>
+                    </div>
+                    <div class="text-right text-xs text-gray-500 ml-4 flex-shrink-0">
+                        @if($ptk->catatan_diubah_at)
+                            <p>Catatan diubah pada</p>
+                            <p class="font-medium">{{ \Carbon\Carbon::parse($ptk->catatan_diubah_at)->setTimezone('Asia/Jakarta')->format('d/m/Y H:i') }} WIB</p>
+                            <p>oleh <strong>{{ $ptk->catatan_diubah_oleh }}</strong></p>
+                            <p class="text-xs text-gray-400">{{ $ptk->catatan_jabatan_diubah }}</p>
+                        @else
+                            <p>Catatan ditambahkan pada</p>
+                            <p class="font-medium">{{ \Carbon\Carbon::parse($ptk->catatan_dibuat_at)->setTimezone('Asia/Jakarta')->format('d/m/Y H:i') }} WIB</p>
+                            <p>oleh <strong>{{ $ptk->catatan_dibuat_oleh }}</strong></p>
+                            <p class="text-xs text-gray-400">{{ $ptk->catatan_jabatan_dibuat }}</p>
+                        @endif
                     </div>
                 </div>
             </div>
