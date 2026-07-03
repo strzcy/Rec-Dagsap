@@ -95,7 +95,6 @@
             font-weight: bold;
             margin: 12px 0 12px 0;
             font-size: 18px;
-            border-left: 4px solid #000;
             padding-left: 8px;
         }
 
@@ -267,7 +266,7 @@
             <div class="section-title">A. DATA PRIBADI</div>
             <table class="detail-table" style="text-transform: capitalize; margin-bottom:0;">
                 <tr>
-                    <td width="150">1. Nama Lengkap</td><td width="10">:</td><td width="350">{{ $detail->nama_lengkap ?? $pelamar->nama_lengkap }}</td>
+                    <td width="185">1. Nama Lengkap</td><td width="10">:</td><td width="350">{{ $detail->nama_lengkap ?? $pelamar->nama_lengkap }}</td>
                     <td width="120" style="white-space:nowrap;">Jenis Kelamin</td><td width="10">:</td><td>{{ ($detail->jenis_kelamin ?? '') == 'L' ? 'Laki-laki' : 'Perempuan' }}</td>
                 </tr>
                 <tr>
@@ -287,13 +286,13 @@
             
             <table class="detail-table">
                 <tr>
-                    <td width="150" style="line-height: 1.5; margin-top:0;">5. Alamat Tinggal</td><td width="10">:</td><td>{{ $detail->alamat_tinggal ?? $pelamar->alamat }}</td>
+                    <td width="185" style="line-height: 1.5; margin-top:0;">5. Alamat Tinggal</td><td width="10">:</td><td>{{ $detail->alamat_tinggal ?? $pelamar->alamat }}</td>
                 </tr>
             </table>
-            <table class="detail-table" style="margin-left: 100px; width: 95%;">
+            <table class="detail-table" style="margin-left: 14px; width: 95%;">
                 <tr>
-                    <td width="100">No. Rumah</td><td width="10">:</td><td width="150">{{ $detail->no_rumah_tinggal ?? '-' }}</td>
-                    <td width="100">RT/RW</td><td width="10">:</td><td>{{ $detail->rt_rw_tinggal ?? '-' }}</td>
+                    <td width="171">No. Rumah</td><td width="10">:</td><td width="250">{{ $detail->no_rumah_tinggal ?? '-' }}</td>
+                    <td width="171">RT/RW</td><td width="10">:</td><td>{{ $detail->rt_rw_tinggal ?? '-' }}</td>
                 </tr>
                 <tr>
                     <td>Kelurahan</td><td>:</td><td>{{ $detail->kelurahan_tinggal ?? '-' }}</td>
@@ -317,11 +316,11 @@
             </table>
             <table class="detail-table">
                 <tr>
-                    <td width="150" style="line-height: 1.5; margin-top:0;">6. Alamat KTP</td><td width="10">:</td><td>{{ $detail->alamat_ktp ?? '-' }}</td>
+                    <td width="185" style="line-height: 1.5; margin-top:0;">6. Alamat KTP</td><td width="10">:</td><td>{{ $detail->alamat_ktp ?? '-' }}</td>
                 </tr>
             </table>
 
-            <table class="detail-table" style="margin-left: 100px; width: 95%;">
+            <table class="detail-table" style="margin-left: 14px; width: 95%;">
                 <tr>
                     <td width="100">No. Rumah</td><td width="10">:</td><td width="150">{{ $detail->no_rumah_ktp ?? '-' }}</td>
                     <td width="100">RT/RW</td><td width="10">:</td><td>{{ $detail->rt_rw_ktp ?? '-' }}</td>
@@ -345,7 +344,7 @@
 
             <table class="detail-table">
                 <tr>
-                    <td width="200">7. No. KTP/Passport</td><td width="10">:</td><td width="250">{{ $detail->no_ktp ?? '-' }}</td>
+                    <td width="185">7. No. KTP/Passport</td><td width="10">:</td><td width="250">{{ $detail->no_ktp ?? '-' }}</td>
                     <td width="120">Dikeluarkan di</td><td width="10">:</td><td>{{ $detail->dikeluarkan_di ?? '-' }}</td>
                 </tr>
                 <tr><td>8. No. NPWP</td><td>:</td><td colspan="4">{{ $detail->no_npwp ?? '-' }}</td></tr>
@@ -353,7 +352,7 @@
                 <tr><td>10. No. BPJS Kesehatan</td><td>:</td><td colspan="4">{{ $detail->no_bpjs_kesehatan ?? '-' }}</td></tr>
                 <tr><td>11. Status Perkawinan</td><td>:</td><td colspan="4">{{ $detail->status_perkawinan ?? '-' }}</td></tr>
                 <tr><td>12. Email</td><td>:</td><td colspan="4">{{ $detail->email ?? $pelamar->email }}</td></tr>
-                <tr><td>13. hobby</td><td>:</td><td colspan="4">{{ $detail->hobby ?? '-' }}</td></tr>
+                <tr><td>13. Hobi</td><td>:</td><td colspan="4">{{ $detail->hobby ?? '-' }}</td></tr>
                 <tr><td><div>14.Organisasi
                 </div></td><td>:</td><td colspan="4">@php $organisasi = is_array($detail->organisasi) ? $detail->organisasi : json_decode($detail->organisasi ?? '[]', true); @endphp
                 @if(!empty($organisasi))
@@ -363,8 +362,8 @@
                 @else
                     -
                 @endif</td></tr>
-            </table>
-        </div>
+            </table>    
+          </div>
 
         <div class="section">
             <div class="section-title">B. RIWAYAT PENDIDIKAN</div>
@@ -384,9 +383,9 @@
                 </thead>
                 <tbody>
                     @php
-                        $tingkatList = ['SLTP', 'SMU', 'DIPLOMA', 'S1', 'S2'];
+                        $tingkatList = ['SD Sederajat', 'SLTP', 'SLTA', 'DIPLOMA', 'S1', 'S2'];
                     @endphp
-                    @foreach($tingkatList as $tingkat)
+                    @forelse($tingkatList as $tingkat)
                         @php
                             $found = collect($pendidikanFormal)->firstWhere('tingkat', $tingkat);
                         @endphp
@@ -400,7 +399,13 @@
                             <td>{{ $found['ipk'] ?? '' }}</td>
                             <td>{{ $tingkat == 'DIPLOMA' ? 'D1/D2/D3' : '' }}</td>
                         </tr>
-                    @endforeach
+                        @empty
+                        @for($i=0; $i<4; $i++)
+                        <tr><td align="center">{{ $i+1 }}</td>
+                        <td></td><td></td><td></td><td></td><td></td>
+                        </tr>
+                        @endfor
+                    @endforelse
                 </tbody>
             </table>
 
@@ -428,7 +433,9 @@
                     </tr>
                     @empty
                         @for($i=0; $i<4; $i++)
-                        <tr><td align="center">{{ $i+1 }}</td><td colspan="5">-</td></tr>
+                        <tr><td align="center">{{ $i+1 }}</td>
+                        <td></td><td></td><td></td><td></td><td></td>
+                        </tr>
                         @endfor
                     @endforelse
                 </tbody>
@@ -458,7 +465,7 @@
                     </tr>
                     @empty
                         @for($i=0; $i<4; $i++)
-                        <tr><td align="center">{{ $i+1 }}</td><td colspan="4">-</td></tr>
+                        <tr><td align="center">{{ $i+1 }}</td><td></td><td></td><td></td><td></td></tr>
                         @endfor
                     @endforelse
                 </tbody>
@@ -513,7 +520,7 @@
             </table>
 
             <!-- Kekuatan & Kelemahan (array) -->
-            <div>
+            <!-- <div>
                 <strong>Kekuatan:</strong>
                 @php $kekuatan = is_array($detail->kekuatan) ? $detail->kekuatan : json_decode($detail->kekuatan ?? '[]', true); @endphp
                 @if(!empty($kekuatan))
@@ -523,9 +530,9 @@
                 @else
                     -
                 @endif
-            </div>
+            </div> -->
 
-            <div>
+            <!-- <div>
                 <strong>Kelemahan:</strong>
                 @php $kelemahan = is_array($detail->kelemahan) ? $detail->kelemahan : json_decode($detail->kelemahan ?? '[]', true); @endphp
                 @if(!empty($kelemahan))
@@ -535,7 +542,7 @@
                 @else
                     -
                 @endif
-            </div>
+            </div> -->
         </div>
 
         <div class="section">
@@ -824,10 +831,11 @@
                         <td>No. Telp</td><td>:</td><td>{{ $kontakDarurat['no_telp'] ?? '-' }}</td>
                     </tr>
                     <tr><td>No. HP</td><td>:</td><td colspan="3">{{ $kontakDarurat['no_hp'] ?? '-' }}</td></tr>
-                    <tr>
-                        <td>e. Pekerjaan</td><td>:</td><td>{{ $kontakDarurat['pekerjaan'] ?? '-' }}</td>
-                        <td>Jabatan</td><td>:</td><td>{{ $kontakDarurat['jabatan'] ?? '-' }}</td>
-                    </tr>
+                </table>
+                
+                <table class="detail-table">
+                    <tr><td width="180">e. Pekerjaan</td><td width="10">:</td><td colspan="4">{{ $kontakDarurat['pekerjaan'] ?? '-' }}</td></tr>
+                    <tr><td>Jabatan</td><td>:</td><td colspan="4">{{ $kontakDarurat['jabatan'] ?? '-' }}</td></tr>
                 </table>
             @else
                 <div style="padding: 10px; background: #f9f9f9; margin-bottom: 10px;">
@@ -915,7 +923,7 @@
 </div>
 
 <button class="print-btn no-print" onclick="window.print()">
-    Print / Cetak
+    Print
 </button>
 
 </body>
