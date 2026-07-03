@@ -98,7 +98,7 @@
                 <div><strong>No. KTP:</strong> {{ $detail->no_ktp ?? '-' }}</div>
                 <div><strong>No. HP:</strong> {{ $detail->no_hp ?? '-' }}</div>
                 <div><strong>Email:</strong> {{ $detail->email ?? '-' }}</div>
-                <div><strong>Hobby:</strong> {{ $detail->hobby ?? '-' }}</div>
+                <div><strong>Hobi:</strong> {{ $detail->hobby ?? '-' }}</div>
                 <div class="col-span-2"><strong>Alamat Tinggal:</strong> {{ $detail->alamat_tinggal ?? '-' }}</div>
                 <div class="col-span-2"><strong>Alamat KTP:</strong> {{ $detail->alamat_ktp ?? '-' }}</div>
             </div>

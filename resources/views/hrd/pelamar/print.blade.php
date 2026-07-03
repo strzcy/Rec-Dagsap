@@ -80,7 +80,7 @@
 
         .detail-table td {
             padding: 5px 4px;
-            vertical-align: top;
+            /* vertical-align: top; */
         }
 
         /* LOGIKA BOX ANTI-POTONG (Dinamis Otomatis) */
@@ -129,7 +129,6 @@
         .grid-table th, .grid-table td {
             border: 0.5px solid #000;
             padding: 4px;
-            vertical-align: top;
         }
 
         .grid-table th {
@@ -354,7 +353,7 @@
                 <tr><td>10. No. BPJS Kesehatan</td><td>:</td><td colspan="4">{{ $detail->no_bpjs_kesehatan ?? '-' }}</td></tr>
                 <tr><td>11. Status Perkawinan</td><td>:</td><td colspan="4">{{ $detail->status_perkawinan ?? '-' }}</td></tr>
                 <tr><td>12. Email</td><td>:</td><td colspan="4">{{ $detail->email ?? $pelamar->email }}</td></tr>
-                <tr><td>13. Hobby</td><td>:</td><td colspan="4">{{ $detail->hobby ?? '-' }}</td></tr>
+                <tr><td>13. hobby</td><td>:</td><td colspan="4">{{ $detail->hobby ?? '-' }}</td></tr>
                 <tr><td><div>14.Organisasi
                 </div></td><td>:</td><td colspan="4">@php $organisasi = is_array($detail->organisasi) ? $detail->organisasi : json_decode($detail->organisasi ?? '[]', true); @endphp
                 @if(!empty($organisasi))
@@ -590,18 +589,22 @@
             @php
                 $bidangMinat = is_array($detail->bidang_minat ?? null) ? $detail->bidang_minat : [];
             @endphp
-            <div style="padding-left: 20px; font-size: 16px; line-height: 1.5;">
-                ( {{ in_array('Logistic & Distribution', $bidangMinat) ? ' ✓ ' : "ㅤ" }} ) Logistic & Distribution &nbsp;&nbsp;
-                ( {{ in_array('Sales/Marketing', $bidangMinat) ? ' ✓ ' : "ㅤ" }} ) Sales/Marketing &nbsp;&nbsp;
-                ( {{ in_array('Finance, Accounting, & Tax', $bidangMinat) ? ' ✓ ' : "ㅤ" }} ) Finance, Accounting, & Tax &nbsp;&nbsp;
-                ( {{ in_array('Production', $bidangMinat) ? ' ✓ ' : "ㅤ" }} ) Production<br>
-                ( {{ in_array('Business Development', $bidangMinat) ? ' ✓ ' : "ㅤ" }} ) Business Development &nbsp;&nbsp;
-                ( {{ in_array('Human Resources', $bidangMinat) ? ' ✓ ' : "ㅤ" }} ) Human Resources &nbsp;&nbsp;
-                ( {{ in_array('General Affair', $bidangMinat) ? ' ✓ ' : "ㅤ" }} ) General Affair &nbsp;&nbsp;
-                ( {{ in_array('QAQC', $bidangMinat) ? ' ✓ ' : "ㅤ" }} ) QAQC<br>
-                ( {{ in_array('Information Technology', $bidangMinat) ? ' ✓ ' : "ㅤ" }} ) Information Technology &nbsp;&nbsp;
-                ( {{ in_array('Product Development', $bidangMinat) ? ' ✓ ' : "ㅤ" }} ) Product Development &nbsp;&nbsp;
-                (ㅤ) Lain : 
+            <div style="page-break-inside: avoid; break-inside: avoid;">
+                <div style="padding-left: 2px; font-size: 16px; line-height: 1.6; display: grid; grid-template-columns: repeat(4, minmax(180px, 1fr)); gap: 0px 10px;">
+                    <div style="white-space: nowrap;">( {{ in_array('Logistic & Distribution', $bidangMinat) ? ' ✓ ' : "ㅤ" }} ) Logistic & Distribution</div>
+                    <div style="white-space: nowrap;">( {{ in_array('Sales/Marketing', $bidangMinat) ? ' ✓ ' : "ㅤ" }} ) Sales/Marketing</div>
+                    <div style="white-space: nowrap;">( {{ in_array('Finance, Accounting, & Tax', $bidangMinat) ? ' ✓ ' : "ㅤ" }} ) Finance, Accounting, & Tax</div>
+                    <div style="white-space: nowrap;">ㅤㅤ( {{ in_array('Production', $bidangMinat) ? ' ✓ ' : "ㅤ" }} ) Production</div>
+
+                    <div style="white-space: nowrap;">( {{ in_array('Business Development', $bidangMinat) ? ' ✓ ' : "ㅤ" }} ) Business Development</div>
+                    <div style="white-space: nowrap;">( {{ in_array('Human Resources', $bidangMinat) ? ' ✓ ' : "ㅤ" }} ) Human Resources</div>
+                    <div style="white-space: nowrap;">( {{ in_array('General Affair', $bidangMinat) ? ' ✓ ' : "ㅤ" }} ) General Affair</div>
+                    <div style="white-space: nowrap;">ㅤㅤ( {{ in_array('QAQC', $bidangMinat) ? ' ✓ ' : "ㅤ" }} ) QAQC</div>
+
+                    <div style="white-space: nowrap;">( {{ in_array('Information Technology', $bidangMinat) ? ' ✓ ' : "ㅤ" }} ) Information Technology</div>
+                    <div style="white-space: nowrap;">( {{ in_array('Product Development', $bidangMinat) ? ' ✓ ' : "ㅤ" }} ) Product Development</div>
+                    <div style="white-space: nowrap;">( ㅤ ) Lain :</div>
+                </div>
             </div>
         </div>
 
