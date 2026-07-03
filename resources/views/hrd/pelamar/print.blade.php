@@ -80,7 +80,7 @@
 
         .detail-table td {
             padding: 5px 4px;
-            vertical-align: top;
+            /* vertical-align: top; */
         }
 
         /* LOGIKA BOX ANTI-POTONG (Dinamis Otomatis) */
@@ -95,7 +95,6 @@
             font-weight: bold;
             margin: 12px 0 12px 0;
             font-size: 18px;
-            border-left: 4px solid #000;
             padding-left: 8px;
         }
 
@@ -129,7 +128,6 @@
         .grid-table th, .grid-table td {
             border: 0.5px solid #000;
             padding: 4px;
-            vertical-align: top;
         }
 
         .grid-table th {
@@ -268,7 +266,7 @@
             <div class="section-title">A. DATA PRIBADI</div>
             <table class="detail-table" style="text-transform: capitalize; margin-bottom:0;">
                 <tr>
-                    <td width="150">1. Nama Lengkap</td><td width="10">:</td><td width="350">{{ $detail->nama_lengkap ?? $pelamar->nama_lengkap }}</td>
+                    <td width="185">1. Nama Lengkap</td><td width="10">:</td><td width="350">{{ $detail->nama_lengkap ?? $pelamar->nama_lengkap }}</td>
                     <td width="120" style="white-space:nowrap;">Jenis Kelamin</td><td width="10">:</td><td>{{ ($detail->jenis_kelamin ?? '') == 'L' ? 'Laki-laki' : 'Perempuan' }}</td>
                 </tr>
                 <tr>
@@ -285,71 +283,113 @@
                 </tr>
             </table>
             
+            
             <table class="detail-table">
                 <tr>
-                    <td width="150" style="line-height: 1.5; margin-top:0;">5. Alamat Tinggal</td><td width="10">:</td><td>{{ $detail->alamat_tinggal ?? $pelamar->alamat }}</td>
+                    <td width="185" style="line-height: 1.5; margin-top:0;">5. Alamat Tinggal</td><td width="10">:</td><td>{{ $detail->alamat_tinggal ?? $pelamar->alamat }}</td>
                 </tr>
             </table>
-            <table class="detail-table" style="margin-left: 100px; width: 95%;">
+            <table class="detail-table" style="margin-left: 14px; width: 95%;">
                 <tr>
-                    <td width="100">RT/RW</td><td width="10">:</td><td width="150">{{ $detail->rt_rw_tinggal ?? '-' }}</td>
-                    <td width="100">Kelurahan</td><td width="10">:</td><td>{{ $detail->kelurahan_tinggal ?? '-' }}</td>
+                    <td width="171">No. Rumah</td><td width="10">:</td><td width="250">{{ $detail->no_rumah_tinggal ?? '-' }}</td>
+                    <td width="171">RT/RW</td><td width="10">:</td><td>{{ $detail->rt_rw_tinggal ?? '-' }}</td>
                 </tr>
                 <tr>
+                    <td>Kelurahan</td><td>:</td><td>{{ $detail->kelurahan_tinggal ?? '-' }}</td>
                     <td>Kecamatan</td><td>:</td><td>{{ $detail->kecamatan_tinggal ?? '-' }}</td>
+                </tr>
+                <tr>
                     <td>Kabupaten</td><td>:</td><td>{{ $detail->kabupaten_tinggal ?? '-' }}</td>
-                </tr>
-                <tr>
                     <td>Kota</td><td>:</td><td>{{ $detail->kota_tinggal ?? '-' }}</td>
+                </tr>
+                <tr>
                     <td>Propinsi</td><td>:</td><td>{{ $detail->provinsi_tinggal ?? '-' }}</td>
-                </tr>
-                <tr>
                     <td>Kode Pos</td><td>:</td><td>{{ $detail->kode_pos_tinggal ?? '-' }}</td>
-                    <td>No. Telp</td><td>:</td><td>-</td>
                 </tr>
                 <tr>
+                    <td>No. Telp</td><td>:</td><td>-</td>
                     <td>No. HP</td><td>:</td><td>{{ $detail->no_hp ?? $pelamar->no_telepon }}</td>
+                </tr>
+                <tr>
                     <td>No. WA</td><td>:</td><td>{{ $detail->no_wa ?? '-' }}</td>
                 </tr>
             </table>
             <table class="detail-table">
                 <tr>
-                    <td width="150" style="line-height: 1.5; margin-top:0;">6. Alamat KTP</td><td width="10">:</td><td>{{ $detail->alamat_ktp ?? '-' }}</td>
+                    <td width="185" style="line-height: 1.5; margin-top:0;">6. Alamat KTP</td><td width="10">:</td><td>{{ $detail->alamat_ktp ?? '-' }}</td>
                 </tr>
             </table>
 
-            <table class="detail-table" style="margin-left: 100px; width: 95%;">
+            <table class="detail-table" style="margin-left: 14px; width: 95%;">
                 <tr>
-                    <td width="100">RT/RW</td><td width="10">:</td><td width="150">{{ $detail->rt_rw_ktp ?? '-' }}</td>
-                    <td width="100">Kelurahan</td><td width="10">:</td><td>{{ $detail->kelurahan_ktp ?? '-' }}</td>
+                    <td width="100">No. Rumah</td><td width="10">:</td><td width="150">{{ $detail->no_rumah_ktp ?? '-' }}</td>
+                    <td width="100">RT/RW</td><td width="10">:</td><td>{{ $detail->rt_rw_ktp ?? '-' }}</td>
                 </tr>
                 <tr>
+                    <td>Kelurahan</td><td>:</td><td>{{ $detail->kelurahan_ktp ?? '-' }}</td>
                     <td>Kecamatan</td><td>:</td><td>{{ $detail->kecamatan_ktp ?? '-' }}</td>
+                </tr>
+                <tr>
                     <td>Kabupaten</td><td>:</td><td>{{ $detail->kabupaten_ktp ?? '-' }}</td>
-                </tr>
-                <tr>
                     <td>Kota</td><td>:</td><td>{{ $detail->kota_ktp ?? '-' }}</td>
-                    <td>Propinsi</td><td>:</td><td>{{ $detail->provinsi_ktp ?? '-' }}</td>
                 </tr>
                 <tr>
+                    <td>Propinsi</td><td>:</td><td>{{ $detail->provinsi_ktp ?? '-' }}</td>
                     <td>Kode Pos</td><td>:</td><td>{{ $detail->kode_pos_ktp ?? '-' }}</td>
+                </tr>
+                <tr>
                     <td>No. Telp</td><td>:</td><td>-</td>
                 </tr>
             </table>
 
             <table class="detail-table">
                 <tr>
-                    <td width="180">7. No. KTP/Passport</td><td width="10">:</td><td width="250">{{ $detail->no_ktp ?? '-' }}</td>
+                    <td width="185">7. No. KTP/Passport</td><td width="10">:</td><td width="250">{{ $detail->no_ktp ?? '-' }}</td>
                     <td width="120">Dikeluarkan di</td><td width="10">:</td><td>{{ $detail->dikeluarkan_di ?? '-' }}</td>
                 </tr>
                 <tr><td>8. No. NPWP</td><td>:</td><td colspan="4">{{ $detail->no_npwp ?? '-' }}</td></tr>
-                <tr><td>9. No. BPJS Kes/TK</td><td>:</td><td colspan="4">{{ $detail->no_bpjs_ketenagakerjaan ?? '-' }}</td></tr>
-                <tr><td>10. Status Perkawinan</td><td>:</td><td colspan="4">{{ $detail->status_perkawinan ?? '-' }}</td></tr>
-                <tr><td>11. Email</td><td>:</td><td colspan="4">{{ $detail->email ?? $pelamar->email }}</td></tr>
-                <tr><td>12. Hobby</td><td>:</td><td colspan="4">{{ $detail->hobby ?? '-' }}</td></tr>
-                <tr><td>13. Organisasi</td><td>:</td><td colspan="4">{{ $detail->organisasi ?? '-' }}</td></tr>
-            </table>
-        </div>
+                <tr ><td>9. No. BPJS Ketenagakerjaan</td><td>:</td><td colspan="4">{{ $detail->no_bpjs_ketenagakerjaan ?? '-' }}</td></tr>
+                <tr><td>10. No. BPJS Kesehatan</td><td>:</td><td colspan="4">{{ $detail->no_bpjs_kesehatan ?? '-' }}</td></tr>
+                <tr><td>11. Status Perkawinan</td><td>:</td><td colspan="4">{{ $detail->status_perkawinan ?? '-' }}</td></tr>
+                <tr><td>12. Email</td><td>:</td><td colspan="4">{{ $detail->email ?? $pelamar->email }}</td></tr>
+                <tr><td>13. Hobi</td><td>:</td><td colspan="4">{{ $detail->hobby ?? '-' }}</td></tr>
+                <tr><td><div>14.Organisasi</div></td><td>:</td><td colspan="4">
+                @php $organisasi = is_array($detail->organisasi) ? $detail->organisasi : json_decode($detail->organisasi ?? '[]', true); @endphp
+                @if(!empty($organisasi))
+                    <table class="grid-table" style="margin-top: 5px; font-size: 13px; width: 100%;">
+                        <thead>
+                            <tr>
+                                <th width="30">No</th>
+                                <th>Nama Organisasi</th>
+                                <th width="80">Waktu</th>
+                                <th width="100">Jabatan</th>
+                                <th width="100">Jenis</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($organisasi as $idx => $org)
+                                @if(is_array($org))
+                                    <tr>
+                                        <td align="center">{{ $idx+1 }}</td>
+                                        <td>{{ $org['nama'] ?? '-' }}</td>
+                                        <td align="center">{{ $org['waktu'] ?? '-' }}</td>
+                                        <td>{{ $org['jabatan'] ?? '-' }}</td>
+                                        <td>{{ $org['jenis'] ?? '-' }}</td>
+                                    </tr>
+                                @else
+                                    <tr>
+                                        <td align="center">{{ $idx+1 }}</td>
+                                        <td colspan="4">{{ $org }}</td>
+                                    </tr>
+                                @endif
+                            @endforeach
+                        </tbody>
+                    </table>
+                @else
+                    -
+                @endif</td></tr>
+            </table>    
+          </div>
 
         <div class="section">
             <div class="section-title">B. RIWAYAT PENDIDIKAN</div>
@@ -369,11 +409,28 @@
                 </thead>
                 <tbody>
                     @php
-                        $tingkatList = ['SLTP', 'SMU', 'DIPLOMA', 'S1', 'S2'];
+                        $tingkatList = ['SD Sederajat', 'SLTP', 'SLTA', 'DIPLOMA', 'S1', 'S2'];
+                        
+                        $findPendidikan = function($tingkat) use ($pendidikanFormal) {
+                            $synonyms = [
+                                'SD Sederajat' => ['sd', 'sd sederajat'],
+                                'SLTP' => ['smp', 'sltp', 'smp sederajat'],
+                                'SLTA' => ['slta', 'sma/smk', 'sma', 'smk', 'sma sederajat'],
+                                'DIPLOMA' => ['diploma', 'd3', 'd1', 'd2', 'd4'],
+                                'S1' => ['s1', 'sarjana'],
+                                'S2' => ['s2', 'magister'],
+                            ];
+                            
+                            $allowed = $synonyms[$tingkat] ?? [strtolower($tingkat)];
+                            
+                            return collect($pendidikanFormal)->first(function($item) use ($allowed) {
+                                return in_array(strtolower($item['tingkat'] ?? ''), $allowed);
+                            });
+                        };
                     @endphp
-                    @foreach($tingkatList as $tingkat)
+                    @forelse($tingkatList as $tingkat)
                         @php
-                            $found = collect($pendidikanFormal)->firstWhere('tingkat', $tingkat);
+                            $found = $findPendidikan($tingkat);
                         @endphp
                         <tr>
                             <td>{{ $tingkat }}</td>
@@ -385,7 +442,13 @@
                             <td>{{ $found['ipk'] ?? '' }}</td>
                             <td>{{ $tingkat == 'DIPLOMA' ? 'D1/D2/D3' : '' }}</td>
                         </tr>
-                    @endforeach
+                        @empty
+                        @for($i=0; $i<4; $i++)
+                        <tr><td align="center">{{ $i+1 }}</td>
+                        <td></td><td></td><td></td><td></td><td></td>
+                        </tr>
+                        @endfor
+                    @endforelse
                 </tbody>
             </table>
 
@@ -413,7 +476,9 @@
                     </tr>
                     @empty
                         @for($i=0; $i<4; $i++)
-                        <tr><td align="center">{{ $i+1 }}</td><td colspan="5">-</td></tr>
+                        <tr><td align="center">{{ $i+1 }}</td>
+                        <td></td><td></td><td></td><td></td><td></td>
+                        </tr>
                         @endfor
                     @endforelse
                 </tbody>
@@ -437,13 +502,13 @@
                     <tr>
                         <td align="center">{{ $idx+1 }}</td>
                         <td>{{ $skill['nama'] ?? '' }}</td>
-                        <td align="center">{{ ($skill['tingkat'] ?? '') == 'Cukup Mahir' ? '✓' : '' }}</td>
-                        <td align="center">{{ ($skill['tingkat'] ?? '') == 'Mahir' ? '✓' : '' }}</td>
-                        <td align="center">{{ ($skill['tingkat'] ?? '') == 'Sangat Mahir' ? '✓' : '' }}</td>
+                        <td align="center">{{ ($skill['tingkat'] ?? '') == 'Cukup Mahir' ? ' ✓ ' : "ㅤ" }}</td>
+                        <td align="center">{{ ($skill['tingkat'] ?? '') == 'Mahir' ? ' ✓ ' : "ㅤ" }}</td>
+                        <td align="center">{{ ($skill['tingkat'] ?? '') == 'Sangat Mahir' ? ' ✓ ' : "ㅤ" }}</td>
                     </tr>
                     @empty
                         @for($i=0; $i<4; $i++)
-                        <tr><td align="center">{{ $i+1 }}</td><td colspan="4">-</td></tr>
+                        <tr><td align="center">{{ $i+1 }}</td><td></td><td></td><td></td><td></td></tr>
                         @endfor
                     @endforelse
                 </tbody>
@@ -491,9 +556,22 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr><td align="center">1</td><td>{{ $detail->kekuatan ?? '' }}</td><td>{{ $detail->kelemahan ?? '' }}</td></tr>
-                    <tr><td align="center">2</td><td>-</td><td>-</td></tr>
-                    <tr><td align="center">3</td><td>-</td><td>-</td></tr>
+                    @php
+                        $kekuatanArr = is_array($detail->kekuatan) ? $detail->kekuatan : json_decode($detail->kekuatan ?? '[]', true);
+                        $kelemahanArr = is_array($detail->kelemahan) ? $detail->kelemahan : json_decode($detail->kelemahan ?? '[]', true);
+                        
+                        if (!is_array($kekuatanArr)) $kekuatanArr = [$detail->kekuatan ?? ''];
+                        if (!is_array($kelemahanArr)) $kelemahanArr = [$detail->kelemahan ?? ''];
+                        
+                        $maxRows = max(count($kekuatanArr), count($kelemahanArr), 3);
+                    @endphp
+                    @for($i = 0; $i < $maxRows; $i++)
+                        <tr>
+                            <td align="center">{{ $i + 1 }}</td>
+                            <td>{{ $kekuatanArr[$i] ?? '-' }}</td>
+                            <td>{{ $kelemahanArr[$i] ?? '-' }}</td>
+                        </tr>
+                    @endfor
                 </tbody>
             </table>
         </div>
@@ -508,27 +586,40 @@
                         <th>Nama Perusahaan</th>
                         <th width="80">Tgl. Masuk</th>
                         <th width="80">Tgl. Keluar</th>
-                        <th>Jabatan & Tugas Utama</th>
+                        <th width="120">Jabatan Terakhir</th>
+                        <th>Tugas Utama</th>
                         <th width="80">Gaji Terakhir</th>
                         <th width="100">Alasan Keluar</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse($pengalamanKerja as $idx => $kerja)
-                    <tr>
-                        <td align="center">{{ $idx+1 }}</td>
-                        <td>{{ $kerja['perusahaan'] ?? '' }}</td>
-                        <td>{{ $kerja['tgl_masuk'] ?? '' }}</td>
-                        <td>{{ $kerja['tgl_keluar'] ?? '' }}</td>
-                        <td>{{ $kerja['jabatan'] ?? '' }}</td>
-                        <td>{{ $kerja['gaji'] ?? '' }}</td>
-                        <td>{{ $kerja['alasan_keluar'] ?? '' }}</td>
-                    </tr>
-                    @empty
-                        @for($i=0; $i<4; $i++)
-                        <tr><td align="center">{{ $i+1 }}</td><td colspan="6">-</td></tr>
+                    @if(!empty($pengalamanKerja))
+                        @foreach($pengalamanKerja as $idx => $kerja)
+                        <tr>
+                            <td align="center">{{ $idx+1 }}</td>
+                            <td>{{ $kerja['perusahaan'] ?? '-' }}</td>
+                            <td>{{ $kerja['tgl_masuk'] ?? '-' }}</td>
+                            <td>{{ $kerja['tgl_keluar'] ?? '-' }}</td>
+                            <td>{{ $kerja['jabatan'] ?? '-' }}</td>
+                            <td>{{ $kerja['tugas_utama'] ?? '-' }}</td>
+                            <td>{{ $kerja['gaji'] ?? '-' }}</td>
+                            <td>{{ $kerja['alasan_keluar'] ?? '-' }}</td>
+                        </tr>
+                        @endforeach
+                    @else
+                        @for($i = 0; $i < 4; $i++)
+                        <tr>
+                            <td align="center">{{ $i+1 }}</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                        </tr>
                         @endfor
-                    @endforelse
+                    @endif
                 </tbody>
             </table>
 
@@ -536,23 +627,28 @@
             @php
                 $bidangMinat = is_array($detail->bidang_minat ?? null) ? $detail->bidang_minat : [];
             @endphp
-            <div style="padding-left: 20px; font-size: 16px; line-height: 1.5;">
-                ( {{ in_array('Logistic & Distribution', $bidangMinat) ? '✓' : ' ' }} ) Logistic & Distribution &nbsp;&nbsp;
-                ( {{ in_array('Sales/Marketing', $bidangMinat) ? '✓' : ' ' }} ) Sales/Marketing &nbsp;&nbsp;
-                ( {{ in_array('Finance, Accounting, & Tax', $bidangMinat) ? '✓' : ' ' }} ) Finance, Accounting, & Tax &nbsp;&nbsp;
-                ( {{ in_array('Production', $bidangMinat) ? '✓' : ' ' }} ) Production<br>
-                ( {{ in_array('Business Development', $bidangMinat) ? '✓' : ' ' }} ) Business Development &nbsp;&nbsp;
-                ( {{ in_array('Human Resources', $bidangMinat) ? '✓' : ' ' }} ) Human Resources &nbsp;&nbsp;
-                ( {{ in_array('General Affair', $bidangMinat) ? '✓' : ' ' }} ) General Affair &nbsp;&nbsp;
-                ( {{ in_array('QAQC', $bidangMinat) ? '✓' : ' ' }} ) QAQC<br>
-                ( {{ in_array('Information Technology', $bidangMinat) ? '✓' : ' ' }} ) Information Technology &nbsp;&nbsp;
-                ( {{ in_array('Product Development', $bidangMinat) ? '✓' : ' ' }} ) Product Development &nbsp;&nbsp;
-                ( ) Lain : 
+            <div style="page-break-inside: avoid; break-inside: avoid;">
+                <div style="padding-left: 2px; font-size: 16px; line-height: 1.6; display: grid; grid-template-columns: repeat(4, minmax(180px, 1fr)); gap: 0px 10px;">
+                    <div style="white-space: nowrap;">( {{ in_array('Logistic & Distribution', $bidangMinat) ? ' ✓ ' : "ㅤ" }} ) Logistic & Distribution</div>
+                    <div style="white-space: nowrap;">( {{ in_array('Sales/Marketing', $bidangMinat) ? ' ✓ ' : "ㅤ" }} ) Sales/Marketing</div>
+                    <div style="white-space: nowrap;">( {{ in_array('Finance, Accounting, & Tax', $bidangMinat) ? ' ✓ ' : "ㅤ" }} ) Finance, Accounting, & Tax</div>
+                    <div style="white-space: nowrap;">ㅤㅤ( {{ in_array('Production', $bidangMinat) ? ' ✓ ' : "ㅤ" }} ) Production</div>
+
+                    <div style="white-space: nowrap;">( {{ in_array('Business Development', $bidangMinat) ? ' ✓ ' : "ㅤ" }} ) Business Development</div>
+                    <div style="white-space: nowrap;">( {{ in_array('Human Resources', $bidangMinat) ? ' ✓ ' : "ㅤ" }} ) Human Resources</div>
+                    <div style="white-space: nowrap;">( {{ in_array('General Affair', $bidangMinat) ? ' ✓ ' : "ㅤ" }} ) General Affair</div>
+                    <div style="white-space: nowrap;">ㅤㅤ( {{ in_array('QAQC', $bidangMinat) ? ' ✓ ' : "ㅤ" }} ) QAQC</div>
+
+                    <div style="white-space: nowrap;">( {{ in_array('Information Technology', $bidangMinat) ? ' ✓ ' : "ㅤ" }} ) Information Technology</div>
+                    <div style="white-space: nowrap;">( {{ in_array('Product Development', $bidangMinat) ? ' ✓ ' : "ㅤ" }} ) Product Development</div>
+                    <div style="white-space: nowrap;">( ㅤ ) Lain :</div>
+                </div>
             </div>
         </div>
 
         <div class="section">
             <div class="section-title">G. REFERENSI</div>
+            <div >Siapa yang mereferensikan / merekomendasikan anda untuk melamar di perusahaan kami ?</div>
             <table class="grid-table">
                 <thead>
                     <tr>
@@ -576,7 +672,9 @@
                     </tr>
                     @empty
                         @for($i=0; $i<2; $i++)
-                        <tr><td align="center">{{ $i+1 }}</td><td colspan="5">-</td></tr>
+                        <tr>
+                            <td align="center">{{ $i+1 }}</td><td colspan="5">-</td>
+                        </tr>
                         @endfor
                     @endforelse
                 </tbody>
@@ -584,7 +682,7 @@
 
             <div style="margin-top: 10px;">
                 Apakah Anda mempunyai saudara/kenalan yang bekerja di perusahaan kami? 
-                ( {{ ($detail->punya_saudara_di_perusahaan ?? false) ? '✓' : ' ' }} ) ya ( {{ !($detail->punya_saudara_di_perusahaan ?? false) ? '✓' : ' ' }} ) tidak
+                ( {{ ($detail->punya_saudara_di_perusahaan ?? false) ? ' ✓ ' : "ㅤ" }} ) ya ( {{ !($detail->punya_saudara_di_perusahaan ?? false) ? ' ✓ ' : "ㅤ" }} ) tidak
             </div>
         </div>
 
@@ -592,26 +690,26 @@
             <div class="section-title">H. RIWAYAT KESEHATAN</div>
             
             <div style="margin-bottom: 12px;">
-                <div>1. Apakah Anda pernah menderita sakit berat dan dirawat di rumah sakit selama 2 years terakhir?</div>
-                <div>( {{ ($detail->pernah_sakit_berat ?? false) ? '✓' : '' }} ) ya ( {{ !($detail->pernah_sakit_berat ?? false) ? '✓' : '' }} ) tidak</div>
+                <div>1. Apakah Anda pernah menderita sakit berat dan dirawat di rumah sakit selama 2 tahun terakhir?</div>
+                <div>( {{ ($detail->pernah_sakit_berat ?? false) ? ' ✓ ' : "ㅤ" }} ) ya ( {{ !($detail->pernah_sakit_berat ?? false) ? ' ✓ ' : "ㅤ" }} ) tidak</div>
                 <div style="border-bottom: 1px dotted #999; margin-top: 5px; padding: 3px;">: {{ $detail->sakit_berat_keterangan ?? '' }}</div>
             </div>
 
             <div style="margin-bottom: 12px;">
                 <div>2. Apakah Anda mempunyai penyakit keturunan, cacat keturunan atau cacat akibat kecelakaan?</div>
-                <div>( {{ ($detail->punya_penyakit_keturunan ?? false) ? '✓' : '' }} ) ya ( {{ !($detail->punya_penyakit_keturunan ?? false) ? '✓' : '' }} ) tidak</div>
+                <div>( {{ ($detail->punya_penyakit_keturunan ?? false) ? ' ✓ ' : "ㅤ" }} ) ya ( {{ !($detail->punya_penyakit_keturunan ?? false) ? ' ✓ ' : "ㅤ" }} ) tidak</div>
                 <div style="border-bottom: 1px dotted #999; margin-top: 5px; padding: 3px;">: {{ $detail->penyakit_keturunan_keterangan ?? '' }}</div>
             </div>
 
             <div style="margin-bottom: 12px;">
                 <div>3. Apakah Anda mempunyai gangguan penglihatan/memakai kacamata?</div>
-                <div>( {{ ($detail->pakai_kacamata ?? false) ? '✓' : '' }} ) ya ( {{ !($detail->pakai_kacamata ?? false) ? '✓' : '' }} ) tidak</div>
+                <div>( {{ ($detail->pakai_kacamata ?? false) ? ' ✓ ' : "ㅤ" }} ) ya ( {{ !($detail->pakai_kacamata ?? false) ? ' ✓ ' : "ㅤ" }} ) tidak</div>
                 <div style="border-bottom: 1px dotted #999; margin-top: 5px; padding: 3px;">: {{ $detail->ukuran_kacamata ?? '' }}</div>
             </div>
 
             <div style="margin-bottom: 12px;">
                 <div>4. Apakah Anda mempunyai alergi?</div>
-                <div>( {{ ($detail->punya_alergi ?? false) ? '✓' : '' }} ) ya ( {{ !($detail->punya_alergi ?? false) ? '✓' : '' }} ) tidak</div>
+                <div>( {{ ($detail->punya_alergi ?? false) ? ' ✓ ' : "ㅤ" }} ) ya ( {{ !($detail->punya_alergi ?? false) ? ' ✓ ' : "ㅤ" }} ) tidak</div>
                 <div style="border-bottom: 1px dotted #999; margin-top: 5px; padding: 3px;">: {{ $detail->alergi_keterangan ?? '' }}</div>
             </div>
         </div>
@@ -764,10 +862,11 @@
                         <td>No. Telp</td><td>:</td><td>{{ $kontakDarurat['no_telp'] ?? '-' }}</td>
                     </tr>
                     <tr><td>No. HP</td><td>:</td><td colspan="3">{{ $kontakDarurat['no_hp'] ?? '-' }}</td></tr>
-                    <tr>
-                        <td>e. Pekerjaan</td><td>:</td><td>{{ $kontakDarurat['pekerjaan'] ?? '-' }}</td>
-                        <td>Jabatan</td><td>:</td><td>{{ $kontakDarurat['jabatan'] ?? '-' }}</td>
-                    </tr>
+                </table>
+                
+                <table class="detail-table">
+                    <tr><td width="180">e. Pekerjaan</td><td width="10">:</td><td colspan="4">{{ $kontakDarurat['pekerjaan'] ?? '-' }}</td></tr>
+                    <tr><td>Jabatan</td><td>:</td><td colspan="4">{{ $kontakDarurat['jabatan'] ?? '-' }}</td></tr>
                 </table>
             @else
                 <div style="padding: 10px; background: #f9f9f9; margin-bottom: 10px;">
@@ -805,7 +904,23 @@
         <div class="section">
             <div class="section-title">J. REMUNERASI</div>
             <div style="margin-bottom: 15px;">
-                Gaji per bulan yang diharapkan : <strong style="text-decoration:underline;">Rp. {{ $detail->gaji_diharapkan ?? '........................' }}</strong>
+                Gaji per bulan yang diharapkan : @php
+                    $gaji = $detail->gaji_diharapkan ?? '........................';
+                    $tipe = $detail->gaji_tipe ?? 'netto';
+                @endphp
+                {{ $gaji }}
+                <span>ㅤㅤㅤ(</span>
+                @if($tipe == 'brutto')
+                    <span>Kotor</span>
+                    <span>/</span>
+                    <span style="text-decoration: line-through;">Bersih</span>
+                @else
+                    <span style="text-decoration: line-through;">Kotor</span>
+                    <span> / </span>
+                    <span style="font-weight: ;">Bersih</span>
+                @endif
+
+                <span>)</span>
             </div>
 
             <div class="section-title">K. WAKTU</div>
@@ -824,7 +939,8 @@
             <div class="signature-area" style="text-transform:capitalize;">
                 <div class="sign-box">
                     <div>Tempat & Tanggal : {{ $detail->tempat_pernyataan ?? '-' }},
-                    {{ $detail->tanggal_pernyataan ? \Carbon\Carbon::parse($detail->tanggal_pernyataan)->format('d/m/Y') : '-' }}</div>
+                    {{ $detail->tanggal_pernyataan ? \Carbon\Carbon::parse($detail->tanggal_pernyataan)->locale('id')
+                    ->translatedFormat('d F Y') : '-' }}</div>
                     <br>
                     <div>Yang Menyatakan :</div>
                     <div class="signan">
@@ -838,7 +954,7 @@
 </div>
 
 <button class="print-btn no-print" onclick="window.print()">
-    🖨️ Print / Cetak
+    Print
 </button>
 
 </body>

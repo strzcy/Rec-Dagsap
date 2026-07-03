@@ -206,8 +206,10 @@ class ApplyController extends Controller
             'waktu_bergabung' => 'required|string',
             'tempat_pernyataan' => 'nullable|string',
             
-            'kekuatan' => 'required|string|min:10',
-            'kelemahan' => 'required|string|min:10',
+            'kekuatan' => 'required|array|min:1',
+            'kekuatan.*' => 'required|string|min:5',
+            'kelemahan' => 'required|array|min:1',
+            'kelemahan.*' => 'required|string|min:5',
         ]);
 
         // Kumpulkan data dinamis - PENDIDIKAN

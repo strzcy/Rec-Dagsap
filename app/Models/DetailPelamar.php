@@ -62,6 +62,9 @@ class DetailPelamar extends Model
         'data_orang_tua' => 'array',
         'kontak_darurat' => 'array',
         'saudara_kandung' => 'array',
+        'organisasi' => 'array',
+        'kekuatan' => 'array',
+        'kelemahan' => 'array',
     ];
 
     private function getEncryptedAttribute($value)
