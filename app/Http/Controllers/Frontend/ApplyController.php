@@ -182,17 +182,13 @@ class ApplyController extends Controller
             'kecamatan_ktp' => 'required|string',
             'kabupaten_ktp' => 'required|string',
             'kota_ktp' => 'required|string',
-            'dikeluarkan_di' => 'nullable|string|max:255',
             'provinsi_ktp' => 'required|string',
             'kode_pos_ktp' => 'required|string',
             'no_ktp' => 'required|string',
             'status_perkawinan' => 'required|string',
             'email' => 'required|email',
             'hobby' => 'nullable|string',
-            'organisasi_nama' => 'nullable|array',
-            'organisasi_waktu' => 'nullable|array',
-            'organisasi_jabatan' => 'nullable|array',
-            'organisasi_jenis' => 'nullable|array',
+            'organisasi' => 'nullable|string',
             'pernyataan_setuju' => 'required|accepted',
             
             'nama_ayah' => 'required|string|max:255',
@@ -331,20 +327,6 @@ class ApplyController extends Controller
             }
         }
 
-        $organisasi = [];
-        if ($request->has('organisasi_nama')) {
-            for ($i = 0; $i < count($request->organisasi_nama); $i++) {
-                if (!empty($request->organisasi_nama[$i])) {
-                    $organisasi[] = [
-                        'nama' => $request->organisasi_nama[$i],
-                        'waktu' => $request->organisasi_waktu[$i] ?? '',
-                        'jabatan' => $request->organisasi_jabatan[$i] ?? '',
-                        'jenis' => $request->organisasi_jenis[$i] ?? '',
-                    ];
-                }
-            }
-        }
-
         // DATA UNTUK DISIMPAN
         $detailData = [
             'pelamar_id' => $pelamar->id,
@@ -378,7 +360,7 @@ class ApplyController extends Controller
             'status_perkawinan' => $validated['status_perkawinan'],
             'email' => $validated['email'],
             'hobby' => $validated['hobby'],
-            'organisasi' => $organisasi,
+            'organisasi' => $validated['organisasi'],
             'pendidikan_formal' => $pendidikanFormal,
             'keterampilan' => $keterampilan,
             'bahasa_asing' => $bahasaAsing,
@@ -397,7 +379,6 @@ class ApplyController extends Controller
             'pernyataan_setuju' => true,
             'tempat_pernyataan' => $validated['tempat_pernyataan'] ?? 'Jakarta',
             'tanggal_pernyataan' => now()->format('Y-m-d'),
-            'dikeluarkan_di' => $validated['dikeluarkan_di'] ?? null,
         ];
 
         // Update data pelamar utama

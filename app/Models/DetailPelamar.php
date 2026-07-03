@@ -16,7 +16,7 @@ class DetailPelamar extends Model
         'tinggi_badan', 'berat_badan', 'kewarganegaraan', 'agama', 'golongan_darah',
         'alamat_tinggal', 'rt_rw_tinggal', 'kelurahan_tinggal', 'kecamatan_tinggal',
         'kabupaten_tinggal', 'kota_tinggal', 'provinsi_tinggal', 'kode_pos_tinggal',
-        'no_telp', 'no_hp', 'no_wa', 'alamat_ktp','dikeluarkan_di', 'rt_rw_ktp', 'kelurahan_ktp',
+        'no_telp', 'no_hp', 'no_wa', 'alamat_ktp', 'rt_rw_ktp', 'kelurahan_ktp',
         'kecamatan_ktp', 'kabupaten_ktp', 'kota_ktp', 'provinsi_ktp', 'kode_pos_ktp',
         'no_ktp', 'no_npwp', 'no_bpjs_ketenagakerjaan', 'status_perkawinan', 'email', 'hobby', 'organisasi',
         // B
