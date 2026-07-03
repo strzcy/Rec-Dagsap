@@ -172,6 +172,133 @@
             @endif
         </div>
 
+        <!-- CATATAN PTK -->
+        <div class="mt-6 pt-4 border-t">
+            <div class="flex items-center justify-between mb-3">
+                <h3 class="text-lg font-semibold">Catatan PTK</h3>
+                <button onclick="openCatatanModal()" 
+                        class="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition text-sm">
+                    <i class="fas fa-edit mr-2"></i> 
+                    {{ $pengajuan->catatan_ptk ? 'Edit Catatan' : 'Tambah Catatan' }}
+                </button>
+            </div>
+    
+            <!-- Tampilkan Catatan -->
+            @if($pengajuan->catatan_ptk)
+            <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <div class="flex items-start">
+                    <div class="flex-1">
+                        <p class="text-gray-700 whitespace-pre-wrap">{{ $pengajuan->catatan_ptk }}</p>
+                    </div>
+                    <div class="text-right text-xs text-gray-500 ml-4 flex-shrink-0">
+                        @if($pengajuan->catatan_diubah_at)
+                            <p><i class="fas fa-edit mr-1"></i> Catatan diubah pada</p>
+                            <p class="font-medium">{{ \Carbon\Carbon::parse($pengajuan->catatan_diubah_at)->setTimezone('Asia/Jakarta')->format('d/m/Y H:i') }} WIB</p>
+                            <p>oleh <strong>{{ $pengajuan->catatan_diubah_oleh }}</strong></p>
+                            <p class="text-xs text-gray-400">{{ $pengajuan->catatan_jabatan_diubah }}</p>
+                        @else
+                            <p><i class="fas fa-plus-circle mr-1"></i> Catatan ditambahkan pada</p>
+                            <p class="font-medium">{{ \Carbon\Carbon::parse($pengajuan->catatan_dibuat_at)->setTimezone('Asia/Jakarta')->format('d/m/Y H:i') }} WIB</p>
+                            <p>oleh <strong>{{ $pengajuan->catatan_dibuat_oleh }}</strong></p>
+                            <p class="text-xs text-gray-400">{{ $pengajuan->catatan_jabatan_dibuat }}</p>
+                        @endif
+                        @if($pengajuan->catatan_ptk)
+                        <button onclick="if(confirm('Hapus catatan ini?')) document.getElementById('hapus-catatan-form').submit();" 
+                                class="text-red-500 hover:text-red-700 text-xs mt-2">
+                            <i class="fas fa-trash mr-1"></i> Hapus
+                        </button>
+                        @endif
+                    </div>
+                </div>
+            </div>
+            @else
+            <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 text-center text-gray-400">
+                <i class="fas fa-sticky-note text-2xl mb-2 block"></i>
+                <p>Belum ada catatan untuk PTK ini</p>
+            </div>
+            @endif
+        </div>
+
+        <!-- MODAL CATATAN -->
+        <div id="catatanModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+            <div class="bg-white rounded-lg p-6 w-full max-w-2xl">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-semibold text-gray-900" id="catatanModalTitle">
+                        {{ $pengajuan->catatan_ptk ? 'Edit Catatan' : 'Tambah Catatan' }}
+                    </h3>
+                    <button onclick="closeCatatanModal()" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+        
+                <form action="{{ route('management.pengajuan.catatan', $pengajuan) }}" method="POST" id="catatanForm">
+                    @csrf
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Nama <span class="text-red-500">*</span></label>
+                            <input type="text" name="catatan_nama" id="catatan_nama" required 
+                                   class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:border-primary"
+                                   placeholder="Masukkan nama Anda">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Jabatan <span class="text-red-500">*</span></label>
+                            <input type="text" name="catatan_jabatan" id="catatan_jabatan" required 
+                                   class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:border-primary"
+                                   placeholder="Masukkan jabatan Anda">
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">
+                            Isi Catatan <span class="text-red-500">*</span>
+                        </label>
+                        <textarea name="catatan_ptk" id="catatan_ptk" rows="5" 
+                                  class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:border-primary"
+                                  placeholder="Tuliskan catatan untuk PTK ini...">{{ $pengajuan->catatan_ptk ?? '' }}</textarea>
+                    </div>
+                    <div class="flex justify-end gap-3">
+                        <button type="button" onclick="closeCatatanModal()" 
+                                class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
+                            Batal
+                        </button>
+                        <button type="submit" 
+                                class="px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition">
+                            <i class="fas fa-save mr-2"></i> 
+                            {{ $pengajuan->catatan_ptk ? 'Update Catatan' : 'Simpan Catatan' }}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Form Hapus Catatan -->
+        <form id="hapus-catatan-form" action="{{ route('management.pengajuan.catatan.hapus', $pengajuan) }}" method="POST" class="hidden">
+            @csrf
+            @method('DELETE')
+        </form>
+
+        @push('scripts')
+        <script>
+            function openCatatanModal() {
+                const modal = document.getElementById('catatanModal');
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                document.getElementById('catatan_ptk').focus();
+            }
+    
+            function closeCatatanModal() {
+                const modal = document.getElementById('catatanModal');
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+    
+            // Tutup modal jika klik di luar
+            document.getElementById('catatanModal')?.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeCatatanModal();
+                }
+            });
+        </script>
+        @endpush
         <!-- Lampiran Dokumen -->
         @if($pengajuan->lampiran_path)
         <div class="mb-6">
@@ -198,7 +325,7 @@
                                 {{ Storage::disk('public')->exists($pengajuan->lampiran_path) ? round(Storage::disk('public')->size($pengajuan->lampiran_path) / 1024, 2) : 0 }} KB
                             </p>
                             <p class="text-xs text-gray-500">
-                                Jenis: {{ $pengajuan->jenis == 'penambahan' ? 'Komitmen Kerja' : 'Surat Resign' }}
+                                Jenis: {{ $pengajuan->jenis == 'penambahan' ? 'Komitmen Target' : 'Surat Resign' }}
                             </p>
                         </div>
                     </div>

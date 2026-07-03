@@ -128,4 +128,66 @@ class PengajuanApprovalController extends Controller
 
         return view('management.pengajuan.print', compact('pengajuan', 'qrCodePemohon', 'qrCodeManager'));
     }
+
+    public function catatan(Request $request, PengajuanTenagaKerja $pengajuan)
+    {
+        $managedDivisiId = Auth::user()->managed_divisi_id;
+    
+        if ($pengajuan->departemen_dipilih !== $managedDivisiId) {
+            abort(403);
+        }
+
+        $request->validate([
+            'catatan_ptk' => 'required|string|min:3',
+            'catatan_nama' => 'required|string|max:255',
+            'catatan_jabatan' => 'required|string|max:255',
+        ]);
+
+        $now = now();
+    
+        // Cek apakah sudah ada catatan sebelumnya
+        if ($pengajuan->catatan_ptk) {
+            // UPDATE catatan
+            $pengajuan->update([
+                'catatan_ptk' => $request->catatan_ptk,
+                'catatan_diubah_oleh' => $request->catatan_nama,
+                'catatan_jabatan_diubah' => $request->catatan_jabatan,
+                'catatan_diubah_at' => $now,
+            ]);
+            $message = 'Catatan berhasil diupdate!';
+        } else {
+            // CREATE catatan baru
+            $pengajuan->update([
+                'catatan_ptk' => $request->catatan_ptk,
+                'catatan_dibuat_oleh' => $request->catatan_nama,
+                'catatan_jabatan_dibuat' => $request->catatan_jabatan,
+                'catatan_dibuat_at' => $now,
+            ]);
+            $message = 'Catatan berhasil ditambahkan!';
+        }
+
+        return redirect()->route('management.pengajuan.show', $pengajuan)
+            ->with('success', $message);
+    }
+
+    public function catatanHapus(PengajuanTenagaKerja $pengajuan)
+    {
+        $managedDivisiId = Auth::user()->managed_divisi_id;
+    
+        if ($pengajuan->departemen_dipilih !== $managedDivisiId) {
+            abort(403);
+        }
+        $pengajuan->update([
+            'catatan_ptk' => null,
+            'catatan_dibuat_oleh' => null,
+            'catatan_jabatan_dibuat' => null,
+            'catatan_dibuat_at' => null,
+            'catatan_diubah_oleh' => null,
+            'catatan_jabatan_diubah' => null,
+            'catatan_diubah_at' => null,
+        ]);
+
+        return redirect()->route('management.pengajuan.show', $pengajuan)
+            ->with('success', 'Catatan berhasil dihapus!');
+    }
 }

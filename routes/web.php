@@ -68,6 +68,9 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         Route::post('/pengajuan/{pengajuan}/approve', [PengajuanApprovalController::class, 'approve'])->name('pengajuan.approve');
         Route::post('/pengajuan/{pengajuan}/reject', [PengajuanApprovalController::class, 'reject'])->name('pengajuan.reject');
         Route::get('/pengajuan/{pengajuan}/print', [PengajuanApprovalController::class, 'printData'])->name('pengajuan.print');
+        Route::post('/pengajuan/{pengajuan}/catatan', [PengajuanApprovalController::class, 'catatan'])->name('pengajuan.catatan');
+        Route::delete('/pengajuan/{pengajuan}/catatan/hapus', [PengajuanApprovalController::class, 'catatanHapus'])->name('pengajuan.catatan.hapus');
+
     });
     
     // HRD Routes
@@ -90,6 +93,5 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         Route::get('/ptk/{ptk}/print', [DataPtkController::class, 'printData'])->name('ptk.print'); 
         
     });
-
     
 });
