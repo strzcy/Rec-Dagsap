@@ -81,10 +81,6 @@
             <div id="toko_penempatan_field" style="display: none;">
                 <label class="block text-sm font-medium text-gray-700 mb-2">Toko Penempatan *</label>
                 <input type="text" name="toko_penempatan" id="toko_penempatan" class="w-full border rounded-lg px-3 py-2">
-                <p class="text-xs text-orange-600 mt-1">
-                    <i class="fas fa-info-circle mr-1"></i> 
-                    Wajib diisi karena jabatan mengandung "SPG" atau "SPB"
-                </p>
             </div>
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">Jumlah Dibutuhkan *</label>
@@ -194,7 +190,7 @@
                     </select>
                 </div>
                 <div>
-                    <label class="block text-xs text-gray-500 mb-1">IPK Minimal (jika S1)</label>
+                    <label class="block text-xs text-gray-500 mb-1">IPK Minimal</label>
                     <select required name="kriteria_ipk" class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:border-primary">
                         <option value="">Bukan D3-S2</option>
                         <option value="2.00">2.00</option>

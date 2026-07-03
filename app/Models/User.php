@@ -72,4 +72,13 @@ class User extends Authenticatable
     {
         return $this->hasMany(Lowongan::class, 'hrd_id');
     }
+
+    public function getManagementEmail($divisiId)
+    {
+        $management = User::where('role', 'management')
+            ->where('managed_divisi_id', $divisiId)
+            ->first();
+    
+        return $management->email ?? 'hrd@dagsap.com';
+    }
 }

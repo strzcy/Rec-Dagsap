@@ -81,8 +81,6 @@ class PengajuanController extends Controller
             // Data PTK
             'jenis' => $validated['jenis'],
             'posisi' => $validated['posisi'],
-            'area_penempatan' => $validated['area_penempatan'] ?? null,
-            'toko_penempatan' => $validated['toko_penempatan'] ?? null,
             'jumlah' => $validated['jumlah'],
             'tanggal_dibutuhkan' => $validated['tanggal_dibutuhkan'],
             'kriteria' => $kriteria,
@@ -95,24 +93,40 @@ class PengajuanController extends Controller
             'lampiran_jenis' => $lampiranJenis,
         ];
 
-        PengajuanTenagaKerja::create($pengajuanData);
-
+        $pengajuan = PengajuanTenagaKerja::create($pengajuanData);
+    
         // HAPUS SESSION VERIFIED NIK AGAR USER HARUS VERIFIKASI ULANG
         session()->forget('verified_nik');
 
         $divisiNama = \App\Models\Divisi::find($validated['departemen_dipilih'])->nama_divisi;
+    
+        // Ambil data management untuk divisi tersebut
+        $management = \App\Models\User::where('role', 'management')
+            ->where('managed_divisi_id', $validated['departemen_dipilih'])
+            ->first();
+    
+        $emailManagement = $management->email ?? 'hrd@dagsap.com';
 
-        // Redirect ke DASHBOARD
+        // Redirect ke DASHBOARD dengan ID pengajuan
         return redirect()->route('divisi.dashboard')
-        ->with('success_submit', true)
-        ->with('success_message', 'Pengajuan tenaga kerja berhasil dikirim!')
-        ->with('ptk_data', [
-            'posisi' => $validated['posisi'],
-            'divisi' => $divisiNama,
-            'jumlah' => $validated['jumlah'],
-            'tanggal_dibutuhkan' => \Carbon\Carbon::parse($validated['tanggal_dibutuhkan'])->format('d/m/Y'),
-            'waktu_pengajuan' => now()->format('d/m/Y H:i:s'), // TAMBAHKAN INI
-        ]); 
+            ->with('success_submit', true)
+            ->with('success_message', 'Pengajuan tenaga kerja berhasil dikirim!')
+            ->with('ptk_data', [
+                'id' => $pengajuan->id, // <-- PASTIKAN ID ADA
+                'posisi' => $validated['posisi'],
+                'divisi' => $divisiNama,
+                'jumlah' => $validated['jumlah'],
+                'tanggal_dibutuhkan' => \Carbon\Carbon::parse($validated['tanggal_dibutuhkan'])->format('d/m/Y'),
+                'waktu_pengajuan' => now()->format('d/m/Y H:i:s'),
+                'nama_pemohon' => $validated['nama_pemohon'],
+                'nip_pemohon' => $validated['nip_pemohon'],
+                'jabatan_pemohon' => $validated['jabatan_pemohon'],
+                'no_hp_pemohon' => $validated['no_hp_pemohon'],
+                'area_penempatan' => $validated['area_penempatan'] ?? '-',
+                'toko_penempatan' => $validated['toko_penempatan'] ?? '-',
+                'email_management' => $emailManagement,
+                'jenis' => $validated['jenis'],
+            ]);
     }
 
     public function show(PengajuanTenagaKerja $pengajuan)
