@@ -33,9 +33,6 @@
     <a href="{{ route('hrd.pelamar.print', $pelamar) }}" target="_blank" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-dark">
         <i class="fas fa-print mr-2"></i> Cetak Data (A4)
     </a>
-    <button onclick="window.print()" class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700">
-        <i class="fas fa-print mr-2"></i> Print Halaman Ini
-    </button>
 </div>
 
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -101,10 +98,40 @@
                 <div><strong>No. KTP:</strong> {{ $detail->no_ktp ?? '-' }}</div>
                 <div><strong>No. HP:</strong> {{ $detail->no_hp ?? '-' }}</div>
                 <div><strong>Email:</strong> {{ $detail->email ?? '-' }}</div>
-                <div><strong>Hobby:</strong> {{ $detail->hobby ?? '-' }}</div>
+                <div><strong>Hobi:</strong> {{ $detail->hobby ?? '-' }}</div>
                 <div class="col-span-2"><strong>Alamat Tinggal:</strong> {{ $detail->alamat_tinggal ?? '-' }}</div>
                 <div class="col-span-2"><strong>Alamat KTP:</strong> {{ $detail->alamat_ktp ?? '-' }}</div>
             </div>
+            @if($detail->organisasi)
+            <div class="mt-2">
+                <strong>Organisasi:</strong>
+                <div class="overflow-x-auto mt-1">
+                    <table class="min-w-full text-xs border">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-2 py-1 border">No</th>
+                                <th class="px-2 py-1 border">Nama Organisasi</th>
+                                <th class="px-2 py-1 border">Waktu</th>
+                                <th class="px-2 py-1 border">Jabatan</th>
+                                <th class="px-2 py-1 border">Jenis Organisasi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($detail->organisasi as $idx => $org)
+                            <tr>
+                                <td class="px-2 py-1 border" align="center">{{ $idx+1 }}</td>
+                                <td class="px-2 py-1 border">{{ $org['nama'] ?? '-' }}</td>
+                                <td class="px-2 py-1 border">{{ $org['waktu'] ?? '-' }}</td>
+                                <td class="px-2 py-1 border">{{ $org['jabatan'] ?? '-' }}</td>
+                                <td class="px-2 py-1 border">{{ $org['jenis'] ?? '-' }}</td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            @endif
+
         </div>
         
         <!-- B. PENDIDIKAN -->
@@ -193,17 +220,32 @@
             @if($detail->pengalaman_kerja)
             <div class="overflow-x-auto mb-2">
                 <table class="min-w-full text-sm border">
-                    <thead class="bg-gray-50"><tr><th class="px-2 py-1 border">Perusahaan</th><th class="px-2 py-1 border">Jabatan</th><th class="px-2 py-1 border">Periode</th><th class="px-2 py-1 border">Gaji</th><th class="px-2 py-1 border">Alasan Keluar</th></tr></thead>
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-2 py-1 border">No</th>
+                            <th class="px-2 py-1 border">Perusahaan</th>
+                            <th class="px-2 py-1 border">Periode</th>
+                            <th class="px-2 py-1 border">Jabatan Terakhir</th>
+                            <th class="px-2 py-1 border">Tugas Utama</th>
+                            <th class="px-2 py-1 border">Gaji</th>
+                            <th class="px-2 py-1 border">Alasan Keluar</th>
+                        </tr>
+                    </thead>
                     <tbody>
-                        @foreach($detail->pengalaman_kerja as $kerja)
-                        <tr><td class="px-2 py-1 border">{{ $kerja['perusahaan'] ?? '-' }}</td><td class="px-2 py-1 border">{{ $kerja['jabatan'] ?? '-' }}</td><td class="px-2 py-1 border">{{ $kerja['tgl_masuk'] ?? '-' }} s/d {{ $kerja['tgl_keluar'] ?? '-' }}</td><td class="px-2 py-1 border">{{ $kerja['gaji'] ?? '-' }}</td><td class="px-2 py-1 border">{{ $kerja['alasan_keluar'] ?? '-' }}</td></tr>
+                        @foreach($detail->pengalaman_kerja as $idx => $kerja)
+                        <tr>
+                            <td class="px-2 py-1 border" align="center">{{ $idx+1 }}</td>
+                            <td class="px-2 py-1 border">{{ $kerja['perusahaan'] ?? '-' }}</td>
+                            <td class="px-2 py-1 border">{{ $kerja['tgl_masuk'] ?? '-' }} s/d {{ $kerja['tgl_keluar'] ?? '-' }}</td>
+                            <td class="px-2 py-1 border">{{ $kerja['jabatan'] ?? '-' }}</td>
+                            <td class="px-2 py-1 border">{{ $kerja['tugas_utama'] ?? '-' }}</td>
+                            <td class="px-2 py-1 border">{{ $kerja['gaji'] ?? '-' }}</td>
+                            <td class="px-2 py-1 border">{{ $kerja['alasan_keluar'] ?? '-' }}</td>
+                        </tr>
                         @endforeach
                     </tbody>
                 </table>
             </div>
-            @endif
-            @if($detail->bidang_minat)
-            <div><strong>Bidang Minat:</strong> {{ implode(', ', $detail->bidang_minat) }}</div>
             @endif
         </div>
         

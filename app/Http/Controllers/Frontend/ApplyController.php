@@ -193,13 +193,17 @@ class ApplyController extends Controller
             'kecamatan_ktp' => 'required|string',
             'kabupaten_ktp' => 'required|string',
             'kota_ktp' => 'required|string',
+            'dikeluarkan_di' => 'nullable|string|max:255',
             'provinsi_ktp' => 'required|string',
             'kode_pos_ktp' => 'required|string',
-            'no_ktp' => 'required|string|min:16|max:16',
+            'no_ktp' => 'required|string',
             'status_perkawinan' => 'required|string',
             'email' => 'required|email',
             'hobby' => 'nullable|string',
-            'organisasi' => 'nullable|string',
+            'organisasi_nama' => 'nullable|array',
+            'organisasi_waktu' => 'nullable|array',
+            'organisasi_jabatan' => 'nullable|array',
+            'organisasi_jenis' => 'nullable|array',
             'pernyataan_setuju' => 'required|accepted',
             
             'nama_ayah' => 'required|string|max:255',
@@ -233,6 +237,7 @@ class ApplyController extends Controller
                         'nama_sekolah' => $request->pendidikan_nama[$i] ?? '',
                         'kota' => $request->pendidikan_kota[$i] ?? '',
                         'jurusan' => $request->pendidikan_jurusan[$i] ?? '',
+                        'tahun_masuk' => $request->pendidikan_tahun_masuk[$i] ?? '',
                         'tahun_lulus' => $request->pendidikan_tahun_lulus[$i] ?? '',
                         'ipk' => $request->pendidikan_ipk[$i] ?? '',
                     ];
@@ -265,6 +270,24 @@ class ApplyController extends Controller
                         'membaca' => $request->bahasa_membaca[$i] ?? 'Cukup',
                         'berbicara' => $request->bahasa_berbicara[$i] ?? 'Cukup',
                         'menulis' => $request->bahasa_menulis[$i] ?? 'Cukup',
+                    ];
+                }
+            }
+        }
+
+        // PENGALAMAN KERJA
+        $pengalamanKerja = [];
+        if ($request->has('pekerjaan_perusahaan')) {
+            for ($i = 0; $i < count($request->pekerjaan_perusahaan); $i++) {
+                if (!empty($request->pekerjaan_perusahaan[$i])) {
+                    $pengalamanKerja[] = [
+                        'perusahaan' => $request->pekerjaan_perusahaan[$i],
+                        'tgl_masuk' => $request->pekerjaan_tgl_masuk[$i] ?? '',
+                        'tgl_keluar' => $request->pekerjaan_tgl_keluar[$i] ?? '',
+                        'jabatan' => $request->pekerjaan_jabatan[$i] ?? '',           // JABATAN TERAKHIR
+                        'tugas_utama' => $request->pekerjaan_tugas_utama[$i] ?? '',   // TUGAS UTAMA (baru)
+                        'gaji' => $request->pekerjaan_gaji[$i] ?? '',
+                        'alasan_keluar' => $request->pekerjaan_alasan[$i] ?? '',
                     ];
                 }
             }
@@ -321,6 +344,20 @@ class ApplyController extends Controller
             }
         }
 
+        $organisasi = [];
+        if ($request->has('organisasi_nama')) {
+            for ($i = 0; $i < count($request->organisasi_nama); $i++) {
+                if (!empty($request->organisasi_nama[$i])) {
+                    $organisasi[] = [
+                        'nama' => $request->organisasi_nama[$i],
+                        'waktu' => $request->organisasi_waktu[$i] ?? '',
+                        'jabatan' => $request->organisasi_jabatan[$i] ?? '',
+                        'jenis' => $request->organisasi_jenis[$i] ?? '',
+                    ];
+                }
+            }
+        }
+
         // DATA UNTUK DISIMPAN
         $detailData = [
             'pelamar_id' => $pelamar->id,
@@ -354,7 +391,7 @@ class ApplyController extends Controller
             'status_perkawinan' => $validated['status_perkawinan'],
             'email' => $validated['email'],
             'hobby' => $validated['hobby'],
-            'organisasi' => $validated['organisasi'],
+            'organisasi' => $organisasi,
             'pendidikan_formal' => $pendidikanFormal,
             'keterampilan' => $keterampilan,
             'bahasa_asing' => $bahasaAsing,
@@ -373,6 +410,7 @@ class ApplyController extends Controller
             'pernyataan_setuju' => true,
             'tempat_pernyataan' => $validated['tempat_pernyataan'] ?? 'Jakarta',
             'tanggal_pernyataan' => now()->format('Y-m-d'),
+            'dikeluarkan_di' => $validated['dikeluarkan_di'] ?? null,
         ];
 
         // Update data pelamar utama

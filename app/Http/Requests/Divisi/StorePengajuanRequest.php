@@ -24,6 +24,8 @@ class StorePengajuanRequest extends FormRequest
             // Data PTK
             'jenis' => 'required|in:penambahan,penggantian',
             'posisi' => 'required|string|max:255',
+            'area_penempatan' => 'required|string|max:255',
+            'toko_penempatan' => 'nullable|string|max:255',
             'jumlah' => 'required|integer|min:1',
             'tanggal_dibutuhkan' => [
                 'required',
@@ -45,6 +47,18 @@ class StorePengajuanRequest extends FormRequest
             'tugas' => 'nullable|array',
             'persyaratan' => 'nullable|array',
             'menggantikan' => 'nullable|string',
+            
+            // LAMPIRAN - WAJIB
+            'lampiran' => 'required|file|mimes:pdf,png,jpg,jpeg,docx|max:5120',
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'lampiran.mimes' => 'Format file harus PDF, PNG, JPG, atau DOCX',
+            'lampiran.max' => 'Ukuran file maksimal 5MB',
+            'tanggal_dibutuhkan.after' => 'Tanggal dibutuhkan harus setelah hari ini',
         ];
     }
 }

@@ -574,6 +574,31 @@
                     @endfor
                 </tbody>
             </table>
+
+            <!-- Kekuatan & Kelemahan (array) -->
+            <!-- <div>
+                <strong>Kekuatan:</strong>
+                @php $kekuatan = is_array($detail->kekuatan) ? $detail->kekuatan : json_decode($detail->kekuatan ?? '[]', true); @endphp
+                @if(!empty($kekuatan))
+                    @foreach($kekuatan as $idx => $k)
+                        <div>{{ $idx+1 }}. {{ $k }}</div>
+                    @endforeach
+                @else
+                    -
+                @endif
+            </div> -->
+
+            <!-- <div>
+                <strong>Kelemahan:</strong>
+                @php $kelemahan = is_array($detail->kelemahan) ? $detail->kelemahan : json_decode($detail->kelemahan ?? '[]', true); @endphp
+                @if(!empty($kelemahan))
+                    @foreach($kelemahan as $idx => $k)
+                        <div>{{ $idx+1 }}. {{ $k }}</div>
+                    @endforeach
+                @else
+                    -
+                @endif
+            </div> -->
         </div>
 
         <div class="section">

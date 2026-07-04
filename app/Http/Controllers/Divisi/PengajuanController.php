@@ -47,13 +47,25 @@ class PengajuanController extends Controller
             'ipk' => $validated['kriteria_ipk'] ?? '',
             'keahlian' => $validated['kriteria_keahlian'] ?? '',
         ];
-    
+
         $persyaratan = array_filter($request->persyaratan ?? []);
         if ($validated['jenis'] == 'penggantian' && $request->menggantikan) {
             $persyaratan[] = "Menggantikan karyawan: " . $request->menggantikan;
         }
-    
+
         $tugas = array_filter($request->tugas ?? []);
+
+        // Upload lampiran (sudah divalidasi di FormRequest)
+        $lampiranPath = null;
+        $lampiranNama = null;
+        $lampiranJenis = null;
+
+        if ($request->hasFile('lampiran')) {
+            $file = $request->file('lampiran');
+            $lampiranNama = $file->getClientOriginalName();
+            $lampiranJenis = $file->getClientOriginalExtension();
+            $lampiranPath = $file->store('lampiran_ptk', 'public');
+        }
 
         $pengajuanData = [
             // Identitas Pemohon
@@ -65,7 +77,7 @@ class PengajuanController extends Controller
             'divisi_id' => $validated['departemen_dipilih'],
             'user_id' => Auth::id(),
             'diajukan_oleh' => $validated['nama_pemohon'],
-        
+    
             // Data PTK
             'jenis' => $validated['jenis'],
             'posisi' => $validated['posisi'],
@@ -76,24 +88,44 @@ class PengajuanController extends Controller
             'deskripsi_pekerjaan' => $validated['deskripsi_pekerjaan'],
             'tugas' => array_values($tugas),
             'status' => 'pending',
+            'lampiran_path' => $lampiranPath,
+            'lampiran_nama' => $lampiranNama,
+            'lampiran_jenis' => $lampiranJenis,
         ];
 
-        PengajuanTenagaKerja::create($pengajuanData);
-
+        $pengajuan = PengajuanTenagaKerja::create($pengajuanData);
+    
         // HAPUS SESSION VERIFIED NIK AGAR USER HARUS VERIFIKASI ULANG
         session()->forget('verified_nik');
-    
+
         $divisiNama = \App\Models\Divisi::find($validated['departemen_dipilih'])->nama_divisi;
     
-        // Redirect ke DASHBOARD (bukan ke create atau index)
+        // Ambil data management untuk divisi tersebut
+        $management = \App\Models\User::where('role', 'management')
+            ->where('managed_divisi_id', $validated['departemen_dipilih'])
+            ->first();
+    
+        $emailManagement = $management->email ?? 'hrd@dagsap.com';
+
+        // Redirect ke DASHBOARD dengan ID pengajuan
         return redirect()->route('divisi.dashboard')
             ->with('success_submit', true)
             ->with('success_message', 'Pengajuan tenaga kerja berhasil dikirim!')
             ->with('ptk_data', [
+                'id' => $pengajuan->id, // <-- PASTIKAN ID ADA
                 'posisi' => $validated['posisi'],
                 'divisi' => $divisiNama,
                 'jumlah' => $validated['jumlah'],
-                'tanggal_dibutuhkan' => \Carbon\Carbon::parse($validated['tanggal_dibutuhkan'])->format('d/m/Y')
+                'tanggal_dibutuhkan' => \Carbon\Carbon::parse($validated['tanggal_dibutuhkan'])->format('d/m/Y'),
+                'waktu_pengajuan' => now()->format('d/m/Y H:i:s'),
+                'nama_pemohon' => $validated['nama_pemohon'],
+                'nip_pemohon' => $validated['nip_pemohon'],
+                'jabatan_pemohon' => $validated['jabatan_pemohon'],
+                'no_hp_pemohon' => $validated['no_hp_pemohon'],
+                'area_penempatan' => $validated['area_penempatan'] ?? '-',
+                'toko_penempatan' => $validated['toko_penempatan'] ?? '-',
+                'email_management' => $emailManagement,
+                'jenis' => $validated['jenis'],
             ]);
     }
 

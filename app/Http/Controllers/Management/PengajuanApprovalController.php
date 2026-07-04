@@ -103,11 +103,11 @@ class PengajuanApprovalController extends Controller
         }
     
         // QR CODE UNTUK MANAGER (Diketahui Oleh / Atasan)
-        $qrDataManager = "PTK-" . str_pad($pengajuan->id, 6, '0', STR_PAD_LEFT) . " | " .
-            ($pengajuan->disetujui_oleh ?? 'Belum disetujui') . " | " .
-            ($pengajuan->jabatan_penyetuju ?? '-') . " | " .
-            ($pengajuan->approved_at ? \Carbon\Carbon::parse($pengajuan->approved_at)->format('d/m/Y') : '-') . " | " .
-            $pengajuan->posisi;
+        $qrDataManager = "PTK-" . str_pad($pengajuan->id, 6, '0', STR_PAD_LEFT) . " - " .
+        $pengajuan->posisi . "  |  " .
+        ($pengajuan->disetujui_oleh ?? 'Belum disetujui') . " | " .
+        ($pengajuan->jabatan_penyetuju ?? '-') . " | " .
+        ($pengajuan->approved_at ? \Carbon\Carbon::parse($pengajuan->approved_at)->format('d/m/Y H:i') : '-') ;
 
         $qrCodeManager = QrCode::errorCorrection('L')
             ->size(70)
@@ -115,10 +115,10 @@ class PengajuanApprovalController extends Controller
             ->generate($qrDataManager);
 
         // QR CODE UNTUK PEMOHON (Diajukan Oleh)
-        $qrDataPemohon = "PTK-" . str_pad($pengajuan->id, 6, '0', STR_PAD_LEFT) . " | " .
+        $qrDataPemohon = "PTK-" . str_pad($pengajuan->id, 6, '0', STR_PAD_LEFT) . " - " .
             $pengajuan->posisi . " | " .
             ($pengajuan->departemen->nama_divisi ?? '') . " | " .
-            $pengajuan->created_at->format('d/m/Y') . " | " .
+            $pengajuan->created_at->format('d/m/Y H:i:s') . " | " .
             $pengajuan->nama_pemohon;
 
         $qrCodePemohon = QrCode::errorCorrection('L')
@@ -127,5 +127,67 @@ class PengajuanApprovalController extends Controller
             ->generate($qrDataPemohon);
 
         return view('management.pengajuan.print', compact('pengajuan', 'qrCodePemohon', 'qrCodeManager'));
+    }
+
+    public function catatan(Request $request, PengajuanTenagaKerja $pengajuan)
+    {
+        $managedDivisiId = Auth::user()->managed_divisi_id;
+    
+        if ($pengajuan->departemen_dipilih !== $managedDivisiId) {
+            abort(403);
+        }
+
+        $request->validate([
+            'catatan_ptk' => 'required|string|min:3',
+            'catatan_nama' => 'required|string|max:255',
+            'catatan_jabatan' => 'required|string|max:255',
+        ]);
+
+        $now = now();
+    
+        // Cek apakah sudah ada catatan sebelumnya
+        if ($pengajuan->catatan_ptk) {
+            // UPDATE catatan
+            $pengajuan->update([
+                'catatan_ptk' => $request->catatan_ptk,
+                'catatan_diubah_oleh' => $request->catatan_nama,
+                'catatan_jabatan_diubah' => $request->catatan_jabatan,
+                'catatan_diubah_at' => $now,
+            ]);
+            $message = 'Catatan berhasil diupdate!';
+        } else {
+            // CREATE catatan baru
+            $pengajuan->update([
+                'catatan_ptk' => $request->catatan_ptk,
+                'catatan_dibuat_oleh' => $request->catatan_nama,
+                'catatan_jabatan_dibuat' => $request->catatan_jabatan,
+                'catatan_dibuat_at' => $now,
+            ]);
+            $message = 'Catatan berhasil ditambahkan!';
+        }
+
+        return redirect()->route('management.pengajuan.show', $pengajuan)
+            ->with('success', $message);
+    }
+
+    public function catatanHapus(PengajuanTenagaKerja $pengajuan)
+    {
+        $managedDivisiId = Auth::user()->managed_divisi_id;
+    
+        if ($pengajuan->departemen_dipilih !== $managedDivisiId) {
+            abort(403);
+        }
+        $pengajuan->update([
+            'catatan_ptk' => null,
+            'catatan_dibuat_oleh' => null,
+            'catatan_jabatan_dibuat' => null,
+            'catatan_dibuat_at' => null,
+            'catatan_diubah_oleh' => null,
+            'catatan_jabatan_diubah' => null,
+            'catatan_diubah_at' => null,
+        ]);
+
+        return redirect()->route('management.pengajuan.show', $pengajuan)
+            ->with('success', 'Catatan berhasil dihapus!');
     }
 }

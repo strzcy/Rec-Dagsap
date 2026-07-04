@@ -1,3 +1,4 @@
+
 <div>
     <h2 class="text-xl font-bold text-primary mb-4 border-b pb-2">A. DATA PRIBADI</h2>
     
@@ -24,11 +25,11 @@
         </div>
         <div>
             <label class="block text-sm font-medium mb-1">Tinggi Badan (cm) <span class="text-red-500">*</span></label>
-            <input type="number" name="tinggi_badan" required class="w-full border rounded-lg px-3 py-2" placeholder="Contoh: 165">
+            <input type="number" name="tinggi_badan" required class="w-full border rounded-lg px-3 py-2" >
         </div>
         <div>
             <label class="block text-sm font-medium mb-1">Berat Badan (kg) <span class="text-red-500">*</span></label>
-            <input type="number" name="berat_badan" required class="w-full border rounded-lg px-3 py-2" placeholder="Contoh: 60">
+            <input type="number" name="berat_badan" required class="w-full border rounded-lg px-3 py-2">
         </div>
         <div>
             <label class="block text-sm font-medium mb-1">Kewarganegaraan <span class="text-red-500">*</span></label>
@@ -65,16 +66,29 @@
     </div>
     
     <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-3">
-        <div><input type="text" name="rt_rw_tinggal" placeholder="RT/RW" required class="w-full border rounded-lg px-3 py-2"></div>
-        <div><input type="text" name="kelurahan_tinggal" placeholder="Kelurahan" required class="w-full border rounded-lg px-3 py-2"></div>
-        <div><input type="text" name="kecamatan_tinggal" placeholder="Kecamatan" required class="w-full border rounded-lg px-3 py-2"></div>
-        <div><input type="text" name="kabupaten_tinggal" placeholder="Kabupaten" required class="w-full border rounded-lg px-3 py-2"></div>
-        <div><input type="text" name="kota_tinggal" placeholder="Kota" required class="w-full border rounded-lg px-3 py-2"></div>
-        <div><input type="text" name="provinsi_tinggal" placeholder="Provinsi" required class="w-full border rounded-lg px-3 py-2"></div>
-        <div><input type="text" name="kode_pos_tinggal" placeholder="Kode Pos" required class="w-full border rounded-lg px-3 py-2"></div>
-        <div><input type="text" name="no_telp" placeholder="No. Telp" required class="w-full border rounded-lg px-3 py-2"></div>
-        <div><input type="text" name="no_hp" placeholder="No. HP" required class="w-full border rounded-lg px-3 py-2"></div>
-        <div><input type="text" name="no_wa" placeholder="No. WA"required class="w-full border rounded-lg px-3 py-2"></div>
+        <div><label class="block text-xs text-gray-400 font-medium mb-2">ㅤ No. Rumah</label>
+            <input type="text" name="no_rumah_tinggal" required class="w-full border rounded-lg px-3 py-2">
+        </div>
+        <div><label class="block text-xs text-gray-400 font-medium mb-2">ㅤ RT/RW</label>
+            <input type="text" name="rt_rw_tinggal"  required class="w-full border rounded-lg px-3 py-2"></div>
+        <div><label class="block text-xs text-gray-400 font-medium mb-2">ㅤ Kelurahan</label>
+            <input type="text" name="kelurahan_tinggal"  required class="w-full border rounded-lg px-3 py-2"></div>
+        <div><label class="block text-xs text-gray-400 font-medium mb-2">ㅤ Kecamatan</label>
+            <input type="text" name="kecamatan_tinggal"  required class="w-full border rounded-lg px-3 py-2"></div>
+        <div><label class="block text-xs text-gray-400 font-medium mb-2">ㅤ Kabupaten</label>
+            <input type="text" name="kabupaten_tinggal"  required class="w-full border rounded-lg px-3 py-2"></div>
+        <div><label class="block text-xs text-gray-400 font-medium mb-2">ㅤ Kota</label>
+            <input type="text" name="kota_tinggal"  required class="w-full border rounded-lg px-3 py-2"></div>
+        <div><label class="block text-xs text-gray-400 font-medium mb-2">ㅤ Provinsi</label>
+            <input type="text" name="provinsi_tinggal" required class="w-full border rounded-lg px-3 py-2"></div>
+        <div><label class="block text-xs text-gray-400 font-medium mb-2">ㅤ Kode Pos</label>
+            <input type="number" name="kode_pos_tinggal"  required class="w-full border rounded-lg px-3 py-2"></div>
+        <div><label class="block text-xs text-gray-400 font-medium mb-2">ㅤ No. Telepon</label>
+            <input type="number" name="no_telp" required class="w-full border rounded-lg px-3 py-2" placeholder="08**********" value="08"></div>
+        <div><label class="block text-xs text-gray-400 font-medium mb-2">ㅤ No. Handphone</label>
+            <input type="number" name="no_hp" required class="w-full border rounded-lg px-3 py-2" placeholder="08**********" value="08"></div>
+        <div><label class="block text-xs text-gray-400 font-medium mb-2">ㅤ No. WhatsApp</label>
+            <input type="number" name="no_wa" required class="w-full border rounded-lg px-3 py-2" placeholder="08**********" value="08"></div>
     </div>
     
     <div class="mt-4">
@@ -83,31 +97,45 @@
     </div>
     
     <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-3">
-        <div><input type="text" name="rt_rw_ktp" placeholder="RT/RW" required class="w-full border rounded-lg px-3 py-2"></div>
-        <div><input type="text" name="kelurahan_ktp" placeholder="Kelurahan" required class="w-full border rounded-lg px-3 py-2"></div>
-        <div><input type="text" name="kecamatan_ktp" placeholder="Kecamatan" required class="w-full border rounded-lg px-3 py-2"></div>
-        <div><input type="text" name="kabupaten_ktp" placeholder="Kabupaten" required class="w-full border rounded-lg px-3 py-2"></div>
-        <div><input type="text" name="kota_ktp" placeholder="Kota" required class="w-full border rounded-lg px-3 py-2"></div>
-        <div><input type="text" name="provinsi_ktp" placeholder="Provinsi" required class="w-full border rounded-lg px-3 py-2"></div>
-        <div><input type="text" name="kode_pos_ktp" placeholder="Kode Pos" required class="w-full border rounded-lg px-3 py-2"></div>
+        <div><label class="block text-xs text-gray-400 font-medium mb-2">ㅤ No. Rumah</label>
+            <input type="text" name="no_rumah_ktp" required class="w-full border rounded-lg px-3 py-2"></div>
+        <div><label class="block text-xs text-gray-400 font-medium mb-2">ㅤ RT/RW</label>
+            <input type="text" name="rt_rw_ktp" required class="w-full border rounded-lg px-3 py-2"></div>
+        <div><label class="block text-xs text-gray-400 font-medium mb-2">ㅤ Kelurahan</label>
+            <input type="text" name="kelurahan_ktp" required class="w-full border rounded-lg px-3 py-2"></div>
+        <div><label class="block text-xs text-gray-400 font-medium mb-2">ㅤ Kecamatan</label>
+            <input type="text" name="kecamatan_ktp" required class="w-full border rounded-lg px-3 py-2"></div>
+        <div><label class="block text-xs text-gray-400 font-medium mb-2">ㅤ Kabupaten</label>
+            <input type="text" name="kabupaten_ktp" required class="w-full border rounded-lg px-3 py-2"></div>
+        <div><label class="block text-xs text-gray-400 font-medium mb-2">ㅤ Kota</label>
+            <input type="text" name="kota_ktp" required class="w-full border rounded-lg px-3 py-2"></div>
+        <div><label class="block text-xs text-gray-400 font-medium mb-2">ㅤ Provinsi</label>
+            <input type="text" name="provinsi_ktp" required class="w-full border rounded-lg px-3 py-2"></div>
+        <div><label class="block text-xs text-gray-400 font-medium mb-2">ㅤ Kode Pos</label>
+            <input type="number" name="kode_pos_ktp" required class="w-full border rounded-lg px-3 py-2"></div>
     </div>
     
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-3">
         <div>
-            <label class="block text-sm font-medium mb-1">No. KTP/Passport <span class="text-red-500">*</span></label>
+            <label class="block text-sm font-medium mb-1">No. KTP/Passport <span class="text-red-500">  *</span></label>
             <input type="text" name="no_ktp" required class="w-full border rounded-lg px-3 py-2">
         </div>
         <div>
-            <label class="block text-sm font-medium mb-1">No. NPWP</label>
-            <input type="text" name="no_npwp" required class="w-full border rounded-lg px-3 py-2">
+            <label class="block text-sm font-medium mb-1">Dikeluarkan di :<span class="text-red-500">*</span></label>
+            <input type="text" name="dikeluarkan_di" class="w-full border rounded-lg px-3 py-2">
         </div>
         <div>
-            <label class="block text-sm font-medium mb-1">No. BPJS</label>
-            <input type="text" name="no_bpjs_ketenagakerjaan" placeholder="BPJS Ketenagakerjaan"required class="w-full border rounded-lg px-3 py-2">
+            <label class="block text-sm font-medium mb-1">No. NPWP <span class="text-red-500">*</span></label>
+            <input type="number" name="no_npwp" required class="w-full border rounded-lg px-3 py-2">
         </div>
-    </div>
-    
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-3">
+        <div>
+            <label class="block text-sm font-medium mb-1">No. BPJS Kesehatan <span class="text-red-500">*</span></label>
+            <input type="number" name="no_bpjs_kesehatan" class="w-full border rounded-lg px-3 py-2">
+        </div>
+        <div>
+            <label class="block text-sm font-medium mb-1">No. BPJS Ketenagakerjaan <span class="text-red-500">*</span></label>
+            <input type="number" name="no_bpjs_ketenagakerjaan"  class="w-full border rounded-lg px-3 py-2">
+        </div>
         <div>
             <label class="block text-sm font-medium mb-1">Status Perkawinan <span class="text-red-500">*</span></label>
             <select name="status_perkawinan" required class="w-full border rounded-lg px-3 py-2">
@@ -122,13 +150,130 @@
             <input type="email" name="email" value="{{ $pelamar->email }}" required class="w-full border rounded-lg px-3 py-2 bg-gray-100" readonly>
         </div>
         <div>
-            <label class="block text-sm font-medium mb-1">Hobby</label>
+            <label class="block text-sm font-medium mb-1">Hobi<span class="text-red-500">*</span></label>
             <input type="text" name="hobby"required class="w-full border rounded-lg px-3 py-2">
         </div>
     </div>
     
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-3">
+    </div>
+    
+
     <div class="mt-3">
         <label class="block text-sm font-medium mb-1">Organisasi</label>
-        <textarea name="organisasi" rows="2"required class="w-full border rounded-lg px-3 py-2" placeholder="Riwayat organisasi yang pernah diikuti"></textarea>
+        <div class="overflow-x-auto">
+            <table class="w-full border-collapse">
+                <thead>
+                    <tr class="bg-gray-50">
+                        <th class="border border-gray-300 px-3 py-2 text-left text-xs font-medium text-gray-500 w-12">No.</th>
+                        <th class="border border-gray-300 px-3 py-2 text-left text-xs font-medium text-gray-500">Nama Organisasi</th>
+                        <th class="border border-gray-300 px-3 py-2 text-left text-xs font-medium text-gray-500 w-40">Waktu</th>
+                        <th class="border border-gray-300 px-3 py-2 text-left text-xs font-medium text-gray-500 w-36">Jabatan</th>
+                        <th class="border border-gray-300 px-3 py-2 text-left text-xs font-medium text-gray-500 w-40">Jenis Organisasi</th>
+                        <th class="border border-gray-300 px-3 py-2 text-center text-xs font-medium text-gray-500 w-12">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="organisasi-tbody">
+                    <tr class="organisasi-item">
+                        <td class="border border-gray-300 px-2 py-2 text-center text-sm organisasi-number">1.</td>
+                        <td class="border border-gray-300 px-2 py-2">
+                            <input type="text" name="organisasi_nama[]" class="w-full border-0 focus:ring-0 px-1 py-0 text-sm" placeholder="...">
+                        </td>
+                        <td class="border border-gray-300 px-2 py-2">
+                            <input type="text" name="organisasi_waktu[]" class="w-full border-0 focus:ring-0 px-1 py-0 text-sm" placeholder="...">
+                        </td>
+                        <td class="border border-gray-300 px-2 py-2">
+                            <input type="text" name="organisasi_jabatan[]" class="w-full border-0 focus:ring-0 px-1 py-0 text-sm" placeholder="...">
+                        </td>
+                        <td class="border border-gray-300 px-2 py-2">
+                            <input type="text" name="organisasi_jenis[]" class="w-full border-0 focus:ring-0 px-1 py-0 text-sm" placeholder="...">
+                        </td>
+                        <td class="border border-gray-300 px-2 py-2 text-center">
+                            <button type="button" class="remove-organisasi text-red-500 hover:text-red-700 text-xs hidden" title="Hapus">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <button type="button" onclick="addOrganisasi()" class="text-primary text-sm hover:text-primary-dark mt-2">
+            + Tambah Organisasi
+        </button>
     </div>
 </div>
+
+<script>
+    // ============================================
+    // ORGANISASI
+    // ============================================
+    // ============================================
+    // ORGANISASI - TABEL
+    // ============================================
+    function updateOrganisasiNumber() {
+        const rows = document.querySelectorAll('#organisasi-tbody .organisasi-item');
+        rows.forEach((row, index) => {
+            const numberCell = row.querySelector('.organisasi-number');
+            if (numberCell) numberCell.textContent = `${index + 1}.`;
+        });
+    
+        // Toggle tombol hapus: hanya jika > 1
+        const removeBtns = document.querySelectorAll('#organisasi-tbody .remove-organisasi');
+        removeBtns.forEach(btn => {
+            if (rows.length > 1) {
+                btn.classList.remove('hidden');
+            } else {
+                btn.classList.add('hidden');
+            }
+        });
+    }
+
+    function addOrganisasi() {
+        const tbody = document.getElementById('organisasi-tbody');
+        const newRow = document.createElement('tr');
+        newRow.className = 'organisasi-item';
+        const rowCount = tbody.children.length + 1;
+    
+        newRow.innerHTML = `
+            <td class="border border-gray-300 px-2 py-2 text-center text-sm organisasi-number">${rowCount}.</td>
+            <td class="border border-gray-300 px-2 py-2">
+                <input type="text" name="organisasi_nama[]" class="w-full border-0 focus:ring-0 px-1 py-0 text-sm" placeholder="...">
+            </td>
+            <td class="border border-gray-300 px-2 py-2">
+                <input type="text" name="organisasi_waktu[]" class="w-full border-0 focus:ring-0 px-1 py-0 text-sm" placeholder="...">
+            </td>
+            <td class="border border-gray-300 px-2 py-2">
+                <input type="text" name="organisasi_jabatan[]" class="w-full border-0 focus:ring-0 px-1 py-0 text-sm" placeholder="...">
+            </td>
+            <td class="border border-gray-300 px-2 py-2">
+                <input type="text" name="organisasi_jenis[]" class="w-full border-0 focus:ring-0 px-1 py-0 text-sm" placeholder="...">
+            </td>
+            <td class="border border-gray-300 px-2 py-2 text-center">
+                <button type="button" onclick="removeOrganisasi(this)" class="remove-organisasi text-red-500 hover:text-red-700 text-xs" title="Hapus">
+                    <i class="fas fa-times"></i>
+                </button>
+            </td>
+        `;
+    
+        tbody.appendChild(newRow);
+        updateOrganisasiNumber();
+    }
+
+    function removeOrganisasi(btn) {
+        const row = btn.closest('.organisasi-item');
+        const tbody = document.getElementById('organisasi-tbody');
+        if (tbody.children.length > 1) {
+            row.remove();
+            updateOrganisasiNumber();
+        }
+    }
+
+    // Inisialisasi
+    updateOrganisasiNumber();
+</script>
+
+
+
+
+
+

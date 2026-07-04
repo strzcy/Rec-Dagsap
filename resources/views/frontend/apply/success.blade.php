@@ -28,9 +28,10 @@
             <p class="text-gray-600 mt-1">Nomor Registrasi: <strong class="text-primary">#{{ str_pad($pelamar->id, 6, '0', STR_PAD_LEFT) }}</strong></p>
             
             @if($pelamar->status == 'lolos_tahap1')
-                <div class="mt-3 p-3 bg-blue-50 rounded-lg">
-                    <p class="text-blue-700 text-sm">
-                        <i class="fas fa-star mr-1"></i> Selamat! Anda lolos seleksi administrasi.
+                <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mb-4">
+                    <p class="text-yellow-800 text-sm">
+                        <i class="fas fa-camera mr-2"></i>
+                        <strong>Silakan screenshot halaman ini untuk bukti lamaran!</strong><br>
                     </p>
                 </div>
                 @elseif($pelamar->status == 'psikotest')
@@ -38,7 +39,14 @@
                 <p><strong>Mohon Tunggu Informasi Whatsaap dari Kami</strong>.</p>
                 <!-- <p>Atau copy link berikut: <br> <small></small></p>
                 <p>Pastikan anda mengerjakan psikotest dengan jujur dan teliti.</p> -->
+                
                 <p>Terima kasih.</p> 
+            <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mb-4">
+                <p class="text-yellow-800 text-sm">
+                    <i class="fas fa-camera mr-2"></i>
+                    <strong>Silakan screenshot halaman ini untuk bukti lamaran!</strong><br>
+                </p>
+            </div>
                 
             @endif
                         
@@ -53,6 +61,7 @@
                 @elseif($pelamar->status == 'psikotest')
                 <p style="text-decoration: underline; text-align: center;">
                 </p> <br>
+
             @endif
             <a href="{{ url('/') }}"  class="text-primary hover:underline">
                 Kembali ke Beranda

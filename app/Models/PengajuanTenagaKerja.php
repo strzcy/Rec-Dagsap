@@ -34,7 +34,19 @@ class PengajuanTenagaKerja extends Model
         'disetujui_oleh',
         'jabatan_penyetuju',
         'approved_by', 
-        'approved_at'
+        'approved_at',
+        'lampiran_path',
+        'lampiran_nama',
+        'lampiran_jenis',
+        'area_penempatan',
+        'toko_penempatan',
+        'catatan_ptk',
+        'catatan_dibuat_oleh',
+        'catatan_jabatan_dibuat',
+        'catatan_dibuat_at',
+        'catatan_diubah_oleh',
+        'catatan_jabatan_diubah',
+        'catatan_diubah_at'
     ];
 
     protected $casts = [

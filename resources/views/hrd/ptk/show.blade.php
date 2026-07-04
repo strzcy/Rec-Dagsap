@@ -82,6 +82,16 @@
                     <p class="font-medium">{{ $ptk->posisi }}</p>
                 </div>
                 <div>
+                    <label class="text-xs text-gray-500">Area Penempatan</label>
+                    <p class="font-medium">{{ $ptk->area_penempatan ?? '-' }}</p>
+                </div>
+                @if($ptk->toko_penempatan)
+                <div>
+                    <label class="text-xs text-gray-500">Toko Penempatan</label>
+                    <p class="font-medium">{{ $ptk->toko_penempatan }}</p>
+                </div>
+                @endif
+                <div>
                     <label class="text-xs text-gray-500">Jumlah Dibutuhkan</label>
                     <p class="font-medium">{{ $ptk->jumlah }} orang</p>
                 </div>
@@ -160,6 +170,78 @@
             @endif
         </div>
 
+        <!-- Lampiran Dokumen -->
+        @if($ptk->lampiran_path)
+        <div class="mb-6">
+            <h3 class="text-lg font-semibold mb-3">Dokumen Pendukung</h3>
+            <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                <div class="flex items-center justify-between flex-wrap gap-3">
+                    <div class="flex items-center">
+                        @php
+                            $ext = strtolower($ptk->lampiran_jenis ?? pathinfo($ptk->lampiran_nama, PATHINFO_EXTENSION));
+                        @endphp
+                        @if($ext == 'pdf')
+                            <i class="fas fa-file-pdf text-red-500 text-3xl mr-3"></i>
+                        @elseif(in_array($ext, ['png', 'jpg', 'jpeg']))
+                            <i class="fas fa-file-image text-green-500 text-3xl mr-3"></i>
+                        @elseif($ext == 'docx' || $ext == 'doc')
+                            <i class="fas fa-file-word text-blue-500 text-3xl mr-3"></i>
+                        @else
+                            <i class="fas fa-file text-gray-500 text-3xl mr-3"></i>
+                        @endif
+                        <div>
+                            <p class="font-medium">{{ $ptk->lampiran_nama ?? 'Dokumen' }}</p>
+                            <p class="text-xs text-gray-500">
+                                {{ strtoupper($ext) }} • 
+                                {{ Storage::disk('public')->exists($ptk->lampiran_path) ? round(Storage::disk('public')->size($ptk->lampiran_path) / 1024, 2) : 0 }} KB
+                            </p>
+                            <p class="text-xs text-gray-500">
+                                Jenis: {{ $ptk->jenis == 'penambahan' ? 'Komitmen Target' : 'Surat Resign' }}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="previewLampiran('{{ Storage::url($ptk->lampiran_path) }}', '{{ $ptk->lampiran_nama }}')" 
+                                class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition">
+                            <i class="fas fa-eye mr-2"></i> Preview
+                        </button>
+                        <a href="{{ Storage::url($ptk->lampiran_path) }}" download="{{ $ptk->lampiran_nama }}" 
+                           class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-dark transition">
+                            <i class="fas fa-download mr-2"></i> Download
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endif
+
+        <!-- CATATAN PTK -->
+        @if($ptk->catatan_ptk)
+        <div class="mt-6 pt-4 border-t">
+            <h3 class="text-lg font-semibold mb-3">Catatan PTK</h3>
+            <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <div class="flex items-start">
+                    <div class="flex-1">
+                        <p class="text-gray-700 whitespace-pre-wrap">{{ $ptk->catatan_ptk }}</p>
+                    </div>
+                    <div class="text-right text-xs text-gray-500 ml-4 flex-shrink-0">
+                        @if($ptk->catatan_diubah_at)
+                            <p>Catatan diubah pada</p>
+                            <p class="font-medium">{{ \Carbon\Carbon::parse($ptk->catatan_diubah_at)->setTimezone('Asia/Jakarta')->format('d/m/Y H:i') }} WIB</p>
+                            <p>oleh <strong>{{ $ptk->catatan_diubah_oleh }}</strong></p>
+                            <p class="text-xs text-gray-400">{{ $ptk->catatan_jabatan_diubah }}</p>
+                        @else
+                            <p>Catatan ditambahkan pada</p>
+                            <p class="font-medium">{{ \Carbon\Carbon::parse($ptk->catatan_dibuat_at)->setTimezone('Asia/Jakarta')->format('d/m/Y H:i') }} WIB</p>
+                            <p>oleh <strong>{{ $ptk->catatan_dibuat_oleh }}</strong></p>
+                            <p class="text-xs text-gray-400">{{ $ptk->catatan_jabatan_dibuat }}</p>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endif
+
         <!-- Tombol Kembali & Print -->
         <div style="display:flex; justify-content:space-between; align-items:center; margin-top:20px;">
             <div>
@@ -179,4 +261,64 @@
         </div>
     </div>
 </div>
+
+<!-- Modal Preview Lampiran -->
+<div id="lampiranModal" class="fixed inset-0 bg-black bg-opacity-75 hidden items-center justify-center z-50 p-4">
+    <div class="bg-white rounded-lg w-full max-w-4xl max-h-[90vh] overflow-hidden">
+        <div class="flex justify-between items-center p-4 border-b">
+            <h3 class="font-semibold text-lg" id="lampiranModalTitle">Preview Dokumen</h3>
+            <button onclick="closeLampiranPreview()" class="text-gray-500 hover:text-gray-700">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+        <div class="p-4 overflow-auto max-h-[calc(90vh-80px)]">
+            <div id="lampiranPdfViewer" class="hidden">
+                <embed id="lampiranPdfEmbed" src="" type="application/pdf" class="w-full min-h-[600px]">
+            </div>
+            <div id="lampiranImageViewer" class="hidden">
+                <img id="lampiranImagePreview" src="" class="max-w-full max-h-[600px] mx-auto">
+            </div>
+            <div id="lampiranDocxViewer" class="hidden text-center py-10">
+                <i class="fas fa-file-word text-6xl text-blue-400 mb-4"></i>
+                <p class="text-gray-600">File DOCX tidak dapat ditampilkan secara langsung.</p>
+                <p class="text-sm text-gray-500 mt-2">Silakan download untuk melihat isi file.</p>
+                <a href="#" id="lampiranDownloadLink" download class="mt-4 inline-block bg-primary text-white px-6 py-2 rounded-lg">
+                    <i class="fas fa-download mr-2"></i> Download File
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function previewLampiran(url, filename) {
+        const ext = filename.split('.').pop().toLowerCase();
+        document.getElementById('lampiranModalTitle').textContent = 'Preview: ' + filename;
+        
+        document.getElementById('lampiranPdfViewer').classList.add('hidden');
+        document.getElementById('lampiranImageViewer').classList.add('hidden');
+        document.getElementById('lampiranDocxViewer').classList.add('hidden');
+        
+        if (ext === 'pdf') {
+            document.getElementById('lampiranPdfViewer').classList.remove('hidden');
+            document.getElementById('lampiranPdfEmbed').src = url;
+        } else if (['png', 'jpg', 'jpeg'].includes(ext)) {
+            document.getElementById('lampiranImageViewer').classList.remove('hidden');
+            document.getElementById('lampiranImagePreview').src = url;
+        } else {
+            document.getElementById('lampiranDocxViewer').classList.remove('hidden');
+            document.getElementById('lampiranDownloadLink').href = url;
+        }
+        
+        document.getElementById('lampiranModal').classList.remove('hidden');
+        document.getElementById('lampiranModal').classList.add('flex');
+    }
+    
+    function closeLampiranPreview() {
+        document.getElementById('lampiranModal').classList.add('hidden');
+        document.getElementById('lampiranModal').classList.remove('flex');
+        document.getElementById('lampiranPdfEmbed').src = '';
+        document.getElementById('lampiranImagePreview').src = '';
+    }
+</script>
 @endsection
