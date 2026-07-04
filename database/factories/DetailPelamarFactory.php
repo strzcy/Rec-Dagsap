@@ -75,7 +75,7 @@ class DetailPelamarFactory extends Factory
 
         $pendidikanFormal = [
             [
-                'tingkat' => 'SMA/SMK',
+                'tingkat' => 'SLTA',
                 'nama_sekolah' => 'SMK Negeri 1 Jakarta',
                 'kota' => 'Jakarta',
                 'jurusan' => 'Administrasi Perkantoran',
@@ -183,13 +183,27 @@ class DetailPelamarFactory extends Factory
             'status_perkawinan' => $statusPerkawinan,
             'email' => $email,
             'hobby' => fake()->randomElement(['Membaca', 'Olahraga', 'Musik', 'Travelling']),
-            'organisasi' => 'Ketua Himpunan Mahasiswa Jurusan (2018-2019)',
+            'organisasi' => [
+                [
+                    'nama' => 'Himpunan Mahasiswa Jurusan',
+                    'waktu' => '2018-2019',
+                    'jabatan' => 'Ketua',
+                    'jenis' => 'Kemahasiswaan'
+                ]
+            ],
             'pendidikan_formal' => $pendidikanFormal,
             'pelatihan' => $pelatihan,
             'keterampilan' => $keterampilan,
             'bahasa_asing' => $bahasaAsing,
-            'kekuatan' => 'Disiplin tinggi, mampu bekerja dalam tim, memiliki orientasi detail.',
-            'kelemahan' => 'Terkadang kurang sabar ketika mendekati deadline, tetapi diatasi dengan manajemen waktu.',
+            'kekuatan' => [
+                'Disiplin tinggi',
+                'Mampu bekerja dalam tim',
+                'Memiliki orientasi detail'
+            ],
+            'kelemahan' => [
+                'Terkadang kurang sabar ketika mendekati deadline',
+                'Tetapi diatasi dengan manajemen waktu yang baik'
+            ],
             'pengalaman_kerja' => $pengalamanKerja,
             'bidang_minat' => ['Administration', 'Human Resources', 'Operations'],
             'referensi' => $referensi,

@@ -353,12 +353,38 @@
                 <tr><td>11. Status Perkawinan</td><td>:</td><td colspan="4">{{ $detail->status_perkawinan ?? '-' }}</td></tr>
                 <tr><td>12. Email</td><td>:</td><td colspan="4">{{ $detail->email ?? $pelamar->email }}</td></tr>
                 <tr><td>13. Hobi</td><td>:</td><td colspan="4">{{ $detail->hobby ?? '-' }}</td></tr>
-                <tr><td><div>14.Organisasi
-                </div></td><td>:</td><td colspan="4">@php $organisasi = is_array($detail->organisasi) ? $detail->organisasi : json_decode($detail->organisasi ?? '[]', true); @endphp
+                <tr><td><div>14.Organisasi</div></td><td>:</td><td colspan="4">
+                @php $organisasi = is_array($detail->organisasi) ? $detail->organisasi : json_decode($detail->organisasi ?? '[]', true); @endphp
                 @if(!empty($organisasi))
-                    @foreach($organisasi as $idx => $org)
-                        <div>{{ $idx+1 }}. {{ $org }}</div>
-                    @endforeach
+                    <table class="grid-table" style="margin-top: 5px; font-size: 13px; width: 100%;">
+                        <thead>
+                            <tr>
+                                <th width="30">No</th>
+                                <th>Nama Organisasi</th>
+                                <th width="80">Waktu</th>
+                                <th width="100">Jabatan</th>
+                                <th width="100">Jenis</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($organisasi as $idx => $org)
+                                @if(is_array($org))
+                                    <tr>
+                                        <td align="center">{{ $idx+1 }}</td>
+                                        <td>{{ $org['nama'] ?? '-' }}</td>
+                                        <td align="center">{{ $org['waktu'] ?? '-' }}</td>
+                                        <td>{{ $org['jabatan'] ?? '-' }}</td>
+                                        <td>{{ $org['jenis'] ?? '-' }}</td>
+                                    </tr>
+                                @else
+                                    <tr>
+                                        <td align="center">{{ $idx+1 }}</td>
+                                        <td colspan="4">{{ $org }}</td>
+                                    </tr>
+                                @endif
+                            @endforeach
+                        </tbody>
+                    </table>
                 @else
                     -
                 @endif</td></tr>
@@ -384,10 +410,27 @@
                 <tbody>
                     @php
                         $tingkatList = ['SD Sederajat', 'SLTP', 'SLTA', 'DIPLOMA', 'S1', 'S2'];
+                        
+                        $findPendidikan = function($tingkat) use ($pendidikanFormal) {
+                            $synonyms = [
+                                'SD Sederajat' => ['sd', 'sd sederajat'],
+                                'SLTP' => ['smp', 'sltp', 'smp sederajat'],
+                                'SLTA' => ['slta', 'sma/smk', 'sma', 'smk', 'sma sederajat'],
+                                'DIPLOMA' => ['diploma', 'd3', 'd1', 'd2', 'd4'],
+                                'S1' => ['s1', 'sarjana'],
+                                'S2' => ['s2', 'magister'],
+                            ];
+                            
+                            $allowed = $synonyms[$tingkat] ?? [strtolower($tingkat)];
+                            
+                            return collect($pendidikanFormal)->first(function($item) use ($allowed) {
+                                return in_array(strtolower($item['tingkat'] ?? ''), $allowed);
+                            });
+                        };
                     @endphp
                     @forelse($tingkatList as $tingkat)
                         @php
-                            $found = collect($pendidikanFormal)->firstWhere('tingkat', $tingkat);
+                            $found = $findPendidikan($tingkat);
                         @endphp
                         <tr>
                             <td>{{ $tingkat }}</td>
@@ -513,9 +556,22 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr><td align="center">1</td><td>{{ $detail->kekuatan ?? '' }}</td><td>{{ $detail->kelemahan ?? '' }}</td></tr>
-                    <tr><td align="center">2</td><td>-</td><td>-</td></tr>
-                    <tr><td align="center">3</td><td>-</td><td>-</td></tr>
+                    @php
+                        $kekuatanArr = is_array($detail->kekuatan) ? $detail->kekuatan : json_decode($detail->kekuatan ?? '[]', true);
+                        $kelemahanArr = is_array($detail->kelemahan) ? $detail->kelemahan : json_decode($detail->kelemahan ?? '[]', true);
+                        
+                        if (!is_array($kekuatanArr)) $kekuatanArr = [$detail->kekuatan ?? ''];
+                        if (!is_array($kelemahanArr)) $kelemahanArr = [$detail->kelemahan ?? ''];
+                        
+                        $maxRows = max(count($kekuatanArr), count($kelemahanArr), 3);
+                    @endphp
+                    @for($i = 0; $i < $maxRows; $i++)
+                        <tr>
+                            <td align="center">{{ $i + 1 }}</td>
+                            <td>{{ $kekuatanArr[$i] ?? '-' }}</td>
+                            <td>{{ $kelemahanArr[$i] ?? '-' }}</td>
+                        </tr>
+                    @endfor
                 </tbody>
             </table>
 

@@ -156,6 +156,17 @@ class ApplyController extends Controller
             return redirect('/')->with('error', 'Anda tidak memiliki akses.');
         }
 
+        if ($request->has('kekuatan') && is_string($request->input('kekuatan'))) {
+            $request->merge([
+                'kekuatan' => array_filter(array_map('trim', explode("\n", $request->input('kekuatan'))))
+            ]);
+        }
+        if ($request->has('kelemahan') && is_string($request->input('kelemahan'))) {
+            $request->merge([
+                'kelemahan' => array_filter(array_map('trim', explode("\n", $request->input('kelemahan'))))
+            ]);
+        }
+
         // VALIDASI DATA
         $validated = $request->validate([
             'nama_lengkap' => 'required|string|max:255',
@@ -210,8 +221,10 @@ class ApplyController extends Controller
             'waktu_bergabung' => 'required|string',
             'tempat_pernyataan' => 'nullable|string',
             
-            'kekuatan' => 'required|string|min:10',
-            'kelemahan' => 'required|string|min:10',
+            'kekuatan' => 'required|array|min:1',
+            'kekuatan.*' => 'required|string|min:5',
+            'kelemahan' => 'required|array|min:1',
+            'kelemahan.*' => 'required|string|min:5',
         ]);
 
         // Kumpulkan data dinamis - PENDIDIKAN
