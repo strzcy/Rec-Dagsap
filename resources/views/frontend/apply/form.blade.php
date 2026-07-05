@@ -60,6 +60,17 @@
                     {{ session('error') }}
                 </div>
             @endif
+
+            @if ($errors->any())
+                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                    <h4 class="font-semibold mb-2"><i class="fas fa-exclamation-triangle mr-2"></i> Harap Perhatikan Sesuai Dengan Di bawah Ini:</h4>
+                    <ul class="list-disc list-inside text-sm space-y-1">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
         
             <form action="{{ route('frontend.apply.store', $lowongan) }}" method="POST" enctype="multipart/form-data">
                 @csrf
@@ -209,186 +220,20 @@
         
             if (isDiatasD3) {
                 ipkSelect.setAttribute('required', 'required');
-                ipkRequired.style.display = 'inline';
-                ipkSelect.closest('div').querySelector('.text-xs.text-gray-500').textContent = 'Wajib diisi untuk D3/S1/S2';
+                if (ipkRequired) ipkRequired.style.display = 'inline';
+                const helper = ipkSelect.closest('div').querySelector('.text-xs.text-gray-500');
+                if (helper) helper.textContent = 'Wajib diisi untuk D3/S1/S2';
             } else {
                 ipkSelect.removeAttribute('required');
-                ipkRequired.style.display = 'none';
-                ipkSelect.closest('div').querySelector('.text-xs.text-gray-500').textContent = 'Opsional untuk pendidikan di bawah D3';
+                if (ipkRequired) ipkRequired.style.display = 'none';
+                const helper = ipkSelect.closest('div').querySelector('.text-xs.text-gray-500');
+                if (helper) helper.textContent = 'Opsional untuk pendidikan di bawah D3';
             }
         }
     
         pendidikanSelect.addEventListener('change', toggleIpkRequired);
         toggleIpkRequired(); // Jalankan saat pertama kali load
-
-    let currentStep = 1;
-    const totalSteps = 4;
-    
-    function updateSteps() {
-        for (let i = 1; i <= totalSteps; i++) {
-            const circle = document.getElementById(`step${i}-circle`);
-            const text = document.getElementById(`step${i}-text`);
-            
-            if (i < currentStep) {
-                circle.className = 'w-10 h-10 rounded-full border-2 border-green-500 flex items-center justify-center mx-auto mb-2 step-completed';
-                circle.innerHTML = '<i class="fas fa-check text-white text-xs"></i>';
-                text.className = 'text-sm text-green-600';
-            } else if (i === currentStep) {
-                circle.className = 'w-10 h-10 rounded-full border-2 border-primary flex items-center justify-center mx-auto mb-2 step-active';
-                circle.innerHTML = i;
-                text.className = 'text-sm text-primary font-semibold';
-            } else {
-                circle.className = 'w-10 h-10 rounded-full border-2 border-gray-300 flex items-center justify-center mx-auto mb-2 step-pending';
-                circle.innerHTML = i;
-                text.className = 'text-sm text-gray-500';
-            }
-        }
-        
-        for (let i = 1; i <= totalSteps; i++) {
-            const section = document.getElementById(`section-${String.fromCharCode(64 + i)}`);
-            if (section) {
-                if (i === currentStep) {
-                    section.classList.add('active');
-                } else {
-                    section.classList.remove('active');
-                }
-            }
-        }
-        
-        const prevBtn = document.getElementById('prevBtn');
-        const nextBtn = document.getElementById('nextBtn');
-        const submitBtn = document.getElementById('submitBtn');
-        
-        if (currentStep === 1) {
-            prevBtn.classList.add('hidden');
-        } else {
-            prevBtn.classList.remove('hidden');
-        }
-        
-        if (currentStep === totalSteps) {
-            nextBtn.classList.add('hidden');
-            submitBtn.classList.remove('hidden');
-        } else {
-            nextBtn.classList.remove('hidden');
-            submitBtn.classList.add('hidden');
-        }
-    }
-    
-    function validateCurrentStep() {
-        const currentSection = document.getElementById(`section-${String.fromCharCode(64 + currentStep)}`);
-        const requiredFields = currentSection.querySelectorAll('[required]');
-        let isValid = true;
-        
-        requiredFields.forEach(field => {
-            if (!field.value.trim()) {
-                field.classList.add('border-red-500');
-                isValid = false;
-            } else {
-                field.classList.remove('border-red-500');
-            }
-        });
-        
-        if (!isValid) {
-            alert('Harap isi semua field yang wajib diisi (ditandai *)');
-        }
-        
-        return isValid;
-    }
-    
-    document.getElementById('nextBtn').addEventListener('click', function() {
-        if (validateCurrentStep()) {
-            if (currentStep < totalSteps) {
-                currentStep++;
-                updateSteps();
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
-        }
-    });
-    
-    document.getElementById('prevBtn').addEventListener('click', function() {
-        if (currentStep > 1) {
-            currentStep--;
-            updateSteps();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-    });
-    
-    document.querySelectorAll('input[type="number"]').forEach(input => {
-        input.addEventListener('input', function() {
-            if (this.value < 0) {
-                this.value = 0;
-            }
-        });
-    });
-    
-    updateSteps();
-
-    // Toggle functions for family forms
-    function togglePasanganForm(show) {
-        document.getElementById('pasangan-form').classList.toggle('hidden', !show);
-    }
-
-    function toggleAnakForm(show) {
-        document.getElementById('anak-form').classList.toggle('hidden', !show);
-    }
-
-    function toggleSaudaraForm(show) {
-        document.getElementById('saudara-form').classList.toggle('hidden', !show);
-    }
-
-    function toggleSakitBerat(show) {
-        document.getElementById('sakit-berat-detail').classList.toggle('hidden', !show);
-    }
-
-    function togglePenyakitKeturunan(show) {
-        document.getElementById('penyakit-keturunan-detail').classList.toggle('hidden', !show);
-    }
-
-    function toggleKacamata(show) {
-        document.getElementById('kacamata-detail').classList.toggle('hidden', !show);
-    }
-
-    function toggleAlergi(show) {
-        document.getElementById('alergi-detail').classList.toggle('hidden', !show);
-    }
-
-    // Setup dynamic add for all dynamic containers
-    function setupDynamicAdd(btnId, containerId, itemClass, removeBtnClass) {
-        document.getElementById(btnId)?.addEventListener('click', function() {
-            const container = document.getElementById(containerId);
-            const template = container.children[0].cloneNode(true);
-            template.querySelectorAll('input, select, textarea').forEach(input => {
-                if (input.type !== 'radio' && input.type !== 'checkbox') {
-                    input.value = '';
-                }
-                if (input.type === 'checkbox' || input.type === 'radio') {
-                    input.checked = false;
-                }
-            });
-            container.appendChild(template);
-            template.querySelector(removeBtnClass)?.addEventListener('click', () => template.remove());
-        });
-    }
-
-    setupDynamicAdd('tambah-pekerjaan', 'pekerjaan-container', '.pekerjaan-item', '.remove-pekerjaan');
-    setupDynamicAdd('tambah-referensi', 'referensi-container', '.referensi-item', '.remove-referensi');
-    setupDynamicAdd('tambah-saudara', 'saudara-container', '.saudara-item', '.remove-saudara');
-    setupDynamicAdd('tambah-anak', 'anak-container', '.anak-item', '.remove-anak');
-    setupDynamicAdd('tambah-penyakit', 'penyakit-keluarga-container', '.penyakit-item', '.remove-penyakit');
-    setupDynamicAdd('tambah-saudara-kandung', 'saudara-kandung-container', '.saudara-kandung-item', '.remove-saudara-kandung');
-
-    // Remove handlers for existing items
-    document.querySelectorAll('.remove-pekerjaan, .remove-referensi, .remove-saudara, .remove-anak, .remove-penyakit, .remove-saudara-kandung').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const container = this.closest('[id$="-container"]');
-            if (container && container.children.length > 1) {
-                this.closest('.pekerjaan-item, .referensi-item, .saudara-item, .anak-item, .penyakit-item, .saudara-kandung-item')?.remove();
-            }
-        });
-    });
 </script>
 @endpush
 
 @endsection
-
-

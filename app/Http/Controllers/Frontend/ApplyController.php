@@ -168,6 +168,7 @@ class ApplyController extends Controller
             'agama' => 'required|string',
             'golongan_darah' => 'required|string',
             'alamat_tinggal' => 'required|string',
+            'no_rumah_tinggal' => 'required|string|max:50',
             'rt_rw_tinggal' => 'required|string',
             'kelurahan_tinggal' => 'required|string',
             'kecamatan_tinggal' => 'required|string',
@@ -175,8 +176,11 @@ class ApplyController extends Controller
             'kota_tinggal' => 'required|string',
             'provinsi_tinggal' => 'required|string',
             'kode_pos_tinggal' => 'required|string',
+            'no_telp' => 'nullable|string|max:15',
             'no_hp' => 'required|string|min:10|max:15',
+            'no_wa' => 'required|string|min:10|max:15',
             'alamat_ktp' => 'required|string',
+            'no_rumah_ktp' => 'required|string|max:50',
             'rt_rw_ktp' => 'required|string',
             'kelurahan_ktp' => 'required|string',
             'kecamatan_ktp' => 'required|string',
@@ -186,6 +190,9 @@ class ApplyController extends Controller
             'provinsi_ktp' => 'required|string',
             'kode_pos_ktp' => 'required|string',
             'no_ktp' => 'required|string',
+            'no_npwp' => 'required|string',
+            'no_bpjs_kesehatan' => 'nullable|string|max:50',
+            'no_bpjs_ketenagakerjaan' => 'nullable|string|max:50',
             'status_perkawinan' => 'required|string',
             'email' => 'required|email',
             'hobby' => 'nullable|string',
@@ -207,11 +214,14 @@ class ApplyController extends Controller
             'alamat_ibu' => 'required|string',
             
             'gaji_diharapkan' => 'required|string',
+            'gaji_tipe' => 'required|in:brutto,netto',
             'waktu_bergabung' => 'required|string',
             'tempat_pernyataan' => 'nullable|string',
             
-            'kekuatan' => 'required|string|min:10',
-            'kelemahan' => 'required|string|min:10',
+            'kekuatan' => 'required|array|min:1',
+            'kekuatan.*' => 'nullable|string',
+            'kelemahan' => 'required|array|min:1',
+            'kelemahan.*' => 'nullable|string',
         ]);
 
         // Kumpulkan data dinamis - PENDIDIKAN
@@ -227,6 +237,24 @@ class ApplyController extends Controller
                         'tahun_masuk' => $request->pendidikan_tahun_masuk[$i] ?? '',
                         'tahun_lulus' => $request->pendidikan_tahun_lulus[$i] ?? '',
                         'ipk' => $request->pendidikan_ipk[$i] ?? '',
+                        'keterangan' => $request->pendidikan_keterangan[$i] ?? '',
+                        'alasan' => $request->pendidikan_alasan[$i] ?? '',
+                    ];
+                }
+            }
+        }
+
+        // PELATIHAN
+        $pelatihan = [];
+        if ($request->has('pelatihan_nama')) {
+            for ($i = 0; $i < count($request->pelatihan_nama); $i++) {
+                if (!empty($request->pelatihan_nama[$i])) {
+                    $pelatihan[] = [
+                        'nama' => $request->pelatihan_nama[$i],
+                        'tgl_mulai' => $request->pelatihan_tgl_mulai[$i] ?? '',
+                        'tgl_selesai' => $request->pelatihan_tgl_selesai[$i] ?? '',
+                        'lembaga' => $request->pelatihan_lembaga[$i] ?? '',
+                        'sertifikat' => $request->pelatihan_sertifikat[$i] ?? '',
                     ];
                 }
             }
@@ -280,6 +308,12 @@ class ApplyController extends Controller
             }
         }
 
+        // BIDANG MINAT
+        $bidangMinat = $request->input('bidang_minat', []);
+        if ($request->filled('bidang_minat_lain')) {
+            $bidangMinat[] = $request->bidang_minat_lain;
+        }
+
         // REFERENSI
         $referensi = [];
         if ($request->has('referensi_nama')) {
@@ -290,6 +324,22 @@ class ApplyController extends Controller
                         'alamat' => $request->referensi_alamat[$i] ?? '',
                         'telp' => $request->referensi_telp[$i] ?? '',
                         'hubungan' => $request->referensi_hubungan[$i] ?? '',
+                        'lama_kenal' => $request->referensi_lama_kenal[$i] ?? '',
+                    ];
+                }
+            }
+        }
+
+        // SAUDARA DI PERUSAHAAN
+        $saudaraDiPerusahaan = [];
+        if ($request->punya_saudara_di_perusahaan == '1' && $request->has('saudara_nama')) {
+            for ($i = 0; $i < count($request->saudara_nama); $i++) {
+                if (!empty($request->saudara_nama[$i])) {
+                    $saudaraDiPerusahaan[] = [
+                        'nama' => $request->saudara_nama[$i],
+                        'jabatan' => $request->saudara_jabatan[$i] ?? '',
+                        'lama_kenal' => $request->saudara_lama_kenal[$i] ?? '',
+                        'hubungan' => $request->saudara_hubungan[$i] ?? '',
                     ];
                 }
             }
@@ -314,8 +364,10 @@ class ApplyController extends Controller
             'nama' => $request->kontak_darurat_nama,
             'hubungan' => $request->kontak_darurat_hubungan,
             'alamat' => $request->kontak_darurat_alamat,
+            'telp' => $request->kontak_darurat_telp,
             'no_hp' => $request->kontak_darurat_hp,
             'pekerjaan' => $request->kontak_darurat_pekerjaan,
+            'jabatan' => $request->kontak_darurat_jabatan,
         ];
 
         // SAUDARA KANDUNG
@@ -325,6 +377,10 @@ class ApplyController extends Controller
                 if (!empty($request->saudara_kandung_nama[$i])) {
                     $saudaraKandung[] = [
                         'nama' => $request->saudara_kandung_nama[$i],
+                        'jenis_kelamin' => $request->saudara_kandung_jk[$i] ?? '',
+                        'usia' => $request->saudara_kandung_usia[$i] ?? '',
+                        'pendidikan' => $request->saudara_kandung_pendidikan[$i] ?? '',
+                        'pekerjaan' => $request->saudara_kandung_pekerjaan[$i] ?? '',
                         'hubungan' => $request->saudara_kandung_hubungan[$i] ?? '',
                     ];
                 }
@@ -345,6 +401,57 @@ class ApplyController extends Controller
             }
         }
 
+        // DATA PASANGAN
+        $dataPasangan = null;
+        if ($request->punya_pasangan == '1') {
+            $dataPasangan = [
+                'nama' => $request->nama_pasangan,
+                'tempat_lahir' => $request->tempat_lahir_pasangan,
+                'tanggal_lahir' => $request->tanggal_lahir_pasangan,
+                'tanggal_menikah' => $request->tanggal_menikah,
+                'agama' => $request->agama_pasangan,
+                'alamat' => $request->alamat_pasangan,
+                'pekerjaan' => $request->pekerjaan_pasangan,
+                'jabatan' => $request->jabatan_pasangan,
+            ];
+        }
+
+        // DATA ANAK
+        $dataAnak = [];
+        if ($request->punya_anak == '1' && $request->has('anak_nama')) {
+            for ($i = 0; $i < count($request->anak_nama); $i++) {
+                if (!empty($request->anak_nama[$i])) {
+                    $dataAnak[] = [
+                        'nama' => $request->anak_nama[$i],
+                        'jenis_kelamin' => $request->anak_jenis_kelamin[$i] ?? '',
+                        'tempat_lahir' => $request->anak_tempat_lahir[$i] ?? '',
+                        'tanggal_lahir' => $request->anak_tanggal_lahir[$i] ?? '',
+                        'pendidikan' => $request->anak_pendidikan[$i] ?? '',
+                    ];
+                }
+            }
+        }
+
+        // RIWAYAT PENYAKIT KELUARGA
+        $riwayatPenyakitKeluarga = [];
+        if ($request->punya_penyakit_keluarga == '1' && $request->has('penyakit_nama')) {
+            for ($i = 0; $i < count($request->penyakit_nama); $i++) {
+                if (!empty($request->penyakit_nama[$i])) {
+                    $riwayatPenyakitKeluarga[] = [
+                        'nama' => $request->penyakit_nama[$i],
+                        'jenis' => $request->penyakit_jenis[$i] ?? '',
+                        'hubungan' => $request->penyakit_hubungan[$i] ?? '',
+                        'tahun' => $request->penyakit_tahun[$i] ?? '',
+                        'tempat' => $request->penyakit_tempat[$i] ?? '',
+                    ];
+                }
+            }
+        }
+
+        // Filter empty values from kekuatan & kelemahan
+        $kekuatan = array_values(array_filter($request->input('kekuatan', []), fn($val) => !is_null($val) && trim($val) !== ''));
+        $kelemahan = array_values(array_filter($request->input('kelemahan', []), fn($val) => !is_null($val) && trim($val) !== ''));
+
         // DATA UNTUK DISIMPAN
         $detailData = [
             'pelamar_id' => $pelamar->id,
@@ -358,6 +465,7 @@ class ApplyController extends Controller
             'agama' => $validated['agama'],
             'golongan_darah' => $validated['golongan_darah'],
             'alamat_tinggal' => $validated['alamat_tinggal'],
+            'no_rumah_tinggal' => $validated['no_rumah_tinggal'],
             'rt_rw_tinggal' => $validated['rt_rw_tinggal'],
             'kelurahan_tinggal' => $validated['kelurahan_tinggal'],
             'kecamatan_tinggal' => $validated['kecamatan_tinggal'],
@@ -365,8 +473,11 @@ class ApplyController extends Controller
             'kota_tinggal' => $validated['kota_tinggal'],
             'provinsi_tinggal' => $validated['provinsi_tinggal'],
             'kode_pos_tinggal' => $validated['kode_pos_tinggal'],
+            'no_telp' => $validated['no_telp'] ?? null,
             'no_hp' => $validated['no_hp'],
+            'no_wa' => $validated['no_wa'],
             'alamat_ktp' => $validated['alamat_ktp'],
+            'no_rumah_ktp' => $validated['no_rumah_ktp'],
             'rt_rw_ktp' => $validated['rt_rw_ktp'],
             'kelurahan_ktp' => $validated['kelurahan_ktp'],
             'kecamatan_ktp' => $validated['kecamatan_ktp'],
@@ -375,24 +486,42 @@ class ApplyController extends Controller
             'provinsi_ktp' => $validated['provinsi_ktp'],
             'kode_pos_ktp' => $validated['kode_pos_ktp'],
             'no_ktp' => $validated['no_ktp'],
+            'no_npwp' => $validated['no_npwp'],
+            'no_bpjs_kesehatan' => $validated['no_bpjs_kesehatan'] ?? null,
+            'no_bpjs_ketenagakerjaan' => $validated['no_bpjs_ketenagakerjaan'] ?? null,
             'status_perkawinan' => $validated['status_perkawinan'],
             'email' => $validated['email'],
             'hobby' => $validated['hobby'],
             'organisasi' => $organisasi,
             'pendidikan_formal' => $pendidikanFormal,
+            'pelatihan' => $pelatihan,
             'keterampilan' => $keterampilan,
             'bahasa_asing' => $bahasaAsing,
-            'kekuatan' => $validated['kekuatan'],
-            'kelemahan' => $validated['kelemahan'],
+            'kekuatan' => $kekuatan,
+            'kelemahan' => $kelemahan,
+            'pengalaman_kerja' => $pengalamanKerja,
+            'bidang_minat' => $bidangMinat,
             'referensi' => $referensi,
+            'punya_saudara_di_perusahaan' => $request->punya_saudara_di_perusahaan == '1',
+            'saudara_di_perusahaan' => $saudaraDiPerusahaan,
             'pernah_sakit_berat' => $request->pernah_sakit_berat == '1',
+            'sakit_berat_keterangan' => $request->pernah_sakit_berat == '1' ? $request->sakit_berat_keterangan : null,
             'punya_penyakit_keturunan' => $request->punya_penyakit_keturunan == '1',
+            'penyakit_keturunan_keterangan' => $request->punya_penyakit_keturunan == '1' ? $request->penyakit_keturunan_keterangan : null,
             'pakai_kacamata' => $request->pakai_kacamata == '1',
+            'ukuran_kacamata' => $request->pakai_kacamata == '1' ? $request->ukuran_kacamata : null,
             'punya_alergi' => $request->punya_alergi == '1',
+            'alergi_keterangan' => $request->punya_alergi == '1' ? $request->alergi_keterangan : null,
+            'punya_pasangan' => $request->punya_pasangan == '1',
+            'data_pasangan' => $dataPasangan,
+            'punya_anak' => $request->punya_anak == '1',
+            'data_anak' => $dataAnak,
+            'riwayat_penyakit_keluarga' => $riwayatPenyakitKeluarga,
             'data_orang_tua' => $dataOrangTua,
             'kontak_darurat' => $kontakDarurat,
             'saudara_kandung' => $saudaraKandung,
             'gaji_diharapkan' => $validated['gaji_diharapkan'],
+            'gaji_tipe' => $validated['gaji_tipe'],
             'waktu_bergabung' => $validated['waktu_bergabung'],
             'pernyataan_setuju' => true,
             'tempat_pernyataan' => $validated['tempat_pernyataan'] ?? 'Jakarta',

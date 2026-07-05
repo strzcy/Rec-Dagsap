@@ -14,11 +14,11 @@ class DetailPelamar extends Model
         // A
         'nama_lengkap', 'jenis_kelamin', 'tempat_lahir', 'tanggal_lahir',
         'tinggi_badan', 'berat_badan', 'kewarganegaraan', 'agama', 'golongan_darah',
-        'alamat_tinggal', 'rt_rw_tinggal', 'kelurahan_tinggal', 'kecamatan_tinggal',
+        'alamat_tinggal', 'no_rumah_tinggal', 'rt_rw_tinggal', 'kelurahan_tinggal', 'kecamatan_tinggal',
         'kabupaten_tinggal', 'kota_tinggal', 'provinsi_tinggal', 'kode_pos_tinggal',
-        'no_telp', 'no_hp', 'no_wa', 'alamat_ktp','dikeluarkan_di', 'rt_rw_ktp', 'kelurahan_ktp',
+        'no_telp', 'no_hp', 'no_wa', 'alamat_ktp', 'no_rumah_ktp', 'dikeluarkan_di', 'rt_rw_ktp', 'kelurahan_ktp',
         'kecamatan_ktp', 'kabupaten_ktp', 'kota_ktp', 'provinsi_ktp', 'kode_pos_ktp',
-        'no_ktp', 'no_npwp', 'no_bpjs_ketenagakerjaan', 'status_perkawinan', 'email', 'hobby', 'organisasi',
+        'no_ktp', 'no_passport', 'no_npwp', 'no_bpjs_kesehatan', 'no_bpjs_ketenagakerjaan', 'status_perkawinan', 'email', 'hobby', 'organisasi',
         // B
         'pendidikan_formal', 'pelatihan',
         // C
@@ -38,7 +38,7 @@ class DetailPelamar extends Model
         'punya_pasangan', 'data_pasangan', 'punya_anak', 'data_anak',
         'riwayat_penyakit_keluarga', 'data_orang_tua', 'kontak_darurat', 'saudara_kandung',
         // J
-        'gaji_diharapkan',
+        'gaji_diharapkan', 'gaji_tipe',
         // K
         'waktu_bergabung',
         // L
@@ -48,10 +48,13 @@ class DetailPelamar extends Model
     protected $casts = [
         'tanggal_lahir' => 'date',
         'tanggal_pernyataan' => 'date',
+        'organisasi' => 'array',
         'pendidikan_formal' => 'array',
         'pelatihan' => 'array',
         'keterampilan' => 'array',
         'bahasa_asing' => 'array',
+        'kekuatan' => 'array',
+        'kelemahan' => 'array',
         'pengalaman_kerja' => 'array',
         'bidang_minat' => 'array',
         'referensi' => 'array',
@@ -99,6 +102,16 @@ class DetailPelamar extends Model
         $this->attributes['no_ktp'] = $value ? encrypt($value) : null;
     }
 
+    public function getNoPassportAttribute($value)
+    {
+        return $this->getEncryptedAttribute($value);
+    }
+
+    public function setNoPassportAttribute($value)
+    {
+        $this->attributes['no_passport'] = $value ? encrypt($value) : null;
+    }
+
     public function getNoNpwpAttribute($value)
     {
         return $this->getEncryptedAttribute($value);
@@ -107,6 +120,16 @@ class DetailPelamar extends Model
     public function setNoNpwpAttribute($value)
     {
         $this->attributes['no_npwp'] = $value ? encrypt($value) : null;
+    }
+
+    public function getNoBpjsKesehatanAttribute($value)
+    {
+        return $this->getEncryptedAttribute($value);
+    }
+
+    public function setNoBpjsKesehatanAttribute($value)
+    {
+        $this->attributes['no_bpjs_kesehatan'] = $value ? encrypt($value) : null;
     }
 
     public function getNoBpjsKetenagakerjaanAttribute($value)

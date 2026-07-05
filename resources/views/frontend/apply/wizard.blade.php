@@ -155,4 +155,145 @@
     </div>
 </div>
 
+
+@push('scripts')
+<script>
+    let currentStep = {{ $stepWithErrors }};
+    const totalSteps = 4;
+    
+    function updateSteps() {
+        for (let i = 1; i <= totalSteps; i++) {
+            const circle = document.getElementById(`step${i}-circle`);
+            const text = document.getElementById(`step${i}-text`);
+            
+            if (i < currentStep) {
+                circle.className = 'w-10 h-10 rounded-full border-2 border-green-500 flex items-center justify-center mx-auto mb-2 step-completed';
+                circle.innerHTML = '<i class="fas fa-check text-white text-xs"></i>';
+                text.className = 'text-sm text-green-600';
+            } else if (i === currentStep) {
+                circle.className = 'w-10 h-10 rounded-full border-2 border-primary flex items-center justify-center mx-auto mb-2 step-active';
+                circle.innerHTML = i;
+                text.className = 'text-sm text-primary font-semibold';
+            } else {
+                circle.className = 'w-10 h-10 rounded-full border-2 border-gray-300 flex items-center justify-center mx-auto mb-2 step-pending';
+                circle.innerHTML = i;
+                text.className = 'text-sm text-gray-500';
+            }
+        }
+        
+        for (let i = 1; i <= totalSteps; i++) {
+            const section = document.getElementById(`section-${String.fromCharCode(64 + i)}`);
+            if (section) {
+                if (i === currentStep) {
+                    section.classList.add('active');
+                } else {
+                    section.classList.remove('active');
+                }
+            }
+        }
+        
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const submitBtn = document.getElementById('submitBtn');
+        
+        if (currentStep === 1) {
+            prevBtn.classList.add('hidden');
+        } else {
+            prevBtn.classList.remove('hidden');
+        }
+        
+        if (currentStep === totalSteps) {
+            nextBtn.classList.add('hidden');
+            submitBtn.classList.remove('hidden');
+        } else {
+            nextBtn.classList.remove('hidden');
+            submitBtn.classList.add('hidden');
+        }
+    }
+    
+    function validateCurrentStep() {
+        const currentSection = document.getElementById(`section-${String.fromCharCode(64 + currentStep)}`);
+        const requiredFields = currentSection.querySelectorAll('[required]');
+        let isValid = true;
+        
+        requiredFields.forEach(field => {
+            if (!field.value.trim()) {
+                field.classList.add('border-red-500');
+                isValid = false;
+            } else {
+                field.classList.remove('border-red-500');
+            }
+        });
+        
+        if (!isValid) {
+            alert('Harap isi semua field yang wajib diisi (ditandai *)');
+        }
+        
+        return isValid;
+    }
+    
+    document.getElementById('nextBtn').addEventListener('click', function() {
+        if (validateCurrentStep()) {
+            if (currentStep < totalSteps) {
+                currentStep++;
+                updateSteps();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+    });
+    
+    document.getElementById('prevBtn').addEventListener('click', function() {
+        if (currentStep > 1) {
+            currentStep--;
+            updateSteps();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    });
+    
+    document.querySelectorAll('input[type="number"]').forEach(input => {
+        input.addEventListener('input', function() {
+            if (this.value < 0) {
+                this.value = 0;
+            }
+        });
+    });
+    
+    updateSteps();
+
+    // Toggle functions for family/health forms
+    function togglePasanganForm(show) {
+        document.getElementById('pasangan-form').classList.toggle('hidden', !show);
+    }
+
+    function toggleAnakForm(show) {
+        document.getElementById('anak-form').classList.toggle('hidden', !show);
+    }
+
+    function toggleSaudaraForm(show) {
+        document.getElementById('saudara-form').classList.toggle('hidden', !show);
+    }
+
+    function toggleSakitBerat(show) {
+        document.getElementById('sakit-berat-detail').classList.toggle('hidden', !show);
+    }
+
+    function togglePenyakitKeturunan(show) {
+        document.getElementById('penyakit-keturunan-detail').classList.toggle('hidden', !show);
+    }
+
+    // Perbaikan: Pastikan fungsi toggleKacamata menerima tipe parameter dengan benar
+    function toggleKacamata(show) {
+        document.getElementById('kacamata-detail').classList.toggle('hidden', !show);
+    }
+
+    function toggleAlergi(show) {
+        document.getElementById('alergi-detail').classList.toggle('hidden', !show);
+    }
+
+    function togglePenyakitKeluargaForm(show) {
+        document.getElementById('penyakit-keluarga-form').classList.toggle('hidden', !show);
+    }
+</script>
+@endpush
+
 @endsection
