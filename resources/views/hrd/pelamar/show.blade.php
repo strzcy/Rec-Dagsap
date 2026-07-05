@@ -187,8 +187,8 @@
         <div class="detail-section">
             <h4>E. KEKUATAN &amp; KELEMAHAN</h4>
             <div class="grid grid-cols-2 gap-3 text-sm">
-                <div><strong>Kekuatan:</strong> {{ $detail->kekuatan ?? '-' }}</div>
-                <div><strong>Kelemahan:</strong> {{ $detail->kelemahan ?? '-' }}</div>
+                <div><strong>Kekuatan:</strong> {{ is_array($detail->kekuatan) ? implode(', ', $detail->kekuatan) : ($detail->kekuatan ?? '-') }}</div>
+                <div><strong>Kelemahan:</strong> {{ is_array($detail->kelemahan) ? implode(', ', $detail->kelemahan) : ($detail->kelemahan ?? '-') }}</div>
             </div>
         </div>
         
@@ -327,9 +327,9 @@
                                 @foreach($riwayatPenyakitKeluarga as $idx => $penyakit)
                                 <tr><td class="px-2 py-1 border" align="center">{{ $idx+1 }}</td>
                                     <td class="px-2 py-1 border">{{ $penyakit['nama'] ?? '-' }}</td>
-                                    <td class="px-2 py-1 border">{{ $penyakit['jenis_penyakit'] ?? '-' }}</td>
+                                    <td class="px-2 py-1 border">{{ $penyakit['jenis_penyakit'] ?? $penyakit['jenis'] ?? '-' }}</td>
                                     <td class="px-2 py-1 border">{{ $penyakit['hubungan'] ?? '-' }}</td>
-                                    <td class="px-2 py-1 border">{{ $penyakit['tahun_dirawat'] ?? '-' }}</td>
+                                    <td class="px-2 py-1 border">{{ $penyakit['tahun_dirawat'] ?? $penyakit['tahun'] ?? '-' }}</td>
                                     <td class="px-2 py-1 border">{{ $penyakit['tempat'] ?? '-' }}</td>
                                 </tr>
                                 @endforeach

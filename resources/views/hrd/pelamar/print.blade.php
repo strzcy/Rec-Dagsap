@@ -357,7 +357,11 @@
                 </div></td><td>:</td><td colspan="4">@php $organisasi = is_array($detail->organisasi) ? $detail->organisasi : json_decode($detail->organisasi ?? '[]', true); @endphp
                 @if(!empty($organisasi))
                     @foreach($organisasi as $idx => $org)
-                        <div>{{ $idx+1 }}. {{ $org }}</div>
+                        @if(is_array($org))
+                            <div>{{ $idx+1 }}. {{ $org['nama'] ?? '-' }} @if(!empty($org['jabatan']))({{ $org['jabatan'] }}@if(!empty($org['waktu'])), {{ $org['waktu'] }}@endif)@endif</div>
+                        @else
+                            <div>{{ $idx+1 }}. {{ $org }}</div>
+                        @endif
                     @endforeach
                 @else
                     -
@@ -504,6 +508,11 @@
 
         <div class="section">
             <div class="section-title">E. KEKUATAN &amp; KELEMAHAN</div>
+            @php
+                $kekuatan = is_array($detail->kekuatan) ? $detail->kekuatan : json_decode($detail->kekuatan ?? '[]', true);
+                $kelemahan = is_array($detail->kelemahan) ? $detail->kelemahan : json_decode($detail->kelemahan ?? '[]', true);
+                $maxCount = max(count($kekuatan), count($kelemahan), 3);
+            @endphp
             <table class="grid-table">
                 <thead>
                     <tr>
@@ -513,9 +522,13 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr><td align="center">1</td><td>{{ $detail->kekuatan ?? '' }}</td><td>{{ $detail->kelemahan ?? '' }}</td></tr>
-                    <tr><td align="center">2</td><td>-</td><td>-</td></tr>
-                    <tr><td align="center">3</td><td>-</td><td>-</td></tr>
+                    @for($i = 0; $i < $maxCount; $i++)
+                        <tr>
+                            <td align="center">{{ $i + 1 }}</td>
+                            <td>{{ $kekuatan[$i] ?? '-' }}</td>
+                            <td>{{ $kelemahan[$i] ?? '-' }}</td>
+                        </tr>
+                    @endfor
                 </tbody>
             </table>
 
@@ -780,9 +793,9 @@
                         <tr>
                             <td align="center">{{ $idx+1 }}</td>
                             <td>{{ $penyakit['nama'] ?? '-' }}</td>
-                            <td>{{ $penyakit['jenis_penyakit'] ?? '-' }}</td>
+                            <td>{{ $penyakit['jenis_penyakit'] ?? $penyakit['jenis'] ?? '-' }}</td>
                             <td>{{ $penyakit['hubungan'] ?? '-' }}</td>
-                            <td>{{ $penyakit['tahun_dirawat'] ?? '-' }}</td>
+                            <td>{{ $penyakit['tahun_dirawat'] ?? $penyakit['tahun'] ?? '-' }}</td>
                             <td>{{ $penyakit['tempat'] ?? '-' }}</td>
                         </tr>
                         @endforeach
