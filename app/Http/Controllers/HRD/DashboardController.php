@@ -40,7 +40,7 @@ class DashboardController extends Controller
           ->groupBy('status')
           ->get();
           
-        $recentPelamar = Pelamar::with('lowongan')
+        $recentPelamar = Pelamar::with(['lowongan', 'detail'])
             ->whereHas('lowongan', function($q) use ($hrdId) {
                 $q->where('hrd_id', $hrdId);
             })

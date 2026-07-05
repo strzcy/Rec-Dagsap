@@ -353,19 +353,51 @@
                 <tr><td>11. Status Perkawinan</td><td>:</td><td colspan="4">{{ $detail->status_perkawinan ?? '-' }}</td></tr>
                 <tr><td>12. Email</td><td>:</td><td colspan="4">{{ $detail->email ?? $pelamar->email }}</td></tr>
                 <tr><td>13. Hobi</td><td>:</td><td colspan="4">{{ $detail->hobby ?? '-' }}</td></tr>
-                <tr><td><div>14.Organisasi
-                </div></td><td>:</td><td colspan="4">@php $organisasi = is_array($detail->organisasi) ? $detail->organisasi : json_decode($detail->organisasi ?? '[]', true); @endphp
-                @if(!empty($organisasi))
-                    @foreach($organisasi as $idx => $org)
-                        @if(is_array($org))
-                            <div>{{ $idx+1 }}. {{ $org['nama'] ?? '-' }} @if(!empty($org['jabatan']))({{ $org['jabatan'] }}@if(!empty($org['waktu'])), {{ $org['waktu'] }}@endif)@endif</div>
+                <tr>
+                    <td><div>14. Organisasi</div></td>
+                    <td>:</td>
+                    <td colspan="4">
+                        @php 
+                            $organisasi = is_array($detail->organisasi) ? $detail->organisasi : json_decode($detail->organisasi ?? '[]', true); 
+                        @endphp
+                        @if(!empty($organisasi))
+                            <table class="grid-table" style="margin-top: 5px; margin-bottom: 5px; width: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th width="40">No.</th>
+                                        <th>Nama Organisasi</th>
+                                        <th width="150">Jenis Organisasi</th>
+                                        <th width="150">Jabatan</th>
+                                        <th width="120">Waktu / Periode</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($organisasi as $idx => $org)
+                                        @if(is_array($org))
+                                            <tr>
+                                                <td align="center">{{ $idx+1 }}</td>
+                                                <td>{{ $org['nama'] ?? '-' }}</td>
+                                                <td>{{ $org['jenis'] ?? '-' }}</td>
+                                                <td>{{ $org['jabatan'] ?? '-' }}</td>
+                                                <td>{{ $org['waktu'] ?? '-' }}</td>
+                                            </tr>
+                                        @else
+                                            <tr>
+                                                <td align="center">{{ $idx+1 }}</td>
+                                                <td>{{ $org }}</td>
+                                                <td>-</td>
+                                                <td>-</td>
+                                                <td>-</td>
+                                            </tr>
+                                        @endif
+                                    @endforeach
+                                </tbody>
+                            </table>
                         @else
-                            <div>{{ $idx+1 }}. {{ $org }}</div>
+                            -
                         @endif
-                    @endforeach
-                @else
-                    -
-                @endif</td></tr>
+                    </td>
+                </tr>
             </table>    
           </div>
 

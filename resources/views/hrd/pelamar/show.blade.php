@@ -29,11 +29,13 @@
 
 @section('content')
 <!-- Tombol Print -->
+@if($pelamar->status !== 'lolos_tahap1')
 <div class="flex justify-end space-x-3 mb-4 no-print">
     <a href="{{ route('hrd.pelamar.print', $pelamar) }}" target="_blank" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-dark">
         <i class="fas fa-print mr-2"></i> Cetak Data (A4)
     </a>
 </div>
+@endif
 
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
     <!-- Informasi Pelamar Ringkas -->

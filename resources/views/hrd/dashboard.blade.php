@@ -122,14 +122,40 @@
                     <tr>
                         <th class="px-4 py-2 text-left text-xs">Nama</th>
                         <th class="px-4 py-2 text-left text-xs">Lowongan</th>
+                        <th class="px-4 py-2 text-left text-xs">Organisasi</th>
                         <th class="px-4 py-2 text-left text-xs">Status</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse($recentPelamar as $pelamar)
                     <tr class="border-t">
-                        <td class="px-4 py-2">{{ $pelamar->nama_lengkap }}</td>
+                        <td class="px-4 py-2 font-medium">{{ $pelamar->nama_lengkap }}</td>
                         <td class="px-4 py-2">{{ $pelamar->lowongan->judul ?? '-' }}</td>
+                        <td class="px-4 py-2">
+                            @if($pelamar->detail && !empty($pelamar->detail->organisasi))
+                                @php
+                                    $organisasi = is_array($pelamar->detail->organisasi) ? $pelamar->detail->organisasi : json_decode($pelamar->detail->organisasi, true);
+                                @endphp
+                                @if(!empty($organisasi))
+                                    <div class="space-y-1">
+                                        @foreach($organisasi as $org)
+                                            @if(is_array($org))
+                                                <div class="text-xs text-gray-600">
+                                                    <span class="font-medium text-gray-800">{{ $org['nama'] ?? '-' }}</span>
+                                                    @if(!empty($org['jabatan'])) <span class="text-gray-500">({{ $org['jabatan'] }})</span> @endif
+                                                </div>
+                                            @else
+                                                <div class="text-xs text-gray-600">{{ $org }}</div>
+                                            @endif
+                                        @endforeach
+                                    </div>
+                                @else
+                                    <span class="text-gray-400">-</span>
+                                @endif
+                            @else
+                                <span class="text-gray-400">-</span>
+                            @endif
+                        </td>
                         <td class="px-4 py-2">
                             <span class="px-2 py-1 text-xs rounded-full 
                                 @if($pelamar->status == 'pending') bg-gray-100 text-gray-800
@@ -144,7 +170,7 @@
                     </tr>
                     @empty
                     <tr class="border-t">
-                        <td colspan="3" class="px-4 py-4 text-center text-gray-500">Belum ada pelamar</td>
+                        <td colspan="4" class="px-4 py-4 text-center text-gray-500">Belum ada pelamar</td>
                     </tr>
                     @endforelse
                 </tbody>
