@@ -187,30 +187,8 @@
         <div class="detail-section">
             <h4>E. KEKUATAN &amp; KELEMAHAN</h4>
             <div class="grid grid-cols-2 gap-3 text-sm">
-                <div>
-                    <strong>Kekuatan:</strong>
-                    @if(is_array($detail->kekuatan))
-                        <ul class="list-disc pl-5 mt-1">
-                            @foreach($detail->kekuatan as $k)
-                                <li>{{ $k }}</li>
-                            @endforeach
-                        </ul>
-                    @else
-                        <p class="mt-1">{{ $detail->kekuatan ?? '-' }}</p>
-                    @endif
-                </div>
-                <div>
-                    <strong>Kelemahan:</strong>
-                    @if(is_array($detail->kelemahan))
-                        <ul class="list-disc pl-5 mt-1">
-                            @foreach($detail->kelemahan as $k)
-                                <li>{{ $k }}</li>
-                            @endforeach
-                        </ul>
-                    @else
-                        <p class="mt-1">{{ $detail->kelemahan ?? '-' }}</p>
-                    @endif
-                </div>
+                <div><strong>Kekuatan:</strong> {{ $detail->kekuatan ?? '-' }}</div>
+                <div><strong>Kelemahan:</strong> {{ $detail->kelemahan ?? '-' }}</div>
             </div>
         </div>
         
