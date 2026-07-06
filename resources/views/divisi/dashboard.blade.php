@@ -106,7 +106,7 @@
                         "Permisi, Saya " . $ptkData['nama_pemohon'] . " telah mengajukan PTK.\n\n" .
                         "• Posisi: " . $ptkData['posisi'] . "\n" .
                         "• Jumlah: " . $ptkData['jumlah'] . " orang\n" .
-                        "• Dibutuhkan pad: " . $ptkData['tanggal_dibutuhkan'] . "\n" .
+                        "• Dibutuhkan pada: " . $ptkData['tanggal_dibutuhkan'] . "\n" .
                         "• Divisi: " . $ptkData['divisi'] . "\n\n" .
                         "Mohon segera diproses. Terima kasih."
                     );

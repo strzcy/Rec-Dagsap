@@ -307,7 +307,7 @@
                     <td>Kode Pos</td><td>:</td><td>{{ $detail->kode_pos_tinggal ?? '-' }}</td>
                 </tr>
                 <tr>
-                    <td>No. Telp</td><td>:</td><td>-</td>
+                    <td>No. Telp</td><td>:</td><td>{{ $detail->no_telepon ?? $pelamar->no_telepon }}</td>
                     <td>No. HP</td><td>:</td><td>{{ $detail->no_hp ?? $pelamar->no_telepon }}</td>
                 </tr>
                 <tr>
@@ -337,9 +337,6 @@
                     <td>Propinsi</td><td>:</td><td>{{ $detail->provinsi_ktp ?? '-' }}</td>
                     <td>Kode Pos</td><td>:</td><td>{{ $detail->kode_pos_ktp ?? '-' }}</td>
                 </tr>
-                <tr>
-                    <td>No. Telp</td><td>:</td><td>-</td>
-                </tr>
             </table>
 
             <table class="detail-table">
@@ -353,49 +350,47 @@
                 <tr><td>11. Status Perkawinan</td><td>:</td><td colspan="4">{{ $detail->status_perkawinan ?? '-' }}</td></tr>
                 <tr><td>12. Email</td><td>:</td><td colspan="4">{{ $detail->email ?? $pelamar->email }}</td></tr>
                 <tr><td>13. Hobi</td><td>:</td><td colspan="4">{{ $detail->hobby ?? '-' }}</td></tr>
+                <tr><td>14. Organisasi</td><td>:</td><td colspan="4"></td></tr>
                 <tr>
-                    <td><div>14. Organisasi</div></td>
-                    <td>:</td>
-                    <td colspan="4">
-                        @php 
-                            $organisasi = is_array($detail->organisasi) ? $detail->organisasi : json_decode($detail->organisasi ?? '[]', true); 
+                    <td colspan="6">
+                        @php
+                            $organisasi = is_array($detail->organisasi)
+                                ? $detail->organisasi
+                                : json_decode($detail->organisasi ?? '[]', true);
                         @endphp
-                        @if(!empty($organisasi))
-                            <table class="grid-table" style="margin-top: 5px; margin-bottom: 5px; width: 100%;">
-                                <thead>
+
+                        <table class="grid-table">
+                            <thead>
+                                <tr>
+                                    <th width="40">No.</th>
+                                    <th>Nama Organisasi</th>
+                                    <th>Jenis Organisasi</th>
+                                    <th>Jabatan</th>
+                                    <th>Waktu / Periode</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse($organisasi as $idx => $org)
                                     <tr>
-                                        <th width="40">No.</th>
-                                        <th>Nama Organisasi</th>
-                                        <th width="150">Jenis Organisasi</th>
-                                        <th width="150">Jabatan</th>
-                                        <th width="120">Waktu / Periode</th>
+                                        <td align="center">{{ $idx + 1 }}</td>
+                                        <td>{{ $org['nama'] ?? '' }}</td>
+                                        <td>{{ $org['jenis'] ?? '' }}</td>
+                                        <td>{{ $org['jabatan'] ?? '' }}</td>
+                                        <td>{{ $org['waktu'] ?? '' }}</td>
                                     </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($organisasi as $idx => $org)
-                                        @if(is_array($org))
-                                            <tr>
-                                                <td align="center">{{ $idx+1 }}</td>
-                                                <td>{{ $org['nama'] ?? '-' }}</td>
-                                                <td>{{ $org['jenis'] ?? '-' }}</td>
-                                                <td>{{ $org['jabatan'] ?? '-' }}</td>
-                                                <td>{{ $org['waktu'] ?? '-' }}</td>
-                                            </tr>
-                                        @else
-                                            <tr>
-                                                <td align="center">{{ $idx+1 }}</td>
-                                                <td>{{ $org }}</td>
-                                                <td>-</td>
-                                                <td>-</td>
-                                                <td>-</td>
-                                            </tr>
-                                        @endif
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        @else
-                            -
-                        @endif
+                                @empty
+                                    @for($i = 0; $i < 3; $i++)
+                                        <tr>
+                                            <td align="center">{{ $i + 1 }}</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    @endfor
+                                @endforelse
+                            </tbody>
+                        </table>
                     </td>
                 </tr>
             </table>    
@@ -435,7 +430,7 @@
                             <td>{{ $found['ipk'] ?? '' }}</td>
                             <td>{{ $tingkat == 'DIPLOMA' ? 'D1/D2/D3' : '' }}</td>
                         </tr>
-                        @empty
+                        @empty  
                         @for($i=0; $i<4; $i++)
                         <tr><td align="center">{{ $i+1 }}</td>
                         <td></td><td></td><td></td><td></td><td></td>
@@ -697,6 +692,10 @@
             <div style="margin-top: 10px;">
                 Apakah Anda mempunyai saudara/kenalan yang bekerja di perusahaan kami? 
                 ( {{ ($detail->punya_saudara_di_perusahaan ?? false) ? ' ✓ ' : "ㅤ" }} ) ya ( {{ !($detail->punya_saudara_di_perusahaan ?? false) ? ' ✓ ' : "ㅤ" }} ) tidak
+            </div>
+
+            <div>
+                {{$detail->punya}}
             </div>
         </div>
 
