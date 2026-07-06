@@ -160,7 +160,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                 <div>
                     <label class="block text-xs text-gray-500 mb-1">Pendidikan Minimal</label>
-                    <select name="kriteria_pendidikan" class="w-full border rounded-lg px-3 py-2" required>
+                    <select id="kriteria_pendidikan" name="kriteria_pendidikan" class="w-full border rounded-lg px-3 py-2" required>
                         <option value="">Pilih Pendidikan</option>
                         <option value="SD">SD</option>
                         <option value="SMP">SMP</option>
@@ -191,7 +191,7 @@
                 </div>
                 <div>
                     <label class="block text-xs text-gray-500 mb-1">IPK Minimal</label>
-                    <select required name="kriteria_ipk" class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:border-primary">
+                    <select id="kriteria_ipk" name="kriteria_ipk" class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:border-primary">
                         <option value="">Bukan D3-S2</option>
                         <option value="2.00">2.00</option>
                         <option value="2.10">2.10</option>
@@ -447,6 +447,36 @@
 
     // Jalankan saat load untuk cek kondisi awal
     setTimeout(toggleTokoPenempatan, 100);
+
+    // ============================================
+    // IPK WAJIB JIKA PENDIDIKAN D3 - S2
+    // ============================================
+    const pendidikanSelect = document.getElementById('kriteria_pendidikan');
+    const ipkSelect = document.getElementById('kriteria_ipk');
+
+    function toggleIPK() {
+        const pendidikan = pendidikanSelect.value;
+
+        if (['D3', 'S1', 'S2'].includes(pendidikan)) {
+            ipkSelect.required = true;
+            ipkSelect.disabled = false;
+
+            // ubah placeholder
+            ipkSelect.options[0].text = '-- Pilih IPK Minimal --';
+        } else {
+            ipkSelect.required = false;
+            ipkSelect.value = '';
+            ipkSelect.disabled = true;
+
+            // ubah placeholder
+            ipkSelect.options[0].text = 'Bukan D3-S2';
+        }
+    }
+
+    pendidikanSelect.addEventListener('change', toggleIPK);
+
+    // Jalankan saat halaman pertama kali dibuka
+    toggleIPK();
 </script>
 @endpush
 @endsection

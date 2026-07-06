@@ -93,7 +93,7 @@
                 
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">No Telepon/WA *</label>
-                        <input type="tel" name="no_telepon" class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:border-primary" placeholder="628xxxxxxxxxx" required>
+                        <input type="tel" name="no_telepon" class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:border-primary" placeholder="08**********" value="08" required>
                     </div>
                 
                     <div>
@@ -140,7 +140,7 @@
                     </div>
                 
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">IPK (jika S1/D3) <span class="text-red-500" id="ipk-required">*</span></label>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">IPK (jika D3-S2) <span class="text-red-500" id="ipk-required">*</span></label>
                         <select name="ipk" id="ipk-select" class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:border-primary">
                             <option value="">Bukan D3-S2</option>
                             <option value="2.00">2.00</option>
@@ -217,17 +217,18 @@
         function toggleIpkRequired() {
             const pendidikan = pendidikanSelect.value;
             const isDiatasD3 = ['D3', 'S1', 'S2'].includes(pendidikan);
-        
+
             if (isDiatasD3) {
-                ipkSelect.setAttribute('required', 'required');
-                if (ipkRequired) ipkRequired.style.display = 'inline';
-                const helper = ipkSelect.closest('div').querySelector('.text-xs.text-gray-500');
-                if (helper) helper.textContent = 'Wajib diisi untuk D3/S1/S2';
+                ipkSelect.required = true;
+                ipkSelect.disabled = false;
+                ipkRequired.style.display = 'inline';
+                ipkSelect.options[0].text = '-- Pilih IPK --';
             } else {
-                ipkSelect.removeAttribute('required');
-                if (ipkRequired) ipkRequired.style.display = 'none';
-                const helper = ipkSelect.closest('div').querySelector('.text-xs.text-gray-500');
-                if (helper) helper.textContent = 'Opsional untuk pendidikan di bawah D3';
+                ipkSelect.required = false;
+                ipkSelect.disabled = true;
+                ipkSelect.value = '';
+                ipkRequired.style.display = 'none';
+                ipkSelect.options[0].text = 'Bukan D3-S2';
             }
         }
     
