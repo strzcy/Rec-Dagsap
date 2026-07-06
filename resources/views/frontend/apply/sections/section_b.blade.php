@@ -1,4 +1,5 @@
 
+
 <div>
     <h2 class="text-xl font-bold text-primary mb-4 border-b pb-2">B. RIWAYAT PENDIDIKAN</h2>
     <label class="block text-sm font-medium mb-2">Riwayat Pendidikan yang pernah ditempuh (urutkan dari yang terlama)</label>
@@ -102,127 +103,210 @@
     // ============================================
     // PENDIDIKAN FORMAL
     // ============================================
-    function updateRemovePendidikan() {
-        const items = document.querySelectorAll('#pendidikan-formal-container .pendidikan-formal-item');
-        const buttons = document.querySelectorAll('#pendidikan-formal-container .remove-pendidikan');
     
-        buttons.forEach(btn => {
-            if (items.length > 1) {
-                btn.classList.remove('hidden');
-            } else {
-                btn.classList.add('hidden');
-            }
-        });
-    }
-
     // Setup tambah pendidikan
     document.getElementById('tambah-pendidikan')?.addEventListener('click', function() {
         const container = document.getElementById('pendidikan-formal-container');
         const template = container.children[0].cloneNode(true);
+        
+        // Reset nilai semua field di item baru
         template.querySelectorAll('input, select, textarea').forEach(input => {
             if (input.type !== 'radio' && input.type !== 'checkbox') {
                 input.value = '';
             }
         });
-        // Reset alasan
+        
+        // Sembunyikan kembali field alasan jika bawaannya sedang terbuka
         const alasanField = template.querySelector('.alasan-pendidikan');
         if (alasanField) alasanField.classList.add('hidden');
     
+        // Masukkan item baru ke container
         container.appendChild(template);
+        
+        // --- PERBAIKAN 1: Pasang Event Validasi ke Item Baru ---
+        bindValidationEvents(template);
     
-        // Setup remove untuk item baru
-        template.querySelector('.remove-pendidikan')?.addEventListener('click', function() {
-            if (container.children.length > 1) {
-                template.remove();
-                updateRemovePendidikan();
-                // Update info IDs
-                container.querySelectorAll('.pendidikan-formal-item').forEach((el, i) => {
-                    const mi = el.querySelector('[id^="info_masuk_"]');
-                    const li = el.querySelector('[id^="info_lulus_"]');
-                    if (mi) mi.id = `info_masuk_${i}`;
-                    if (li) li.id = `info_lulus_${i}`;
-                });
-            }
-        });
-    
-        updateRemovePendidikan();
-    });
-
-    // Setup remove untuk item pertama
-    document.addEventListener('DOMContentLoaded', function() {
-        const container = document.getElementById('pendidikan-formal-container');
-        if (container) {
-            // Setup untuk semua item yang ada
-            container.querySelectorAll('.pendidikan-formal-item').forEach((item, index) => {
-                const removeBtn = item.querySelector('.remove-pendidikan');
-                if (removeBtn) {
-                    removeBtn.addEventListener('click', function() {
-                        if (container.children.length > 1) {
-                            item.remove();
-                            updateRemovePendidikan();
-                            container.querySelectorAll('.pendidikan-formal-item').forEach((el, i) => {
-                                const mi = el.querySelector('[id^="info_masuk_"]');
-                                const li = el.querySelector('[id^="info_lulus_"]');
-                                if (mi) mi.id = `info_masuk_${i}`;
-                                if (li) li.id = `info_lulus_${i}`;
-                            });
-                        }
-                    });
-                }
-            });
-            updateRemovePendidikan();
-        }
+        // Refresh format tampilan & ID
+        refreshPendidikanFormat();
     });
 
     // ============================================
     // PELATIHAN/KURSUS
     // ============================================
-    function updateRemovePelatihan() {
-        const items = document.querySelectorAll('#pelatihan-container .pelatihan-item');
-        const buttons = document.querySelectorAll('#pelatihan-container .remove-pelatihan');
-    
-        buttons.forEach(btn => {
-            if (items.length > 1) {
-                btn.classList.remove('hidden');
-            } else {
-                btn.classList.add('hidden');
-            }
-        });
-    }
-
     document.getElementById('tambah-pelatihan')?.addEventListener('click', function() {
         const container = document.getElementById('pelatihan-container');
         const template = container.children[0].cloneNode(true);
         template.querySelectorAll('input').forEach(input => input.value = '');
         container.appendChild(template);
     
-        template.querySelector('.remove-pelatihan')?.addEventListener('click', function() {
-            if (container.children.length > 1) {
-                template.remove();
-                updateRemovePelatihan();
-            }
-        });
-    
-        updateRemovePelatihan();
+        refreshPelatihanFormat();
     });
 
-    // Setup remove untuk item pertama pelatihan
-    document.addEventListener('DOMContentLoaded', function() {
-        const container = document.getElementById('pelatihan-container');
-        if (container) {
-            container.querySelectorAll('.pelatihan-item').forEach(item => {
-                const removeBtn = item.querySelector('.remove-pelatihan');
-                if (removeBtn) {
-                    removeBtn.addEventListener('click', function() {
-                        if (container.children.length > 1) {
-                            item.remove();
-                            updateRemovePelatihan();
-                        }
-                    });
-                }
-            });
-            updateRemovePelatihan();
+    // ============================================
+    // VALIDASI PENDIDIKAN - IDEAL AGE
+    // ============================================
+    const TAHUN_LAHIR = {{ isset($pelamar) ? \Carbon\Carbon::parse($pelamar->tanggal_lahir)->format('Y') : date('Y') - 20 }};
+
+    const DURASI_PENDIDIKAN = {
+        'SD Sederajat': { masuk: 7, durasi: 6 },
+        'SLTP': { masuk: 13, durasi: 3 },
+        'SMU': { masuk: 16, durasi: 3 },
+        'Diploma': { masuk: 19, durasi: 3 },
+        'S1': { masuk: 19, durasi: 4 },
+        'S2': { masuk: 23, durasi: 2 }
+    };
+
+    function hitungTahunIdeal(tingkat) {
+        if (!tingkat || !DURASI_PENDIDIKAN[tingkat]) return null;
+        const data = DURASI_PENDIDIKAN[tingkat];
+        const tahunMasukIdeal = TAHUN_LAHIR + data.masuk;
+        const tahunLulusIdeal = tahunMasukIdeal + data.durasi;
+        return { tahunMasukIdeal, tahunLulusIdeal, durasi: data.durasi };
+    }
+
+    function validatePendidikanItem(item) {
+        const tingkatField = item.querySelector('.pendidikan-tingkat');
+        const masukField = item.querySelector('.pendidikan-tahun-masuk');
+        const lulusField = item.querySelector('.pendidikan-tahun-lulus');
+        
+        if (!tingkatField || !masukField || !lulusField) return;
+
+        const tingkat = tingkatField.value;
+        const tahunMasuk = parseInt(masukField.value);
+        const tahunLulus = parseInt(lulusField.value);
+        const alasanField = item.querySelector('.alasan-pendidikan');
+        const alasanTextarea = item.querySelector('textarea[name="pendidikan_alasan[]"]');
+    
+        if (!tingkat || !tahunMasuk || !tahunLulus) {
+            if (alasanField) alasanField.classList.add('hidden');
+            return;
         }
+    
+        const ideal = hitungTahunIdeal(tingkat);
+        if (!ideal) return;
+    
+        const selisihMasuk = Math.abs(tahunMasuk - ideal.tahunMasukIdeal);
+        const selisihLulus = Math.abs(tahunLulus - ideal.tahunLulusIdeal);
+        const durasiActual = tahunLulus - tahunMasuk;
+        const durasiIdeal = ideal.durasi;
+    
+        const isSesuai = (
+            selisihMasuk <= 1 && 
+            selisihLulus <= 1 && 
+            durasiActual === durasiIdeal
+        );
+    
+        if (alasanField && alasanTextarea) {
+            if (isSesuai) {
+                alasanField.classList.add('hidden');
+                alasanTextarea.removeAttribute('required');
+            } else {
+                alasanField.classList.remove('hidden');
+                alasanTextarea.setAttribute('required', 'required');
+                
+                const pesan = alasanField.querySelector('label');
+                if (pesan) {
+                    let alasan = `Standar pendidikan ${tingkat} anda pada tahun ${ideal.tahunMasukIdeal} sampai tahun ${ideal.tahunLulusIdeal}.`;
+                    pesan.innerHTML = '<i class="fas fa-exclamation-triangle mr-1"></i> ' + alasan;
+                }
+            }
+        }
+    }
+
+    // Mengatur ulang keaktifan tombol hapus & indeks ID info
+    function refreshPendidikanFormat() {
+        const container = document.getElementById('pendidikan-formal-container');
+        if (!container) return;
+
+        const items = container.querySelectorAll('.pendidikan-formal-item');
+        
+        items.forEach((item, index) => {
+            const mi = item.querySelector('[id^="info_masuk_"]');
+            const li = item.querySelector('[id^="info_lulus_"]');
+            if (mi) mi.id = `info_masuk_${index}`;
+            if (li) li.id = `info_lulus_${index}`;
+
+            const btnHapus = item.querySelector('.remove-pendidikan');
+            if (btnHapus) {
+                if (items.length > 1) {
+                    btnHapus.classList.remove('hidden');
+                } else {
+                    btnHapus.classList.add('hidden');
+                }
+            }
+        });
+    }
+
+    // Pasang validasi ke satu item baris pendidikan
+    function bindValidationEvents(item) {
+        const tingkat = item.querySelector('.pendidikan-tingkat');
+        const tahunMasuk = item.querySelector('.pendidikan-tahun-masuk');
+        const tahunLulus = item.querySelector('.pendidikan-tahun-lulus');
+    
+        const validate = () => validatePendidikanItem(item);
+    
+        if (tingkat) tingkat.addEventListener('change', validate);
+        if (tahunMasuk) tahunMasuk.addEventListener('input', validate);
+        if (tahunLulus) tahunLulus.addEventListener('input', validate);
+    }
+
+    // ============================================
+    // PELATIHAN/KURSUS FORMAT
+    // ============================================
+    function refreshPelatihanFormat() {
+        const container = document.getElementById('pelatihan-container');
+        if (!container) return;
+
+        const items = container.querySelectorAll('.pelatihan-item');
+        items.forEach(item => {
+            const btnHapus = item.querySelector('.remove-pelatihan');
+            if (btnHapus) {
+                if (items.length > 1) {
+                    btnHapus.classList.remove('hidden');
+                } else {
+                    btnHapus.classList.add('hidden');
+                }
+            }
+        });
+    }
+
+    // ============================================
+    // INITIALIZATION (DOM READY)
+    // ============================================
+    document.addEventListener('DOMContentLoaded', function() {
+        // Setup Awal Pendidikan Formal bawaan
+        const pendContainer = document.getElementById('pendidikan-formal-container');
+        if (pendContainer) {
+            pendContainer.querySelectorAll('.pendidikan-formal-item').forEach(item => {
+                bindValidationEvents(item);
+            });
+            refreshPendidikanFormat();
+        }
+
+        // Event Hapus Pendidikan (Delegasi Event)
+        document.getElementById('pendidikan-formal-container')?.addEventListener('click', function(e) {
+            if (e.target && e.target.classList.contains('remove-pendidikan')) {
+                const container = document.getElementById('pendidikan-formal-container');
+                if (container.children.length > 1) {
+                    e.target.closest('.pendidikan-formal-item').remove();
+                    refreshPendidikanFormat();
+                }
+            }
+        });
+
+        // Setup Awal Pelatihan
+        refreshPelatihanFormat();
+
+        // Event Hapus Pelatihan (Delegasi Event)
+        document.getElementById('pelatihan-container')?.addEventListener('click', function(e) {
+            if (e.target && e.target.classList.contains('remove-pelatihan')) {
+                const container = document.getElementById('pelatihan-container');
+                if (container.children.length > 1) {
+                    e.target.closest('.pelatihan-item').remove();
+                    refreshPelatihanFormat();
+                }
+            }
+        });
     });
 </script>
 @endpush
