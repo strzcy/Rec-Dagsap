@@ -45,7 +45,7 @@
                     No. HP / WhatsApp <span class="text-red-500">*</span>
                 </label>
                 <input type="tel" name="no_hp_pemohon" required 
-                       class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:border-primary" placeholder="08**********" value="08">
+                       class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:border-primary" placeholder="08**********">
             </div>
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">

@@ -93,7 +93,7 @@
                 
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">No Telepon/WA *</label>
-                        <input type="tel" name="no_telepon" class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:border-primary" placeholder="08**********" value="08" required>
+                        <input type="tel" name="no_telepon" class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:border-primary" placeholder="08**********" required>
                     </div>
                 
                     <div>

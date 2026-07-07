@@ -87,7 +87,7 @@
                     <div><label class="block text-sm font-medium mb-2">Alamat Lengkap</label>
                         <input type="text" name="referensi_alamat[]" class="w-full border rounded-lg px-3 py-2"></div>
                     <div><label class="block text-sm font-medium mb-2">No. Telp/HP</label>
-                        <input type="number" name="referensi_telp[]"  class="w-full border rounded-lg px-3 py-2" placeholder="08**********" value="08"></div>
+                        <input type="number" name="referensi_telp[]"  class="w-full border rounded-lg px-3 py-2" placeholder="08**********"></div>
                     <div><label class="block text-sm font-medium mb-2">Hubungan</label>
                         <input type="text" name="referensi_hubungan[]" class="w-full border rounded-lg px-3 py-2"></div>
                     <div><label class="block text-sm font-medium mb-2">Lama Kenal</label>

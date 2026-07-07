@@ -150,7 +150,7 @@
     const DURASI_PENDIDIKAN = {
         'SD Sederajat': { masuk: 7, durasi: 6 },
         'SLTP': { masuk: 13, durasi: 3 },
-        'SMU': { masuk: 16, durasi: 3 },
+        'SLTA': { masuk: 16, durasi: 3 },
         'Diploma': { masuk: 19, durasi: 3 },
         'S1': { masuk: 19, durasi: 4 },
         'S2': { masuk: 23, durasi: 2 }
