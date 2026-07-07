@@ -69,7 +69,7 @@
                 @php
                     $emailSubject = rawurlencode("Notifikasi Pengajuan PTK - " . $ptkData['posisi']);
                     $emailBody = rawurlencode(
-                        "Yth. Management " . $ptkData['divisi'] . ",\n\n" .
+                        "Yth. Atasan " . $ptkData['divisi'] . ",\n\n" .
                         "Saya ingin memberitahukan bahwa telah dilakukan pengajuan Permintaan Tenaga Kerja (PTK) dengan detail sebagai berikut:\n\n" .
                         "📋 DETAIL PENGAJUAN:\n" .
                         "No. PTK: PTK-" . str_pad($ptkData['id'], 6, '0', STR_PAD_LEFT) . "\n" .

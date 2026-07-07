@@ -39,6 +39,19 @@ class PengajuanController extends Controller
     {
         $validated = $request->validated();
 
+        $tokoPenempatan = $validated['toko_penempatan'] ?? null;
+
+        // Validasi tambahan untuk toko_penempatan jika posisi diawali SPG/SPB
+        $posisi = strtoupper($validated['posisi']);
+        if (str_starts_with($posisi, 'SPG') || str_starts_with($posisi, 'SPB')) {
+            $request->validate([
+                'toko_penempatan' => 'required|string|max:255',
+            ], [
+                'toko_penempatan.required' => 'Toko penempatan wajib diisi untuk posisi SPG/SPB!',
+            ]);
+            $tokoPenempatan = $validated['toko_penempatan'];
+        }
+
         // Build kriteria JSON
         $kriteria = [
             'pendidikan' => $validated['kriteria_pendidikan'],
@@ -82,6 +95,8 @@ class PengajuanController extends Controller
             'jenis' => $validated['jenis'],
             'posisi' => $validated['posisi'],
             'jumlah' => $validated['jumlah'],
+            'area_penempatan' => $validated['area_penempatan'],  // <-- TAMBAHKAN INI
+            'toko_penempatan' => $tokoPenempatan, 
             'tanggal_dibutuhkan' => $validated['tanggal_dibutuhkan'],
             'kriteria' => $kriteria,
             'persyaratan' => array_values($persyaratan),
