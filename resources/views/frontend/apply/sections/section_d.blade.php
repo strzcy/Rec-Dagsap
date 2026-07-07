@@ -189,28 +189,105 @@
                 <span class="text-sm">Data Istri/Suami</span>
             </label>
         </div>
-        
+    
         <div id="pasangan-form" class="hidden bg-gray-50 p-4 rounded-lg">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div><input type="text" name="nama_pasangan" placeholder="Nama Lengkap" class="w-full border rounded-lg px-3 py-2"></div>
-                <div><input type="text" name="tempat_lahir_pasangan" placeholder="Tempat Lahir" class="w-full border rounded-lg px-3 py-2"></div>
-                <div><label class="block text-sm font-medium mb-2">Tanggal Lahir Pasangan</label>
-                    <input type="date" name="tanggal_lahir_pasangan" placeholder="Tanggal Lahir" class="w-full border rounded-lg px-3 py-2"></div>
-                <div><label class="block text-sm font-medium mb-2">Tanggal Menikah</label>
-                    <input type="date" name="tanggal_menikah" placeholder="Tanggal Menikah" class="w-full border rounded-lg px-3 py-2"></div>
                 <div>
+                    <label class="block text-sm font-medium mb-1">a. Nama Lengkap</label>
+                    <input type="text" name="nama_pasangan" class="w-full border rounded-lg px-3 py-2">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">b. Tempat/Tgl Lahir</label>
+                    <input type="text" name="tempat_lahir_pasangan" placeholder="Tempat Lahir" class="w-full border rounded-lg px-3 py-2">
+                    <input type="date" name="tanggal_lahir_pasangan" class="w-full border rounded-lg px-3 py-2 mt-1">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">c. Tgl. Menikah</label>
+                    <input type="date" name="tanggal_menikah" class="w-full border rounded-lg px-3 py-2">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">d. Agama</label>
                     <select name="agama_pasangan" class="w-full border rounded-lg px-3 py-2">
-                    <option value="">Agama</option>
-                    <option value="Islam">Islam</option>
-                    <option value="Kristen">Kristen</option>
-                    <option value="Katolik">Katolik</option>
-                    <option value="Hindu">Hindu</option>
-                    <option value="Buddha">Buddha</option>
-                    <option value="Konghucu">Konghucu</option>
-                </select></div>
-                <div><textarea name="alamat_pasangan" rows="2" placeholder="Alamat Tinggal" class="w-full border rounded-lg px-3 py-2"></textarea></div>
-                <div><input type="text" name="pekerjaan_pasangan" placeholder="Pekerjaan" class="w-full border rounded-lg px-3 py-2"></div>
-                <div><input type="text" name="jabatan_pasangan" placeholder="Jabatan" class="w-full border rounded-lg px-3 py-2"></div>
+                        <option value="">Pilih Agama</option>
+                        <option value="Islam">Islam</option>
+                        <option value="Kristen">Kristen</option>
+                        <option value="Katolik">Katolik</option>
+                        <option value="Hindu">Hindu</option>
+                        <option value="Buddha">Buddha</option>
+                        <option value="Konghucu">Konghucu</option>
+                    </select>
+                </div>
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-medium mb-1">e. Alamat Tinggal</label>
+                    <textarea name="alamat_pasangan" rows="2" class="w-full border rounded-lg px-3 py-2"></textarea>
+                </div>
+            </div>
+        
+            <!-- Alamat Detail Pasangan -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-3">
+                <div>
+                    <label class="block text-xs text-gray-500 mb-1">No. Rumah</label>
+                    <input type="text" name="pasangan_no_rumah" class="w-full border rounded-lg px-3 py-2">
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-500 mb-1">RT/RW</label>
+                    <input type="text" name="pasangan_rt_rw" class="w-full border rounded-lg px-3 py-2">
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-500 mb-1">Kelurahan</label>
+                    <input type="text" name="pasangan_kelurahan" class="w-full border rounded-lg px-3 py-2">
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-500 mb-1">Kecamatan</label>
+                    <input type="text" name="pasangan_kecamatan" class="w-full border rounded-lg px-3 py-2">
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-500 mb-1">Kabupaten</label>
+                    <input type="text" name="pasangan_kabupaten" class="w-full border rounded-lg px-3 py-2">
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-500 mb-1">Kota</label>
+                    <input type="text" name="pasangan_kota" class="w-full border rounded-lg px-3 py-2">
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-500 mb-1">Propinsi</label>
+                    <input type="text" name="pasangan_provinsi" class="w-full border rounded-lg px-3 py-2">
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-500 mb-1">Kode Pos</label>
+                    <input type="text" name="pasangan_kode_pos" class="w-full border rounded-lg px-3 py-2">
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-500 mb-1">No. Telp</label>
+                    <input placeholder="08**********" type="text" name="pasangan_no_telp" class="w-full border rounded-lg px-3 py-2">
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-500 mb-1">No. HP</label>
+                    <input placeholder="08**********" type="text" name="pasangan_no_hp" class="w-full border rounded-lg px-3 py-2">
+                </div>
+            </div>
+        
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
+                <div>
+                    <label class="block text-sm font-medium mb-1">f. Pendidikan</label>
+                    <select name="pasangan_pendidikan" class="w-full border rounded-lg px-3 py-2">
+                        <option value="">Pilih</option>
+                        <option value="SD">SD</option>
+                        <option value="SMP">SMP</option>
+                        <option value="SMA/SMK">SMA/SMK</option>
+                        <option value="D3">D3</option>
+                        <option value="S1">S1</option>
+                        <option value="S2">S2</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">g. Pekerjaan</label>
+                    <input type="text" name="pasangan_pekerjaan" class="w-full border rounded-lg px-3 py-2">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Jabatan</label>
+                    <input type="text" name="pasangan_jabatan" class="w-full border rounded-lg px-3 py-2">
+                </div>
             </div>
         </div>
     </div>
@@ -327,21 +404,79 @@
     <div class="mb-6">
         <h3 class="font-semibold text-gray-700 mb-3">5. Orang Terdekat yang Dapat Dihubungi dalam Keadaan Darurat</h3>
         <div class="bg-gray-50 p-4 rounded-lg">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                <div><label class="block text-sm font-medium mb-2">Nama Lengkap</label>
-                    <input type="text" name="kontak_darurat_nama" class="w-full border rounded-lg px-3 py-2"></div>
-                <div><label class="block text-sm font-medium mb-2">Hubungan</label>
-                    <input type="text" name="kontak_darurat_hubungan" class="w-full border rounded-lg px-3 py-2"></div>
-                <div><label class="block text-sm font-medium mb-2">Alamat Tinggal</label>
-                    <textarea name="kontak_darurat_alamat" rows="2" class="w-full border rounded-lg px-3 py-2"></textarea></div>
-                <div><label class="block text-sm font-medium mb-2">No. Telepon</label>
-                    <input type="number" name="kontak_darurat_telp" class="w-full border rounded-lg px-3 py-2"></div>
-                <div><label class="block text-sm font-medium mb-2">No. Handphone</label>
-                    <input type="number" name="kontak_darurat_hp" class="w-full border rounded-lg px-3 py-2" placeholder="08**********" value="08"></div>
-                <div><label class="block text-sm font-medium mb-2">Pekerjaan</label>
-                    <input type="text" name="kontak_darurat_pekerjaan" class="w-full border rounded-lg px-3 py-2"></div>
-                <div><label class="block text-sm font-medium mb-2">Jabatan</label>
-                    <input type="text" name="kontak_darurat_jabatan" class="w-full border rounded-lg px-3 py-2"></div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium mb-1">a. Nama Lengkap</label>
+                    <input type="text" name="kontak_darurat_nama" class="w-full border rounded-lg px-3 py-2">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">b. Tempat/Tgl Lahir</label>
+                    <input type="text" name="kontak_darurat_tempat_lahir" placeholder="Tempat Lahir" class="w-full border rounded-lg px-3 py-2">
+                    <input type="date" name="kontak_darurat_tanggal_lahir" class="w-full border rounded-lg px-3 py-2 mt-1">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">c. Hubungan</label>
+                    <input type="text" name="kontak_darurat_hubungan" class="w-full border rounded-lg px-3 py-2">
+                </div>
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-medium mb-1">d. Alamat Tinggal</label>
+                    <textarea name="kontak_darurat_alamat" rows="2" class="w-full border rounded-lg px-3 py-2"></textarea>
+                </div>
+            </div>
+        
+            <!-- Alamat Detail Kontak Darurat -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-3">
+                <div>
+                    <label class="block text-xs text-gray-500 mb-1">No. Rumah</label>
+                    <input type="text" name="kontak_darurat_no_rumah" class="w-full border rounded-lg px-3 py-2">
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-500 mb-1">RT/RW</label>
+                    <input type="text" name="kontak_darurat_rt_rw" class="w-full border rounded-lg px-3 py-2">
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-500 mb-1">Kelurahan</label>
+                    <input type="text" name="kontak_darurat_kelurahan" class="w-full border rounded-lg px-3 py-2">
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-500 mb-1">Kecamatan</label>
+                    <input type="text" name="kontak_darurat_kecamatan" class="w-full border rounded-lg px-3 py-2">
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-500 mb-1">Kabupaten</label>
+                    <input type="text" name="kontak_darurat_kabupaten" class="w-full border rounded-lg px-3 py-2">
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-500 mb-1">Kota</label>
+                    <input type="text" name="kontak_darurat_kota" class="w-full border rounded-lg px-3 py-2">
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-500 mb-1">Propinsi</label>
+                    <input type="text" name="kontak_darurat_provinsi" class="w-full border rounded-lg px-3 py-2">
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-500 mb-1">Kode Pos</label>
+                    <input type="text" name="kontak_darurat_kode_pos" class="w-full border rounded-lg px-3 py-2">
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-500 mb-1">No. Telp</label>
+                    <input placeholder="08**********" type="text" name="kontak_darurat_telp" class="w-full border rounded-lg px-3 py-2">
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-500 mb-1">No. HP</label>
+                    <input placeholder="08**********" type="text" name="kontak_darurat_hp" class="w-full border rounded-lg px-3 py-2">
+                </div>
+            </div>
+        
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
+                <div>
+                    <label class="block text-sm font-medium mb-1">e. Pekerjaan</label>
+                    <input type="text" name="kontak_darurat_pekerjaan" class="w-full border rounded-lg px-3 py-2">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Jabatan</label>
+                    <input type="text" name="kontak_darurat_jabatan" class="w-full border rounded-lg px-3 py-2">
+                </div>
             </div>
         </div>
     </div>

@@ -361,13 +361,23 @@ class ApplyController extends Controller
 
         // KONTAK DARURAT
         $kontakDarurat = [
-            'nama' => $request->kontak_darurat_nama,
-            'hubungan' => $request->kontak_darurat_hubungan,
-            'alamat' => $request->kontak_darurat_alamat,
-            'telp' => $request->kontak_darurat_telp,
-            'no_hp' => $request->kontak_darurat_hp,
-            'pekerjaan' => $request->kontak_darurat_pekerjaan,
-            'jabatan' => $request->kontak_darurat_jabatan,
+            'nama' => $request->kontak_darurat_nama ?? '',
+            'tempat_lahir' => $request->kontak_darurat_tempat_lahir ?? '',
+            'tanggal_lahir' => $request->kontak_darurat_tanggal_lahir ?? '',
+            'hubungan' => $request->kontak_darurat_hubungan ?? '',
+            'alamat' => $request->kontak_darurat_alamat ?? '',
+            'no_rumah' => $request->kontak_darurat_no_rumah ?? '',
+            'rt_rw' => $request->kontak_darurat_rt_rw ?? '',
+            'kelurahan' => $request->kontak_darurat_kelurahan ?? '',
+            'kecamatan' => $request->kontak_darurat_kecamatan ?? '',
+            'kabupaten' => $request->kontak_darurat_kabupaten ?? '',
+            'kota' => $request->kontak_darurat_kota ?? '',
+            'provinsi' => $request->kontak_darurat_provinsi ?? '',
+            'kode_pos' => $request->kontak_darurat_kode_pos ?? '',
+            'no_telp' => $request->kontak_darurat_telp ?? '',
+            'no_hp' => $request->kontak_darurat_hp ?? '',
+            'pekerjaan' => $request->kontak_darurat_pekerjaan ?? '',
+            'jabatan' => $request->kontak_darurat_jabatan ?? '',
         ];
 
         // SAUDARA KANDUNG
@@ -401,18 +411,44 @@ class ApplyController extends Controller
             }
         }
 
+        // SAUDARA DI PERUSAHAAN
+        $saudaraPerusahaan = [];
+        if ($request->punya_saudara_di_perusahaan == '1' && $request->has('saudara_nama')) {
+            for ($i = 0; $i < count($request->saudara_nama); $i++) {
+                if (!empty($request->saudara_nama[$i])) {
+                    $saudaraPerusahaan[] = [
+                        'nama' => $request->saudara_nama[$i],
+                        'jabatan' => $request->saudara_jabatan[$i] ?? '',
+                        'lama_kenal' => $request->saudara_lama_kenal[$i] ?? '',
+                        'hubungan' => $request->saudara_hubungan[$i] ?? '',
+                    ];
+                }
+            }
+        }
+
         // DATA PASANGAN
         $dataPasangan = null;
-        if ($request->punya_pasangan == '1') {
+        if ($request->punya_pasangan && $request->filled('nama_pasangan')) {
             $dataPasangan = [
-                'nama' => $request->nama_pasangan,
-                'tempat_lahir' => $request->tempat_lahir_pasangan,
-                'tanggal_lahir' => $request->tanggal_lahir_pasangan,
-                'tanggal_menikah' => $request->tanggal_menikah,
-                'agama' => $request->agama_pasangan,
-                'alamat' => $request->alamat_pasangan,
-                'pekerjaan' => $request->pekerjaan_pasangan,
-                'jabatan' => $request->jabatan_pasangan,
+                'nama_lengkap' => $request->nama_pasangan,
+                'tempat_lahir' => $request->tempat_lahir_pasangan ?? '',
+                'tanggal_lahir' => $request->tanggal_lahir_pasangan ?? '',
+                'tanggal_menikah' => $request->tanggal_menikah ?? '',
+                'agama' => $request->agama_pasangan ?? '',
+                'alamat' => $request->alamat_pasangan ?? '',
+                'no_rumah' => $request->pasangan_no_rumah ?? '',
+                'rt_rw' => $request->pasangan_rt_rw ?? '',
+                'kelurahan' => $request->pasangan_kelurahan ?? '',
+                'kecamatan' => $request->pasangan_kecamatan ?? '',
+                'kabupaten' => $request->pasangan_kabupaten ?? '',
+                'kota' => $request->pasangan_kota ?? '',
+                'provinsi' => $request->pasangan_provinsi ?? '',
+                'kode_pos' => $request->pasangan_kode_pos ?? '',
+                'no_telp' => $request->pasangan_no_telp ?? '',
+                'no_hp' => $request->pasangan_no_hp ?? '',
+                'pendidikan' => $request->pasangan_pendidikan ?? '',
+                'pekerjaan' => $request->pasangan_pekerjaan ?? '',
+                'jabatan' => $request->pasangan_jabatan ?? '',
             ];
         }
 

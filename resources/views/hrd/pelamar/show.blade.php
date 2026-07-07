@@ -94,13 +94,18 @@
                 <div><strong>Jenis Kelamin:</strong> {{ $detail->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan' }}</div>
                 <div><strong>Tempat/Tgl Lahir:</strong> {{ $detail->tempat_lahir ?? '-' }}, {{ $detail->tanggal_lahir ? \Carbon\Carbon::parse($detail->tanggal_lahir)->format('d/m/Y') : '-' }}</div>
                 <div><strong>Tinggi/Berat:</strong> {{ $detail->tinggi_badan ?? '-' }} cm / {{ $detail->berat_badan ?? '-' }} kg</div>
+                <div><strong>Kewarganegaraan: </strong>{{ $detail->kewarganegaraan ?? 'Indonesia' }}</div>
                 <div><strong>Agama:</strong> {{ $detail->agama ?? '-' }}</div>
                 <div><strong>Golongan Darah:</strong> {{ $detail->golongan_darah ?? '-' }}</div>
                 <div><strong>Status Perkawinan:</strong> {{ $detail->status_perkawinan ?? '-' }}</div>
                 <div><strong>No. KTP:</strong> {{ $detail->no_ktp ?? '-' }}</div>
+                <div><strong>No. NPWP:</strong> {{ $detail->no_bpjs_ketenagakerjaan ?? '-' }}</div>
+                <div><strong>No. BPJS Ketenagakerjaan:</strong> {{ $detail->no_bpjs_kesehatan ?? '-' }}</div>
+                <div><strong>No. BPJS Kesehatan:</strong> {{ $detail->no_npwp ?? '-' }}</div>
                 <div><strong>No. HP:</strong> {{ $detail->no_hp ?? '-' }}</div>
                 <div><strong>Email:</strong> {{ $detail->email ?? '-' }}</div>
                 <div><strong>Hobi:</strong> {{ $detail->hobby ?? '-' }}</div>
+                
                 <div class="col-span-2"><strong>Alamat Tinggal:</strong> {{ $detail->alamat_tinggal ?? '-' }}</div>
                 <div class="col-span-2"><strong>Alamat KTP:</strong> {{ $detail->alamat_ktp ?? '-' }}</div>
             </div>
@@ -142,10 +147,10 @@
             @if($detail->pendidikan_formal)
             <div class="overflow-x-auto mb-3">
                 <table class="min-w-full text-sm border">
-                    <thead class="bg-gray-50"><tr><th class="px-2 py-1 border">Tingkat</th><th class="px-2 py-1 border">Sekolah</th><th class="px-2 py-1 border">Jurusan</th><th class="px-2 py-1 border">Tahun Lulus</th><th class="px-2 py-1 border">IPK</th></tr></thead>
+                    <thead class="bg-gray-50"><tr><th class="px-2 py-1 border">Tingkat</th><th class="px-2 py-1 border">Sekolah</th><th class="px-2 py-1 border">Jurusan</th><th class="px-2 py-1 border">Tahun Lulus</th><th class="px-2 py-1 border">IPK</th><th class="px-2 py-1 border">Alasan Tidak Sesuai Stadar Pendidikan</th></tr></thead>
                     <tbody>
                         @foreach($detail->pendidikan_formal as $pend)
-                        <tr><td class="px-2 py-1 border">{{ $pend['tingkat'] ?? '-' }}</td><td class="px-2 py-1 border">{{ $pend['nama_sekolah'] ?? '-' }}</td><td class="px-2 py-1 border">{{ $pend['jurusan'] ?? '-' }}</td><td class="px-2 py-1 border">{{ $pend['tahun_lulus'] ?? '-' }}</td><td class="px-2 py-1 border">{{ $pend['ipk'] ?? '-' }}</td></tr>
+                        <tr><td class="px-2 py-1 border">{{ $pend['tingkat'] ?? '-' }}</td><td class="px-2 py-1 border">{{ $pend['nama_sekolah'] ?? '-' }}</td><td class="px-2 py-1 border">{{ $pend['jurusan'] ?? '-' }}</td><td class="px-2 py-1 border">{{ $pend['tahun_lulus'] ?? '-' }}</td><td class="px-2 py-1 border">{{ $pend['ipk'] ?? '-' }}</td><td class="px-2 py-1 border">{{ $pend['alasan'] ?? 'sesuai standar' }}</td></tr>
                         @endforeach
                     </tbody>
                 </table>
@@ -226,6 +231,48 @@
                     </tbody>
                 </table>
             </div>
+            @php
+                // 1. Ambil array asal seperti biasa
+                $bidangMinat = is_array($detail->bidang_minat ?? null) ? $detail->bidang_minat : [];
+
+                // 2. Definisikan semua kategori statis yang ada di atas
+                $kategoriStatis = [
+                    'Logistic & Distribution',
+                    'Sales/Marketing',
+                    'Finance, Accounting, & Tax',
+                    'Production',
+                    'Business Development',
+                    'Human Resources',
+                    'General Affair',
+                    'QAQC',
+                    'Information Technology',
+                    'Product Development'
+                ];
+
+                // 3. Cari selisihnya (array yang TIDAK ada di kategori statis)
+                $kategoriLainnya = array_diff($bidangMinat, $kategoriStatis);
+
+                // 4. Gabungkan menjadi teks jika hasilnya lebih dari satu (misal dipisah koma)
+                $teksLainnya = implode(', ', $kategoriLainnya);
+            @endphp
+            <div style="page-break-inside: avoid; break-inside: avoid;">
+                <div style="padding-left: 2px; font-size: 0.875rem; line-height: 1.6; display: grid; grid-template-columns: repeat(4, minmax(180px, 1fr)); gap: 0px 10px;">
+                    <div style="white-space: nowrap;">( {{ in_array('Logistic & Distribution', $bidangMinat) ? ' ✓ ' : "ㅤ" }} ) Logistic & Distribution</div>
+                    <div style="white-space: nowrap;">( {{ in_array('Sales/Marketing', $bidangMinat) ? ' ✓ ' : "ㅤ" }} ) Sales/Marketing</div>
+                    <div style="white-space: nowrap;">( {{ in_array('Finance, Accounting, & Tax', $bidangMinat) ? ' ✓ ' : "ㅤ" }} ) Finance, Accounting, & Tax</div>
+                    <div style="white-space: nowrap;">ㅤㅤ( {{ in_array('Production', $bidangMinat) ? ' ✓ ' : "ㅤ" }} ) Production</div>
+
+                    <div style="white-space: nowrap;">( {{ in_array('Business Development', $bidangMinat) ? ' ✓ ' : "ㅤ" }} ) Business Development</div>
+                    <div style="white-space: nowrap;">( {{ in_array('Human Resources', $bidangMinat) ? ' ✓ ' : "ㅤ" }} ) Human Resources</div>
+                    <div style="white-space: nowrap;">( {{ in_array('General Affair', $bidangMinat) ? ' ✓ ' : "ㅤ" }} ) General Affair</div>
+                    <div style="white-space: nowrap;">ㅤㅤ( {{ in_array('QAQC', $bidangMinat) ? ' ✓ ' : "ㅤ" }} ) QAQC</div>
+
+                    <div style="white-space: nowrap;">( {{ in_array('Information Technology', $bidangMinat) ? ' ✓ ' : "ㅤ" }} ) Information Technology</div>
+                    <div style="white-space: nowrap;">( {{ in_array('Product Development', $bidangMinat) ? ' ✓ ' : "ㅤ" }} ) Product Development</div>
+                    <div style="white-space: nowrap;">( {{ !empty($kategoriLainnya) ? ' ✓ ' : "ㅤ" }} ) Lain : 
+                    <u>{{ $teksLainnya }}</u></div>
+                </div>
+            </div>
             @endif
         </div>
         
@@ -244,7 +291,25 @@
                 </table>
             </div>
             @endif
-            <div><strong>Punya Saudara di Perusahaan:</strong> {{ $detail->punya_saudara_di_perusahaan ? 'Ya' : 'Tidak' }}</div>
+            <div class="mt-2">
+                <strong>Punya Saudara/Kenalan di Perusahaan:</strong> {{ $detail->punya_saudara_di_perusahaan ? 'Ya' : 'Tidak' }}
+                @if($detail->punya_saudara_di_perusahaan && !empty($detail->saudara_di_perusahaan))
+                    @php
+                        $saudara = $detail->saudara_di_perusahaan;
+                        if (is_string($saudara)) {
+                            $saudara = json_decode($saudara, true);
+                        }
+                    @endphp
+                    @if(!empty($saudara) && isset($saudara[0]))
+                    <div class="mt-2 text-sm bg-gray-100 p-3 rounded">
+                        <p><strong>Nama:</strong> {{ $saudara[0]['nama'] ?? '-' }}</p>
+                        <p><strong>Jabatan/Unit Kerja:</strong> {{ $saudara[0]['jabatan'] ?? '-' }}</p>
+                        <p><strong>Hubungan:</strong> {{ $saudara[0]['hubungan'] ?? '-' }}</p>
+                        <p><strong>Lama Kenal:</strong> {{ $saudara[0]['lama_kenal'] ?? '-' }}</p>
+                    </div>
+                    @endif
+                @endif
+            </div>
         </div>
         
         <!-- H. RIWAYAT KESEHATAN -->
@@ -301,7 +366,8 @@
                             </thead>
                             <tbody>
                                 @foreach($dataAnak as $idx => $anak)
-                                <td><td class="px-2 py-1 border" align="center">{{ $idx+1 }}</td>
+                                <tr>
+                                    <td class="px-2 py-1 border" align="center">{{ $idx+1 }}</td>
                                     <td class="px-2 py-1 border">{{ $anak['nama'] ?? '-' }}</td>
                                     <td class="px-2 py-1 border">{{ $anak['jenis_kelamin'] ?? '-' }}</td>
                                     <td class="px-2 py-1 border">{{ $anak['tempat_lahir'] ?? '-' }}, {{ isset($anak['tanggal_lahir']) ? \Carbon\Carbon::parse($anak['tanggal_lahir'])->format('d/m/Y') : '-' }}</td>
@@ -373,7 +439,6 @@
                     <div class="grid grid-cols-2 gap-2 text-sm mt-1">
                         <div><span class="text-gray-500">Nama:</span> {{ $kontakDarurat['nama'] ?? '-' }}</div>
                         <div><span class="text-gray-500">Hubungan:</span> {{ $kontakDarurat['hubungan'] ?? '-' }}</div>
-                        <div class="col-span-2"><span class="text-gray-500">Alamat:</span> {{ $kontakDarurat['alamat'] ?? '-' }}</div>
                         <div><span class="text-gray-500">No. Telp:</span> {{ $kontakDarurat['no_telp'] ?? '-' }}</div>
                         <div><span class="text-gray-500">No. HP:</span> {{ $kontakDarurat['no_hp'] ?? '-' }}</div>
                         <div><span class="text-gray-500">Pekerjaan:</span> {{ $kontakDarurat['pekerjaan'] ?? '-' }}</div>
