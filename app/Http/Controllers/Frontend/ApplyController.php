@@ -90,8 +90,8 @@ class ApplyController extends Controller
                 $pelamar->forceDelete();
             
                 return redirect()->route('frontend.apply.failed')
-                    ->with('error', 'Maaf, ' . $pelamarNama . '! Anda belum memenuhi kriteria yang ditentukan.')
-                    ->with('reason', 'Berdasarkan kriteria yang dibutuhkan, pendidikan atau kualifikasi Anda belum sesuai dengan persyaratan lowongan ini.');
+                    ->with('error', $pelamarNama . '! Anda belum memenuhi kualifikasi yang ditentukan.')
+                    ->with('reason', 'Terima kasih atas minat Anda untuk bergabung dengan Dagsap.');
             }
         
         } catch (\Exception $e) {

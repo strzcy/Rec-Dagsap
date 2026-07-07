@@ -1,4 +1,4 @@
-@extends('layouts.frontend')
+@extends('layouts.nav-fe')
 
 @section('title', 'Hasil Lamaran - Dagsap Recruitment')
 
@@ -21,7 +21,6 @@
         @endif
         
         <div class="bg-gray-50 rounded-lg p-4 mb-6">
-            <p class="text-gray-600">Terima kasih atas minat Anda untuk bergabung dengan Dagsap.</p>
             <p class="text-gray-600 mt-2">Jangan berkecil hati, masih banyak lowongan lain yang mungkin sesuai dengan kualifikasi Anda.</p>
         </div>
         

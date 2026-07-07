@@ -66,7 +66,7 @@
             <div class="col-span-full text-center py-16 bg-white rounded-2xl shadow-sm border border-gray-100">
                 <i class="fas fa-briefcase text-6xl text-gray-300 mb-4"></i>
                 <h3 class="text-lg font-bold text-gray-700 mb-1">Tidak Ada Lowongan</h3>
-                <p class="text-gray-500 max-w-sm mx-auto">Maaf, kami tidak dapat menemukan lowongan aktif yang cocok dengan kriteria pencarian Anda.</p>
+                <p class="text-gray-500 max-w-sm mx-auto">Maaf, kami tidak dapat menemukan lowongan aktif yang cocok dengan kualifikasi pencarian Anda.</p>
             </div>
             @endforelse
         </div>

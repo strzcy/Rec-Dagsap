@@ -19,7 +19,7 @@
         <div class="content">
             <h3>Halo, {{ $pelamar->nama_lengkap }}</h3>
             <p>Terima kasih atas minat Anda untuk bergabung dengan Dagsap.</p>
-            <p>Setelah melalui proses seleksi administrasi, kami informasikan bahwa Anda <strong>BELUM MEMENUHI</strong> kriteria yang dibutuhkan untuk posisi yang anda lamar.</p>
+            <p>Setelah melalui proses seleksi administrasi, kami informasikan bahwa Anda <strong>BELUM MEMENUHI</strong> kualifikasi yang dibutuhkan untuk posisi yang anda lamar.</p>
             <p>Jangan berkecil hati, masih banyak kesempatan lain yang bisa Anda coba di masa mendatang.</p>
             <p>Tetap semangat!</p>
         </div>
