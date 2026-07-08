@@ -6,7 +6,7 @@
 <div class="container mx-auto px-4 py-8 max-w-5xl mt-16">
     <div class="bg-white rounded-xl shadow-md overflow-hidden">
         @if($lowongan->banner_image)
-        <img src="{{ Storage::url($lowongan->banner_image) }}" alt="{{ $lowongan->judul }}" class="w-full h-64 object-cover">
+            <img src="{{ asset($lowongan->banner_image) }}" alt="{{ $lowongan->judul }}" class="w-full h-48 object-cover">
         @endif
         
         <div class="p-6">

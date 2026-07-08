@@ -36,8 +36,8 @@
             <div class="bg-white rounded-xl shadow-sm overflow-hidden card-hover transition duration-300 border border-gray-100 flex flex-col justify-between">
                 <div>
                     @if($lowongan->banner_image)
-                    <img src="{{ Storage::url($lowongan->banner_image) }}" alt="{{ $lowongan->judul }}" class="w-full h-48 object-cover">
-                    @else
+                        <img src="{{ asset($lowongan->banner_image) }}" alt="{{ $lowongan->judul }}" class="w-full h-48 object-cover">
+                    @endif
                     <div class="w-full h-48 bg-gradient-to-r from-primary to-primary-dark flex items-center justify-center">
                         <i class="fas fa-briefcase text-white text-5xl opacity-40"></i>
                     </div>

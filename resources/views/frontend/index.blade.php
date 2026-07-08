@@ -1,4 +1,5 @@
 @extends('layouts.frontend')
+
 @section('title', 'Dagsap Recruitment - Karir Bersama Dagsap')
 
 @section('content')
@@ -28,12 +29,13 @@
             @forelse($lowongans as $lowongan)
             <div class="bg-white rounded-xl shadow-sm overflow-hidden card-hover transition duration-300 border border-gray-100">
                 @if($lowongan->banner_image)
-                <img src="{{ Storage::url($lowongan->banner_image) }}" alt="{{ $lowongan->judul }}" class="w-full h-48 object-cover">
+                    <img src="{{ asset($lowongan->banner_image) }}" alt="{{ $lowongan->judul }}" class="w-full h-48 object-cover">
                 @else
-                <div class="w-full h-48 bg-gradient-to-r from-primary to-primary-dark flex items-center justify-center">
-                    <i class="fas fa-briefcase text-white text-5xl opacity-40"></i>
-                </div>
+                    <div class="w-full h-48 bg-gradient-to-r from-primary to-primary-dark flex items-center justify-center">
+                        <i class="fas fa-briefcase text-white text-5xl opacity-40"></i>
+                    </div>
                 @endif
+                
                 <div class="p-6">
                     <div class="flex items-center justify-between mb-3">
                         <span class="text-xs text-primary bg-primary-light px-2.5 py-1 rounded-full font-medium">

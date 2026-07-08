@@ -46,8 +46,10 @@ class LowonganController extends Controller
         $validated['status'] = 'publikasi';
 
         if ($request->hasFile('banner_image')) {
-            $path = $request->file('banner_image')->store('banners', 'public');
-            $validated['banner_image'] = $path;
+            $file = $request->file('banner_image');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('uploads/banners'), $filename);
+            $validated['banner_image'] = 'uploads/banners/' . $filename;
         }
 
         Lowongan::create($validated);

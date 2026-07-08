@@ -501,41 +501,34 @@
         <!-- Preview CV -->
         <div class="mb-6">
             <label class="block text-sm font-medium text-gray-700 mb-2">CV / Resume</label>
-            @if($pelamar->cv_path)
+            @if($pelamar->cv_path && file_exists(public_path($pelamar->cv_path)))
+                @php
+                    $cvExtension = pathinfo($pelamar->cv_path, PATHINFO_EXTENSION);
+                    $cvSize = file_exists(public_path($pelamar->cv_path)) ? round(filesize(public_path($pelamar->cv_path)) / 1024, 2) : 0;
+                @endphp
                 <div class="border rounded-lg p-3 bg-gray-50">
                     <div class="flex items-center justify-between flex-wrap gap-3">
                         <div class="flex items-center">
-                            @php
-                                $cvExtension = pathinfo($pelamar->cv_path, PATHINFO_EXTENSION);
-                                $cvSize = 0;
-                                if (Storage::disk('local')->exists($pelamar->cv_path)) {
-                                    $cvSize = Storage::disk('local')->size($pelamar->cv_path);
-                                } elseif (Storage::disk('public')->exists($pelamar->cv_path)) {
-                                    $cvSize = Storage::disk('public')->size($pelamar->cv_path);
-                                }
-                            @endphp
-                            @if($cvExtension == 'pdf')
-                                <i class="fas fa-file-pdf text-red-500 text-2xl mr-3"></i>
-                            @else
-                                <i class="fas fa-file-word text-blue-500 text-2xl mr-3"></i>
-                            @endif
+                            <i class="fas fa-file-pdf text-red-500 text-2xl mr-3"></i>
                             <div>
                                 <p class="text-sm font-medium">CV_{{ $pelamar->nama_lengkap }}.{{ $cvExtension }}</p>
-                                <p class="text-xs text-gray-500">Ukuran: {{ $cvSize ? round($cvSize / 1024, 2) : 0 }} KB</p>
+                                <p class="text-xs text-gray-500">Ukuran: {{ $cvSize }} KB</p>
                             </div>
                         </div>
                         <div class="flex gap-2">
-                            <button onclick="previewFile('{{ route('hrd.pelamar.preview-cv', $pelamar) }}', 'CV', '{{ $cvExtension }}')" class="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600">
+                            <button onclick="previewFile('{{ asset($pelamar->cv_path) }}', 'CV', '{{ $cvExtension }}')" 
+                                    class="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600">
                                 <i class="fas fa-eye mr-1"></i> Preview
                             </button>
-                            <a href="{{ route('hrd.pelamar.download-cv', $pelamar) }}" class="bg-primary text-white px-3 py-1 rounded text-sm hover:bg-primary-dark">
+                            <a href="{{ asset($pelamar->cv_path) }}" download 
+                               class="bg-primary text-white px-3 py-1 rounded text-sm hover:bg-primary-dark">
                                 <i class="fas fa-download mr-1"></i> Download
                             </a>
                         </div>
                     </div>
                 </div>
             @else
-                <p class="text-gray-500">Belum upload CV</p>
+                <p class="text-gray-500">File tidak ditemukan</p>
             @endif
         </div>
         

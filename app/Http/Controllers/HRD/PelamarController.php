@@ -46,7 +46,6 @@ class PelamarController extends Controller
 
     public function show(Pelamar $pelamar)
     {
-        // Cek apakah pelamar ini dari lowongan HRD yang login
         Gate::authorize('view', $pelamar);
         
         $lowongans = Lowongan::where('hrd_id', auth()->id())->get();
@@ -57,13 +56,11 @@ class PelamarController extends Controller
     public function kirimJadwalInterview(KirimJadwalInterviewRequest $request, Pelamar $pelamar)
     {
         Gate::authorize('updateStatus', $pelamar);
-        // Validated automatically by the FormRequest class
 
         $tanggal = $request->tanggal_interview;
         $waktu = $request->waktu_interview;
         $lokasi = $request->lokasi_interview;
         
-        // Format nomor telepon
         $noTelepon = $pelamar->no_telepon;
         if (substr($noTelepon, 0, 1) === '0') {
             $noTelepon = '62' . substr($noTelepon, 1);
@@ -85,19 +82,15 @@ class PelamarController extends Controller
         $message .= "Kami tunggu balasan dari Anda.%0A%0A";
         $message .= "Terima kasih.";
 
-        // Update status pelamar
         $pelamar->update([
             'status' => 'interview',
             'catatan' => "Tahap Lanjutan dijadwalkan pada {$tanggal} {$waktu} di {$lokasi}" . ($request->catatan ? "\nCatatan: " . $request->catatan : '')
         ]);
         
-        // Simpan log pengiriman
         Log::info('WhatsApp message prepared for: ' . $noTelepon);
         
-        // Kirim WhatsApp via API (redirect ke WhatsApp Web)
         $whatsappUrl = "https://api.whatsapp.com/send?phone=" . $noTelepon . "&text=" . $message;
         
-        // Kirim email juga sebagai backup
         $this->sendEmailInterview($pelamar, $tanggal, $waktu, $lokasi);
         
         return redirect()->route('hrd.pelamar.show', $pelamar)
@@ -108,14 +101,12 @@ class PelamarController extends Controller
     public function updateStatus(UpdatePelamarStatusRequest $request, Pelamar $pelamar)
     {
         Gate::authorize('updateStatus', $pelamar);
-        // Validated automatically by the FormRequest class
         
         $pelamar->update([
             'status' => $request->status,
             'catatan' => $request->catatan
         ]);
         
-        // Jika status diterima, kirim email pemberitahuan
         if ($request->status == 'diterima') {
             $this->sendEmailDiterima($pelamar);
         }
@@ -124,57 +115,64 @@ class PelamarController extends Controller
             ->with('success', 'Status pelamar berhasil diupdate!');
     }
     
-    // Tambahkan method ini di dalam class PelamarController
+    // DOWNLOAD CV - HANYA 1 METHOD
     public function downloadCv(Pelamar $pelamar)
     {
-        Gate::authorize('downloadCv', $pelamar);
-    
-        if (Storage::disk('local')->exists($pelamar->cv_path)) {
-            return Storage::disk('local')->download($pelamar->cv_path, 'CV_' . $pelamar->nama_lengkap . '.pdf');
-        } elseif (Storage::disk('public')->exists($pelamar->cv_path)) {
-            return Storage::disk('public')->download($pelamar->cv_path, 'CV_' . $pelamar->nama_lengkap . '.pdf');
+        if ($pelamar->lowongan->hrd_id !== auth()->id()) {
+            abort(403);
         }
     
-        return back()->with('error', 'File tidak ditemukan.');
+        $path = public_path($pelamar->cv_path);
+        if (file_exists($path)) {
+            $extension = pathinfo($pelamar->cv_path, PATHINFO_EXTENSION);
+            $filename = 'CV_' . $pelamar->nama_lengkap . '.' . $extension;
+            return response()->download($path, $filename);
+        }
+    
+        return back()->with('error', 'File CV tidak ditemukan.');
     }
 
+    // DOWNLOAD IJAZAH - HANYA 1 METHOD (HAPUS YANG DUPLIKAT)
     public function downloadIjazah(Pelamar $pelamar)
     {
-        Gate::authorize('downloadIjazah', $pelamar);
-    
-        if (Storage::disk('local')->exists($pelamar->ijazah_path)) {
-            return Storage::disk('local')->download($pelamar->ijazah_path, 'Ijazah_' . $pelamar->nama_lengkap . '.pdf');
-        } elseif (Storage::disk('public')->exists($pelamar->ijazah_path)) {
-            return Storage::disk('public')->download($pelamar->ijazah_path, 'Ijazah_' . $pelamar->nama_lengkap . '.pdf');
+        if ($pelamar->lowongan->hrd_id !== auth()->id()) {
+            abort(403);
         }
     
-        return back()->with('error', 'File tidak ditemukan.');
+        $path = public_path($pelamar->ijazah_path);
+        if (file_exists($path)) {
+            $extension = pathinfo($pelamar->ijazah_path, PATHINFO_EXTENSION);
+            $filename = 'Ijazah_' . $pelamar->nama_lengkap . '.' . $extension;
+            return response()->download($path, $filename);
+        }
+    
+        return back()->with('error', 'File Ijazah tidak ditemukan.');
     }
 
+    // PREVIEW CV (Opsional, jika perlu)
     public function previewCv(Pelamar $pelamar)
     {
-        Gate::authorize('downloadCv', $pelamar);
+        if ($pelamar->lowongan->hrd_id !== auth()->id()) {
+            abort(403);
+        }
     
-        if (Storage::disk('local')->exists($pelamar->cv_path)) {
-            $path = Storage::disk('local')->path($pelamar->cv_path);
-            return response()->file($path);
-        } elseif (Storage::disk('public')->exists($pelamar->cv_path)) {
-            $path = Storage::disk('public')->path($pelamar->cv_path);
+        $path = public_path($pelamar->cv_path);
+        if (file_exists($path)) {
             return response()->file($path);
         }
     
         return abort(404, 'File tidak ditemukan.');
     }
 
+    // PREVIEW IJAZAH (Opsional, jika perlu)
     public function previewIjazah(Pelamar $pelamar)
     {
-        Gate::authorize('downloadIjazah', $pelamar);
+        if ($pelamar->lowongan->hrd_id !== auth()->id()) {
+            abort(403);
+        }
     
-        if (Storage::disk('local')->exists($pelamar->ijazah_path)) {
-            $path = Storage::disk('local')->path($pelamar->ijazah_path);
-            return response()->file($path);
-        } elseif (Storage::disk('public')->exists($pelamar->ijazah_path)) {
-            $path = Storage::disk('public')->path($pelamar->ijazah_path);
+        $path = public_path($pelamar->ijazah_path);
+        if (file_exists($path)) {
             return response()->file($path);
         }
     

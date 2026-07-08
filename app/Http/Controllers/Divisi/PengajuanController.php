@@ -77,7 +77,16 @@ class PengajuanController extends Controller
             $file = $request->file('lampiran');
             $lampiranNama = $file->getClientOriginalName();
             $lampiranJenis = $file->getClientOriginalExtension();
-            $lampiranPath = $file->store('lampiran_ptk', 'public');
+            $filename = time() . '_' . preg_replace('/[^a-zA-Z0-9._-]/', '_', $file->getClientOriginalName());
+    
+            // Pastikan folder ada
+            $uploadPath = public_path('uploads/lampiran_ptk');
+            if (!is_dir($uploadPath)) {
+                mkdir($uploadPath, 0755, true);
+            }
+    
+            $file->move($uploadPath, $filename);
+            $lampiranPath = 'uploads/lampiran_ptk/' . $filename;
         }
 
         $pengajuanData = [

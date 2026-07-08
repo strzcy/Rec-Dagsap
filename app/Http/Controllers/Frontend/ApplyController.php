@@ -41,11 +41,26 @@ class ApplyController extends Controller
             'cv' => 'required|file|mimes:pdf,doc,docx|max:5120',
             'ijazah' => 'required|file|mimes:pdf,jpg,jpeg,png|max:5120',
         ]);
-    
+
         try {
-            $cvPath = $request->file('cv')->store('cvs', 'local');
-            $ijazahPath = $request->file('ijazah')->store('ijazahs', 'local');
-        
+            // Simpan CV
+            $cvPath = null;
+            if ($request->hasFile('cv')) {
+                $file = $request->file('cv');
+                $filename = time() . '_' . preg_replace('/[^a-zA-Z0-9._-]/', '_', $file->getClientOriginalName());
+                $file->move(public_path('uploads/cvs'), $filename);
+                $cvPath = 'uploads/cvs/' . $filename;
+            }
+
+            // Simpan Ijazah
+            $ijazahPath = null;
+            if ($request->hasFile('ijazah')) {
+                $file = $request->file('ijazah');
+                $filename = time() . '_' . preg_replace('/[^a-zA-Z0-9._-]/', '_', $file->getClientOriginalName());
+                $file->move(public_path('uploads/ijazahs'), $filename);
+                $ijazahPath = 'uploads/ijazahs/' . $filename;
+            }
+
             $pelamar = Pelamar::create([
                 'lowongan_id' => $lowongan->id,
                 'nama_lengkap' => $validated['nama_lengkap'],
@@ -62,7 +77,7 @@ class ApplyController extends Controller
                 'ijazah_path' => $ijazahPath,
                 'status' => 'pending',
             ]);
-        
+
             if ($request->filled('ipk')) {
                 FormulirJawaban::create([
                     'pelamar_id' => $pelamar->id,
