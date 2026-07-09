@@ -1,30 +1,30 @@
 # Rec-Dagsap
 
-# Clone repository
+### Clone repository
 git clone https://github.com/strzcy/Rec-Dagsap.git
 cd Rec-Dagsap
 
-# Install dependencies
+### Install dependencies
 composer install
 
-# Copy environment
+### Copy environment
 cp .env.example .env
 
-# Generate key
+### Generate key
 php artisan key:generate
 
-# Setup database di .env
-# DB_DATABASE=recruitment_dagsap
-# DB_USERNAME=root
-# DB_PASSWORD=
+### Setup database di .env
+DB_DATABASE=recruitment_dagsap
+DB_USERNAME=root
+DB_PASSWORD=
 
-# Jalankan migration & seeder
+### Jalankan migration & seeder
 php artisan migrate:fresh
 
-# BUAT STORAGE LINK
+### BUAT STORAGE LINK
 php artisan storage:link
 
-# Install NPM (optional)
+### Install NPM (optional)
 npm install
 npm run build
 
