@@ -32,5 +32,5 @@ npm install
 <br>
 npm run build
 
-# Jalankan server
+### 9. Jalankan server
 php artisan serve
