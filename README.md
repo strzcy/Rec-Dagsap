@@ -23,6 +23,7 @@ DB_PASSWORD=
 
 ### 6. Jalankan migration & seeder
 php artisan migrate:fresh
+php artisan db:seed
 
 ### 7. BUAT STORAGE LINK
 php artisan storage:link
