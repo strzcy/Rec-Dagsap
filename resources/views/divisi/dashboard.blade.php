@@ -63,62 +63,6 @@
                 </p>
             </div>
             
-            <!-- Tombol Notifikasi -->
-            <div class="grid grid-cols-2 gap-3 mb-4">
-                <!-- Tombol Email -->
-                @php
-                    $emailSubject = rawurlencode("Notifikasi Pengajuan PTK - " . $ptkData['posisi']);
-                    $emailBody = rawurlencode(
-                        "Yth. Atasan " . $ptkData['divisi'] . ",\n\n" .
-                        "Saya ingin memberitahukan bahwa telah dilakukan pengajuan Permintaan Tenaga Kerja (PTK) dengan detail sebagai berikut:\n\n" .
-                        "📋 DETAIL PENGAJUAN:\n" .
-                        "No. PTK: PTK-" . str_pad($ptkData['id'], 6, '0', STR_PAD_LEFT) . "\n" .
-                        "Posisi: " . $ptkData['posisi'] . "\n" .
-                        "Divisi: " . $ptkData['divisi'] . "\n" .
-                        "Jumlah: " . $ptkData['jumlah'] . " orang\n" .
-                        "Tanggal Dibutuhkan: " . $ptkData['tanggal_dibutuhkan'] . "\n" .
-                        "Area Penempatan: " . $ptkData['area_penempatan'] . "\n" .
-                        ($ptkData['toko_penempatan'] != '-' ? "Toko Penempatan: " . $ptkData['toko_penempatan'] . "\n" : "") .
-                        "Jenis: " . ($ptkData['jenis'] == 'penambahan' ? 'Penambahan' : 'Penggantian') . "\n\n" .
-                        "👤 IDENTITAS PEMOHON:\n" .
-                        "Nama: " . $ptkData['nama_pemohon'] . "\n" .
-                        "NIP/NIK: " . $ptkData['nip_pemohon'] . "\n" .
-                        "Jabatan: " . $ptkData['jabatan_pemohon'] . "\n" .
-                        "No. HP: " . $ptkData['no_hp_pemohon'] . "\n\n" .
-                        "Waktu Pengajuan: " . $ptkData['waktu_pengajuan'] . "\n\n" .
-                        "Mohon segera diproses.\n\n" .
-                        "Terima kasih.\n" .
-                        $ptkData['nama_pemohon']
-                    );
-                    $emailManagement = $ptkData['email_management'] ?? 'hrd@dagsap.com';
-                @endphp
-    
-                <a href="mailto:{{ $emailManagement }}?subject={{ $emailSubject }}&body={{ $emailBody }}" 
-                   target="_blank" 
-                   class="flex items-center justify-center gap-2 bg-blue-600 text-white px-4 py-3 rounded-lg hover:bg-blue-700 transition text-sm">
-                    <i class="fas fa-envelope"></i> Email
-                </a>
-    
-                <!-- Tombol WhatsApp -->
-                @php
-                    $waMessage = rawurlencode(
-            
-                        "Permisi, Saya " . $ptkData['nama_pemohon'] . " telah mengajukan PTK.\n\n" .
-                        "• Posisi: " . $ptkData['posisi'] . "\n" .
-                        "• Jumlah: " . $ptkData['jumlah'] . " orang\n" .
-                        "• Dibutuhkan pada: " . $ptkData['tanggal_dibutuhkan'] . "\n" .
-                        "• Divisi: " . $ptkData['divisi'] . "\n\n" .
-                        "Mohon segera diproses. Terima kasih."
-                    );
-                    $noHpManagement = '6281294491075'; // Ganti dengan nomor management sebenarnya
-                @endphp
-    
-                <a href="https://api.whatsapp.com/send?phone={{ $noHpManagement }}&text={{ $waMessage }}" 
-                   target="_blank" 
-                   class="flex items-center justify-center gap-2 bg-green-600 text-white px-4 py-3 rounded-lg hover:bg-green-700 transition text-sm">
-                    <i class="fab fa-whatsapp"></i> WhatsApp
-                </a>
-            </div>
             @endif
             
             <!-- Tombol Navigasi -->
